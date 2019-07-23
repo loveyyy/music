@@ -11,12 +11,14 @@ import android.os.IBinder;
 import androidx.annotation.Nullable;
 
 import com.example.music.Beens.RankMusicBeens;
+import com.example.music.Beens.SearchBeens;
 import com.example.music.Beens.SingerBeens;
 import com.example.music.Beens.Singer_MusicBeens;
 import com.example.music.UI.Adapter.GridViewAdapter;
 import com.example.music.UI.Adapter.Rank_ItemAdapter;
 import com.example.music.UI.Adapter.RlRankAdapter;
 import com.example.music.UI.Adapter.SInger_music_ItemAdapter;
+import com.example.music.UI.Adapter.Search_MusicAdapter;
 import com.example.music.Utils.GildeCilcleImageUtils;
 import com.example.music.Utils.Rereofit.Api;
 import com.example.music.Utils.Rereofit.ApiResponse;
@@ -27,9 +29,12 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -50,7 +55,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 
 /**
@@ -64,7 +72,9 @@ public class MainHostActivity extends FragmentActivity implements View.OnClickLi
     private DrawerLayout drawerLayout;
     //Main中的控件
     private RecyclerView recyclerView,left_recycle ,rcv_singer;
-    private ImageView iv_maintou,ivdrawmaintou;
+    private ImageView iv_maintou,ivdrawmaintou,iv_Search;
+    private EditText et_search;
+
 
     //播放器中的控件
     private ImageButton btn_play_s, btn_play_n;//开始或者暂停   下一曲
@@ -127,6 +137,8 @@ public class MainHostActivity extends FragmentActivity implements View.OnClickLi
         iv_maintou = findViewById(R.id.iv_Maintou);
         recyclerView=findViewById(R.id.rcv_rank);
         rcv_singer=findViewById(R.id.rcv_singer);
+        et_search=findViewById(R.id.et_search);
+        iv_Search=findViewById(R.id.iv_Search);
     }
 
     public void initdata() {
@@ -139,6 +151,7 @@ public class MainHostActivity extends FragmentActivity implements View.OnClickLi
             @Override
             public void OnItemClikListener(int pos) {
                 getdata(bangId[pos],reqId);
+                drawerLayout.closeDrawer(Gravity.LEFT);
             }
         });
         Api.getInstance().iRetrofit.getsinger("http://www.kuwo.cn/api/www/artist/artistInfo",11,1,6,"635ee580-aa06-11e9-8bbc-afbabde1324f")
@@ -168,6 +181,7 @@ public class MainHostActivity extends FragmentActivity implements View.OnClickLi
         iv_maintou.setOnClickListener(this);
         iv_play_musicimage.setOnClickListener(this);
         sb_play.setOnSeekBarChangeListener(this);
+        iv_Search.setOnClickListener(this);
     }
     private void getsinger_music(int artistid,String reqId){
         Api.getInstance().iRetrofit.getsinger_music("http://www.kuwo.cn/api/www/artist/artistMusic",artistid,1,30,reqId)
@@ -189,30 +203,8 @@ public class MainHostActivity extends FragmentActivity implements View.OnClickLi
                         imageurl=data.getData().getList().get(pos).getAlbumpic();
                         Glide.with(MainHostActivity.this).load(data.getData().getList().get(pos).getPic()).
                                 transform(new GildeCilcleImageUtils(MainHostActivity.this)).into(iv_play_musicimage);
-                        Api.getInstance().iRetrofit.getmusicinfo("http://www.kuwo.cn/url",
-                                "mp3",data.getData().getList().get(pos).getRid(),"url",
-                                "convert_url3",
-                                "128kmp3","web",
-                                data.getCurTime(),
-                                data.getReqId()).
-                                compose(ApiSubscribe.<ResponseBody>io_main()).subscribe(new ApiResponse<ResponseBody>(MainHostActivity.this){
-
-                            @Override
-                            public void success(ResponseBody data1) {
-                                //获得歌曲播放地址
-                                try {
-                                    JSONObject jsonObject=new JSONObject(data1.string());
-                                    String url=jsonObject.get("url").toString();
-                                    mi.Play(url,data.getData().getList().get(pos).getDuration());
-                                    btn_play_s.setBackgroundResource(R.drawable.ic_stop);
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        });
-
+                        getmusicurl(data.getData().getList().get(pos).getRid(),
+                                data.getCurTime(),data.getReqId(),data.getData().getList().get(pos).getDuration());
                     }
                 });
             }
@@ -239,30 +231,8 @@ public class MainHostActivity extends FragmentActivity implements View.OnClickLi
                         imageurl=data.getData().getMusicList().get(pos).getAlbumpic();
                         Glide.with(MainHostActivity.this).load(data.getData().getMusicList().get(pos).getPic()).
                                 transform(new GildeCilcleImageUtils(MainHostActivity.this)).into(iv_play_musicimage);
-                        Api.getInstance().iRetrofit.getmusicinfo("http://www.kuwo.cn/url",
-                                "mp3",data.getData().getMusicList().get(pos).getRid(),"url",
-                                "convert_url3",
-                                "128kmp3","web",
-                                data.getCurTime(),
-                                data.getReqId()).
-                                compose(ApiSubscribe.<ResponseBody>io_main()).subscribe(new ApiResponse<ResponseBody>(MainHostActivity.this){
-
-                            @Override
-                            public void success(ResponseBody data1) {
-                                //获得歌曲播放地址
-                                try {
-                                    JSONObject jsonObject=new JSONObject(data1.string());
-                                    String url=jsonObject.get("url").toString();
-                                    mi.Play(url,data.getData().getMusicList().get(pos).getDuration());
-                                    btn_play_s.setBackgroundResource(R.drawable.ic_stop);
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        });
-
+                        getmusicurl(data.getData().getMusicList().get(pos).getRid(),
+                                data.getCurTime(),data.getReqId(),data.getData().getMusicList().get(pos).getDuration());
                     }
                 });
             }
@@ -308,7 +278,61 @@ public class MainHostActivity extends FragmentActivity implements View.OnClickLi
                 intent.setClass(MainHostActivity.this, TextLrc.class);
                 startActivity(intent);
                 break;
+
+            case R.id.iv_Search:
+                    Api.getInstance().iRetrofit.search("http://www.kuwo.cn/api/www/search/searchMusicBykeyWord",
+                            et_search.getText().toString(),1,30,"9b992050-ad30-11e9-a442-47291f49893f")
+                            .compose(ApiSubscribe.<SearchBeens>io_main()).subscribe(new ApiResponse<SearchBeens>(MainHostActivity.this) {
+                        @Override
+                        public void success(final SearchBeens data) {
+                            RecyclerView.LayoutManager layoutManager4 =new LinearLayoutManager(MainHostActivity.this,RecyclerView.VERTICAL,false);
+                            recyclerView.setLayoutManager(layoutManager4);
+                            Search_MusicAdapter search_musicAdapter=new Search_MusicAdapter(MainHostActivity.this,data.getData());
+                            recyclerView.setAdapter(search_musicAdapter);
+
+                            search_musicAdapter.setOnItemClick(new Search_MusicAdapter.OnItemClick() {
+                                @Override
+                                public void OnItemClickListener(final int pos) {
+                                    tv_play_songname.setText(data.getData().getList().get(pos).getName());
+                                    tv_play_time.setText(String.valueOf(data.getData().getList().get(pos).getSongTimeMinutes()));
+                                    MusicID=data.getData().getList().get(pos).getRid();
+                                    imageurl=data.getData().getList().get(pos).getAlbumpic();
+                                    Glide.with(MainHostActivity.this).load(data.getData().getList().get(pos).getPic()).
+                                            transform(new GildeCilcleImageUtils(MainHostActivity.this)).into(iv_play_musicimage);
+                                    getmusicurl(data.getData().getList().get(pos).getRid(),
+                                            data.getCurTime(),data.getReqId(),data.getData().getList().get(pos).getDuration());
+                                }
+                            });
+                        }
+                    });
+
         }
+    }
+
+    private void getmusicurl(int  rid,long curtime,String reqid,final int duration){
+        Api.getInstance().iRetrofit.getmusicinfo("http://www.kuwo.cn/url",
+                "mp3",rid,"url",
+                "convert_url3",
+                "128kmp3","web",
+                curtime,
+                reqid).
+                compose(ApiSubscribe.<ResponseBody>io_main()).subscribe(new ApiResponse<ResponseBody>(MainHostActivity.this){
+
+            @Override
+            public void success(ResponseBody data1) {
+                //获得歌曲播放地址
+                try {
+                    JSONObject jsonObject=new JSONObject(data1.string());
+                    String url=jsonObject.get("url").toString();
+                    mi.Play(url,duration);
+                    btn_play_s.setBackgroundResource(R.drawable.ic_stop);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
 

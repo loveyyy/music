@@ -9,6 +9,7 @@ import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.android.BuildConfig;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -35,14 +36,18 @@ public class Api {
     }
 
     private void initRetrofit() {
-        OkHttpClient.Builder builder = new OkHttpClient.Builder().connectTimeout(15, TimeUnit.SECONDS).readTimeout(15, TimeUnit.SECONDS).
-                writeTimeout(20, TimeUnit.SECONDS);
-        HttpLoggingInterceptor.Logger logging = new HttpLoggingInterceptor.Logger() {
+        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger()
+        {
             @Override
-            public void log(String message) {
-                Log.e("retrofit url", message);
+            public void log(String message)
+            {
+                Log.d("Http", message+"");
+
             }
-        };
+        });
+        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        OkHttpClient.Builder builder = new OkHttpClient.Builder().addInterceptor(loggingInterceptor).connectTimeout(15, TimeUnit.SECONDS).readTimeout(15, TimeUnit.SECONDS).
+                writeTimeout(20, TimeUnit.SECONDS);
         OkHttpClient okHttpClient = builder.build();
 
         Gson gson = new GsonBuilder()

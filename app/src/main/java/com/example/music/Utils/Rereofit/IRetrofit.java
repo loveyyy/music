@@ -10,10 +10,12 @@ package com.example.music.Utils.Rereofit;
 import com.example.music.Beens.HotMusicBeens;
 import com.example.music.Beens.LrcBeen;
 import com.example.music.Beens.RankMusicBeens;
+import com.example.music.Beens.SearchBeens;
 import com.example.music.Beens.SingerBeens;
 import com.example.music.Beens.Singer_MusicBeens;
 
 import io.reactivex.Observable;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.http.*;
 
@@ -48,5 +50,10 @@ public interface IRetrofit {
     //获得歌词信息
     @GET()
     Observable<LrcBeen>getmusic_lrc(@Url String url, @Query("musicId") int musicId, @Query("reqId") String reqId);
+
+
+    //搜索
+    @GET()
+    Observable<SearchBeens>search(@Url String url, @Query("key") String key, @Query("pn") int pn, @Query("rn") int rn, @Query("reqId") String reqId);
 
 }

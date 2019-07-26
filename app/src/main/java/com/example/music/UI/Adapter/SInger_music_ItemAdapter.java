@@ -11,7 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.music.Beens.RankMusicBeens;
 import com.example.music.Beens.Singer_MusicBeens;
 import com.example.music.R;
 

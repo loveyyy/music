@@ -47,7 +47,7 @@ public class TextLrc extends BaseActivity {
         String url=intent.getStringExtra("image");
         Glide.with(this).load(url).into(iv_bac);
         Api.getInstance().iRetrofit.getmusic_lrc("http://www.kuwo.cn/newh5/singles/songinfoandlrc",
-                musicid,"4ea6be30-a9eb-11e9-b6f5-ab365f00f113").compose(ApiSubscribe.<LrcBeen>io_main()).
+                musicid).compose(ApiSubscribe.<LrcBeen>io_main()).
                 subscribe(new ApiResponse<LrcBeen>(this) {
                     @Override
                     public void success(LrcBeen data) {

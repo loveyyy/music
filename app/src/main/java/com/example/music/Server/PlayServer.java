@@ -75,7 +75,7 @@ public class PlayServer extends Service implements lrcText.ScrollChange {
         @Override
         public void Play(String Musicuri, int  d) {
             duration=d;
-            PlayMusic(Musicuri,duration);
+            PlayMusic(Musicuri);
         }
 
         @Override
@@ -93,12 +93,12 @@ public class PlayServer extends Service implements lrcText.ScrollChange {
 
         @Override
         public void next(String Musicuri) {
-            PlayMusic(Musicuri,duration);
+            PlayMusic(Musicuri);
         }
 
         @Override
         public void last(String Musicuri) {
-            PlayMusic(Musicuri,duration);
+            PlayMusic(Musicuri);
         }
 
         @Override
@@ -116,7 +116,7 @@ public class PlayServer extends Service implements lrcText.ScrollChange {
     }
 
 
-    private void PlayMusic(String musicuri,final int duration) {
+    private void PlayMusic(String musicuri) {
         init();
         try {
             mediaPlayer.reset();

@@ -17,7 +17,6 @@ import com.example.music.R;
 
 public class WelcomeActivity extends BaseActivity implements View.OnClickListener {
     private ImageView iv_wlcome;
-    private Button btn_toMain;
     @SuppressLint("HandlerLeak")
     private Handler handler=new Handler();
     @Override
@@ -31,7 +30,7 @@ public class WelcomeActivity extends BaseActivity implements View.OnClickListene
                 startActivity(intent);
                 finish();
             }
-        },5000);
+        },2000);
     }
 
     @Override
@@ -42,19 +41,15 @@ public class WelcomeActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     public void initview() {
-    btn_toMain=findViewById(R.id.btn_toMain);
     iv_wlcome=findViewById(R.id.Iv_wlcome);
     }
 
     @Override
     public void initdata() {
-        //欢迎页加载图片
-//        Glide.with(this).load("").into(iv_wlcome);
     }
 
     @Override
     public void setlistener() {
-        btn_toMain.setOnClickListener(this);
         iv_wlcome.setOnClickListener(this);
     }
 
@@ -63,17 +58,6 @@ public class WelcomeActivity extends BaseActivity implements View.OnClickListene
         switch (v.getId()){
             case R.id.Iv_wlcome:
                 break;
-
-
-            case R.id.btn_toMain:
-                handler.removeCallbacksAndMessages(null);
-                Intent intent=new Intent();
-                intent.setClass(WelcomeActivity.this,MainHostActivity.class);
-                startActivity(intent);
-                finish();
-                break;
-
-
         }
     }
 }

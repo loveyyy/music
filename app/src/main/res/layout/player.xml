@@ -12,7 +12,8 @@
         <SeekBar
             android:id="@+id/sb_play"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_1"
+            android:layout_height="@dimen/dp_2"
+            android:layout_marginTop="@dimen/dp_1"
             android:layout_gravity="center" />
 
         <LinearLayout
@@ -24,6 +25,8 @@
                 android:layout_width="@dimen/dp_60"
                 android:layout_height="@dimen/dp_60"
                 android:layout_marginLeft="@dimen/dp_10"
+                android:layout_marginBottom="@dimen/dp_3"
+                android:layout_marginTop="@dimen/dp_2"
                 android:background="@drawable/ic_music"
                 android:scaleType="fitXY" />
             <LinearLayout

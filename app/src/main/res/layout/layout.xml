@@ -42,7 +42,7 @@
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/include"
+            android:layout_above="@+id/playview"
             >
 
             <LinearLayout
@@ -107,11 +107,16 @@
 
         </androidx.core.widget.NestedScrollView>
 
-        <include layout="@layout/player"
+        <com.example.music.View.PlayerView
+            android:id="@+id/playview"
             android:layout_width="match_parent"
             android:layout_alignParentBottom="true"
-            android:layout_height="@dimen/dp_68"
-            android:id="@+id/include" />
+            android:layout_height="@dimen/dp_68"/>
+        <!--<include layout="@layout/player"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_alignParentBottom="true"-->
+            <!--android:layout_height="@dimen/dp_68"-->
+            <!--android:id="@+id/include" />-->
 
     </RelativeLayout>
 

@@ -2,67 +2,77 @@ package com.example.music.Beens;
 
 
 public class PlayingMusicBeens {
+        private String musicid;
         private  String pic;
         private  String musicname;
         private String music_singer;
         private  int  duration;
         private String album;
         private String albumpic;
+        private int rid;
 
-        public String getAlbumpic() {
-            return albumpic;
-        }
+    public String getMusicid() {
+        return musicid;
+    }
 
-        public void setAlbumpic(String albumpic) {
-            this.albumpic = albumpic;
-        }
+    public void setMusicid(String musicid) {
+        this.musicid = musicid;
+    }
 
-        public String getAlbum() {
-            return album;
-        }
+    public String getPic() {
+        return pic;
+    }
 
-        public void setAlbum(String album) {
-            this.album = album;
-        }
+    public void setPic(String pic) {
+        this.pic = pic;
+    }
 
-         public int getRid() {
-            return rid;
-        }
+    public String getMusicname() {
+        return musicname;
+    }
 
-        public void setRid(int rid) {
-            this.rid = rid;
-        }
+    public void setMusicname(String musicname) {
+        this.musicname = musicname;
+    }
 
-        private  int rid;
-        public String getPic() {
-            return pic;
-        }
+    public String getMusic_singer() {
+        return music_singer;
+    }
 
-        public void setPic(String pic) {
-            this.pic = pic;
-        }
+    public void setMusic_singer(String music_singer) {
+        this.music_singer = music_singer;
+    }
 
-        public String getMusicname() {
-            return musicname;
-        }
+    public int getDuration() {
+        return duration;
+    }
 
-        public void setMusicname(String musicname) {
-            this.musicname = musicname;
-        }
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
 
-        public String getMusic_singer() {
-            return music_singer;
-        }
+    public String getAlbum() {
+        return album;
+    }
 
-        public void setMusic_singer(String music_singer) {
-            this.music_singer = music_singer;
-        }
+    public void setAlbum(String album) {
+        this.album = album;
+    }
 
-        public int getDuration() {
-            return duration;
-        }
+    public String getAlbumpic() {
+        return albumpic;
+    }
 
-        public void setDuration(int duration) {
-            this.duration = duration;
-        }
+    public void setAlbumpic(String albumpic) {
+        this.albumpic = albumpic;
+    }
+
+    public int getRid() {
+        return rid;
+    }
+
+    public void setRid(int rid) {
+        this.rid = rid;
+    }
+
 }

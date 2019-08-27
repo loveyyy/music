@@ -6,9 +6,7 @@ package com.example.music.Interface;
 
 public interface MusicInterface {
 
-    void Play(String Musicuri,int duration);
+    void Play(String Musicuri);
     int PlayWithButton();
-    void next(String Musicuri);
-    void last(String Musicuri);
     void PlayWithSb(int progress);
 }

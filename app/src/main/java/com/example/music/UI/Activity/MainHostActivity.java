@@ -15,6 +15,8 @@ import android.widget.ImageView;
 import androidx.annotation.Nullable;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -32,11 +34,14 @@ import com.example.music.UI.Adapter.Rank_ItemAdapter;
 import com.example.music.UI.Adapter.RlRankAdapter;
 import com.example.music.UI.Adapter.SInger_music_ItemAdapter;
 import com.example.music.UI.Adapter.Search_MusicAdapter;
+import com.example.music.UI.Model.ModelTest;
 import com.example.music.Utils.GildeCilcleImageUtils;
 import com.example.music.Utils.Rereofit.Api;
 import com.example.music.Utils.Rereofit.ApiResponse;
 import com.example.music.Utils.Rereofit.ApiSubscribe;
 import com.example.music.View.PlayerView;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,6 +60,7 @@ public class MainHostActivity extends FragmentActivity implements View.OnClickLi
 
     private int[] bangId={17,93,16,158,145};
     private PlayerView playerView;
+    private ModelTest modelTest;
 
     //选择播放的音乐列表
     private List<PlayingMusicBeens> playingMusicBeensList =new ArrayList<>() ;
@@ -94,6 +100,18 @@ public class MainHostActivity extends FragmentActivity implements View.OnClickLi
     }
 
     public void initdata() {
+
+        modelTest = new ViewModelProvider(
+                this, new ViewModelProvider.AndroidViewModelFactory(getApplication())
+        ).get(ModelTest.class);
+        modelTest.getImage().observe(this, new Observer<SearchBeens>() {
+            @Override
+            public void onChanged(SearchBeens searchBeens) {
+                ///更新数据
+            }
+        });
+        modelTest.getmusic(this,et_search.getText().toString());
+
         Glide.with(this).load(R.drawable.lable).transform(new GildeCilcleImageUtils(this)).into(ivdrawmaintou);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         left_recycle.setLayoutManager(layoutManager);

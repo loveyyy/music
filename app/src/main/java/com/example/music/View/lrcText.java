@@ -20,6 +20,8 @@ import android.widget.Toast;
 import com.example.music.Beens.LrcBeen;
 import com.example.music.R;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.IOException;
 
 /**
@@ -168,6 +170,7 @@ public class lrcText extends TextView implements View.OnTouchListener{
 
 
     public  void sendp(int progress) {
+
         this.progree=progress;
         currentLine=findShowLine(progress);
         hanschange=true;
@@ -182,12 +185,12 @@ public class lrcText extends TextView implements View.OnTouchListener{
             int right = dataBean.getLrclist().size();
             while (left <= right) {
                 int middle = (left + right) / 2;
-                double middleTime =  Double.parseDouble(dataBean.getLrclist().get(middle).getTime());
+                double middleTime = dataBean.getLrclist().get(middle).getTime();
 
                 if (time < middleTime) {
                     right = middle - 1;
                 } else {
-                    if (middle + 1 >= dataBean.getLrclist().size() || time < Double.parseDouble(dataBean.getLrclist().get(middle + 1).getTime())) {
+                    if (middle + 1 >= dataBean.getLrclist().size() || time < dataBean.getLrclist().get(middle + 1).getTime()) {
                         return middle;
                     }
                     left = middle + 1;
@@ -228,7 +231,7 @@ public class lrcText extends TextView implements View.OnTouchListener{
                 currentLine= (int) (currentLine+(Math.floor(Math.abs(offset))/50));
             }
             if(currentLine<=dataBean.getLrclist().size()){
-                scrollChangeListener.ScrollProgree(Double.parseDouble(dataBean.getLrclist().get(currentLine).getTime()));
+                EventBus.getDefault().postSticky(dataBean.getLrclist().get(currentLine).getTime());
                 handler.removeCallbacksAndMessages(null);
                 invalidate();
             }
@@ -241,14 +244,4 @@ public class lrcText extends TextView implements View.OnTouchListener{
             return true;
         }
     };
-    public static  ScrollChange scrollChangeListener;
-
-
-
-    public interface  ScrollChange{
-        void ScrollProgree(Double progree);
-    }
-    public static void SetScrollChange(ScrollChange scrollChange){
-        scrollChangeListener=scrollChange;
-    }
 }

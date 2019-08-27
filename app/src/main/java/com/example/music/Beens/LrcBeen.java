@@ -1202,14 +1202,14 @@ public class LrcBeen {
              * lineLyric : 缘份一道桥-(电影《长城》片尾曲) - 谭维维&王力宏
              */
 
-            private String time;
+            private double time;
             private String lineLyric;
 
-            public String getTime() {
+            public double getTime() {
                 return time;
             }
 
-            public void setTime(String time) {
+            public void setTime(double time) {
                 this.time = time;
             }
 

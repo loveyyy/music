@@ -11,6 +11,10 @@ import android.util.Log;
 import com.example.music.Interface.MusicInterface;
 import com.example.music.View.lrcText;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -20,19 +24,16 @@ import java.util.TimerTask;
  * Created by Administrator on 2018/5/17.
  */
 
-public class PlayServer extends Service implements lrcText.ScrollChange {
+public class PlayServer extends Service  {
     private MediaPlayer mediaPlayer;
     private Timer timer;
     private int i = 0;
-    private int duration;
-    public static SendProgress sendProgressListener;
     private boolean isstop;
 
     @Override
     public void onCreate() {
         super.onCreate();
         init();
-        lrcText.SetScrollChange(this);
     }
 
     @Override
@@ -59,12 +60,10 @@ public class PlayServer extends Service implements lrcText.ScrollChange {
         if (mediaPlayer == null) {
             mediaPlayer = new MediaPlayer();
         }
-        if (timer == null) {
-            timer = new Timer();
-        }
     }
-    @Override
-    public void ScrollProgree(Double progree) {
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public  void getscroller(Double progree){
         mediaPlayer.seekTo(progree.intValue());
         i = progree.intValue();
     }
@@ -73,8 +72,7 @@ public class PlayServer extends Service implements lrcText.ScrollChange {
     public class MusicController extends Binder implements MusicInterface {
 
         @Override
-        public void Play(String Musicuri, int  d) {
-            duration=d;
+        public void Play(String Musicuri) {
             PlayMusic(Musicuri);
         }
 
@@ -89,16 +87,6 @@ public class PlayServer extends Service implements lrcText.ScrollChange {
                     isstop=false;
                     return 0;
                 }
-        }
-
-        @Override
-        public void next(String Musicuri) {
-            PlayMusic(Musicuri);
-        }
-
-        @Override
-        public void last(String Musicuri) {
-            PlayMusic(Musicuri);
         }
 
         @Override
@@ -136,22 +124,19 @@ public class PlayServer extends Service implements lrcText.ScrollChange {
     }
 
     private void starttime(){
+        if(timer!=null){
+            timer.cancel();
+        }
         timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
                 if(!isstop){
                     i++;
-                    sendProgressListener.sendP(i, duration);
-                }
+                    EventBus.getDefault().post(i);
+                    Log.e("tag",i+"");
+            }
             }
         }, 0, 1000);
-    }
-    public interface SendProgress {
-        void sendP(int progress, int time);
-    }
-
-    public static void getSendProgress(SendProgress sendProgress) {
-        sendProgressListener = sendProgress;
     }
 }

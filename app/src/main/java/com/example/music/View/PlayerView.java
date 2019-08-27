@@ -36,6 +36,9 @@ import com.example.music.Utils.Rereofit.ApiResponse;
 import com.example.music.Utils.Rereofit.ApiSubscribe;
 import com.google.gson.Gson;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -45,8 +48,7 @@ import java.util.List;
 
 import okhttp3.ResponseBody;
 
-public class PlayerView extends RelativeLayout implements   SeekBar.OnSeekBarChangeListener,PlayServer.SendProgress,
-        lrcText.ScrollChange{
+public class PlayerView extends RelativeLayout implements   SeekBar.OnSeekBarChangeListener{
     private ServiceConnection serviceConnection;
     private MusicInterface mi;
     private boolean isBind = false;
@@ -66,6 +68,7 @@ public class PlayerView extends RelativeLayout implements   SeekBar.OnSeekBarCha
                 Glide.with(context).load(playingMusicBeens.get(pos).getPic()).
                         transform(new GildeCilcleImageUtils(context)).into(iv_play_musicimage);
                 playmusci(playingMusicBeens.get(pos).getRid());
+                sb_play.setMax(playingMusicBeens.get(pos).getDuration());
             }
         }
     };
@@ -101,6 +104,7 @@ public class PlayerView extends RelativeLayout implements   SeekBar.OnSeekBarCha
         Intent intent = new Intent(context, PlayServer.class);
         isBind = context.bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
         this.context=context;
+        EventBus.getDefault().register(this);
     }
 
     public PlayerView(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -110,7 +114,6 @@ public class PlayerView extends RelativeLayout implements   SeekBar.OnSeekBarCha
 
 
     private void initView(View view) {
-        PlayServer.getSendProgress(this);
         btn_play_s=view.findViewById(R.id.ibtn_play_s);
         btn_play_n = view.findViewById(R.id.ibtn_play_n);
         ibtn_play_l=view.findViewById(R.id.ibtn_play_l);
@@ -176,7 +179,7 @@ public class PlayerView extends RelativeLayout implements   SeekBar.OnSeekBarCha
             public void onClick(View v) {
                 Intent intent = new Intent();
                 int progress = sb_play.getProgress();
-                intent.putExtra("musicid", playingMusicBeens.get(pos).getMusicname());
+                intent.putExtra("musicid", playingMusicBeens.get(pos).getMusicid());
                 intent.putExtra("progress", progress);
                 intent.putExtra("image",playingMusicBeens.get(pos).getAlbumpic());
                 intent.setClass(context, TextLrc.class);
@@ -210,31 +213,28 @@ public class PlayerView extends RelativeLayout implements   SeekBar.OnSeekBarCha
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                mi.Play(songurl,playingMusicBeens.get(pos).getDuration());
+                mi.Play(songurl);
                 btn_play_s.setBackgroundResource(R.drawable.ic_stop);
             }
         });
     }
 
-    @Override
-    public void sendP(final int progress, final int time) {
-        sb_play.setMax(time);
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public  void getseek(Integer progress){
         sb_play.setProgress(progress);
-        if(time<=progress){
+        if(sb_play.getMax()<=progress){
             //播放完成
             pos=pos+1;
             handler.sendEmptyMessage(0);
         }else{
-            tv_play_time.setText(MusicUtils.formatTime(time - progress));
+            tv_play_time.setText(MusicUtils.formatTime(sb_play.getMax() - progress));
         }
-
     }
 
-    @Override
-    public void ScrollProgree(Double progree) {
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public  void getscroller(Double progree){
         sb_play.setProgress(progree.intValue());
     }
-
 
 
     @Override
@@ -258,5 +258,7 @@ public class PlayerView extends RelativeLayout implements   SeekBar.OnSeekBarCha
         if (isBind) {
             context.unbindService(serviceConnection);
         }
+        EventBus.getDefault().removeAllStickyEvents();
+        EventBus.getDefault().unregister(this);
     }
 }

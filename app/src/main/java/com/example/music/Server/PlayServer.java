@@ -18,6 +18,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.Logger;
 
 
 /**
@@ -92,7 +93,7 @@ public class PlayServer extends Service  {
         @Override
         public void PlayWithSb(int progress) {
             if (mediaPlayer != null) {
-                mediaPlayer.seekTo(progress);
+                mediaPlayer.seekTo(progress*1000);
                 i = progress;
             }
         }
@@ -134,7 +135,6 @@ public class PlayServer extends Service  {
                 if(!isstop){
                     i++;
                     EventBus.getDefault().post(i);
-                    Log.e("tag",i+"");
             }
             }
         }, 0, 1000);

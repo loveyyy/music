@@ -5,13 +5,10 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.content.res.TypedArray;
-import android.graphics.Color;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.util.AttributeSet;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
@@ -27,7 +24,6 @@ import com.example.music.Interface.MusicInterface;
 import com.example.music.R;
 import com.example.music.Server.DownloadServer;
 import com.example.music.Server.PlayServer;
-import com.example.music.UI.Activity.MainHostActivity;
 import com.example.music.UI.Activity.TextLrc;
 import com.example.music.Utils.GildeCilcleImageUtils;
 import com.example.music.Utils.MusicUtils;
@@ -179,7 +175,7 @@ public class PlayerView extends RelativeLayout implements   SeekBar.OnSeekBarCha
             public void onClick(View v) {
                 Intent intent = new Intent();
                 int progress = sb_play.getProgress();
-                intent.putExtra("musicid", playingMusicBeens.get(pos).getMusicid());
+                intent.putExtra("musicid", playingMusicBeens.get(pos).getRid());
                 intent.putExtra("progress", progress);
                 intent.putExtra("image",playingMusicBeens.get(pos).getAlbumpic());
                 intent.setClass(context, TextLrc.class);
@@ -234,6 +230,7 @@ public class PlayerView extends RelativeLayout implements   SeekBar.OnSeekBarCha
     @Subscribe(threadMode = ThreadMode.MAIN)
     public  void getscroller(Double progree){
         sb_play.setProgress(progree.intValue());
+        mi.PlayWithSb(progree.intValue());
     }
 
 

@@ -92,7 +92,7 @@ public class lrcText extends TextView implements View.OnTouchListener{
 
     };
 
-    public lrcText(Context context, AttributeSet attrs) throws IOException {
+    public lrcText(Context context, AttributeSet attrs)  {
         super(context, attrs);
         super.setOnTouchListener(this);
         super.setFocusable(true);
@@ -170,12 +170,13 @@ public class lrcText extends TextView implements View.OnTouchListener{
 
 
     public  void sendp(int progress) {
-
         this.progree=progress;
         currentLine=findShowLine(progress);
         hanschange=true;
         handler.removeCallbacksAndMessages(null);
         invalidate();
+        IsDrawLine=true;
+        IsSrcoll=true;
     }
 
 

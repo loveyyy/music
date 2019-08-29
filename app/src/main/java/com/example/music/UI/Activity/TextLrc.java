@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 import com.bumptech.glide.Glide;
 import com.example.music.Beens.LrcBeen;
 import com.example.music.R;
+import com.example.music.Utils.GildeCilcleImageUtils;
 import com.example.music.Utils.Rereofit.Api;
 import com.example.music.Utils.Rereofit.ApiResponse;
 import com.example.music.Utils.Rereofit.ApiSubscribe;
@@ -45,7 +46,7 @@ public class TextLrc extends BaseActivity {
         int musicid=intent.getIntExtra("musicid",0);
         final int progress=intent.getIntExtra("progress",0);
         String url=intent.getStringExtra("image");
-        Glide.with(this).load(url).into(iv_bac);
+        Glide.with(this).load(url).transform(new GildeCilcleImageUtils(this)).into(iv_bac);
         Api.getInstance().iRetrofit.getmusic_lrc("http://www.kuwo.cn/newh5/singles/songinfoandlrc",
                 musicid).compose(ApiSubscribe.<LrcBeen>io_main()).
                 subscribe(new ApiResponse<LrcBeen>(this) {

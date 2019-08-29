@@ -100,17 +100,16 @@ public class MainHostActivity extends FragmentActivity implements View.OnClickLi
     }
 
     public void initdata() {
-
-        modelTest = new ViewModelProvider(
-                this, new ViewModelProvider.AndroidViewModelFactory(getApplication())
-        ).get(ModelTest.class);
-        modelTest.getImage().observe(this, new Observer<SearchBeens>() {
-            @Override
-            public void onChanged(SearchBeens searchBeens) {
-                ///更新数据
-            }
-        });
-        modelTest.getmusic(this,et_search.getText().toString());
+//        modelTest = new ViewModelProvider(
+//                this, new ViewModelProvider.AndroidViewModelFactory(getApplication())
+//        ).get(ModelTest.class);
+//        modelTest.getImage().observe(this, new Observer<SearchBeens>() {
+//            @Override
+//            public void onChanged(SearchBeens searchBeens) {
+//                ///更新数据
+//            }
+//        });
+//        modelTest.getmusic(this,et_search.getText().toString());
 
         Glide.with(this).load(R.drawable.lable).transform(new GildeCilcleImageUtils(this)).into(ivdrawmaintou);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);

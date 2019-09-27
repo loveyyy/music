@@ -19,7 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.music.Beens.PlayingMusicBeens;
+import com.example.music.entry.PlayingMusicBeens;
 import com.example.music.Interface.MusicInterface;
 import com.example.music.R;
 import com.example.music.Server.DownloadServer;

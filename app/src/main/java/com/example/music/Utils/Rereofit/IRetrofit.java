@@ -7,15 +7,14 @@ package com.example.music.Utils.Rereofit;
  */
 
 
-import com.example.music.Beens.HotMusicBeens;
-import com.example.music.Beens.LrcBeen;
-import com.example.music.Beens.RankMusicBeens;
-import com.example.music.Beens.SearchBeens;
-import com.example.music.Beens.SingerBeens;
-import com.example.music.Beens.Singer_MusicBeens;
+import com.example.music.entry.HotMusicBeens;
+import com.example.music.entry.LrcBeen;
+import com.example.music.entry.RankMusicBeens;
+import com.example.music.entry.SearchBeens;
+import com.example.music.entry.SingerBeens;
+import com.example.music.entry.Singer_MusicBeens;
 
 import io.reactivex.Observable;
-import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.http.*;
 

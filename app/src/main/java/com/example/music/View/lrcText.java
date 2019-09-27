@@ -17,12 +17,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-import com.example.music.Beens.LrcBeen;
+import com.example.music.entry.LrcBeen;
 import com.example.music.R;
 
 import org.greenrobot.eventbus.EventBus;
-
-import java.io.IOException;
 
 /**
  * Created by Administrator on 2018/5/19.

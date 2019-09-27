@@ -7,7 +7,7 @@ import android.provider.MediaStore;
 import android.provider.MediaStore.Audio.Media;
 
 
-import com.example.music.Beens.MusicBeen;
+import com.example.music.entry.MusicBeen;
 
 import java.util.ArrayList;
 import java.util.List;

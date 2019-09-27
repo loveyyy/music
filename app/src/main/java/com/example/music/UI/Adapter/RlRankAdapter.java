@@ -3,7 +3,6 @@ package com.example.music.UI.Adapter;
 import android.content.Context;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,10 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.music.Beens.HotMusicBeens;
+import com.example.music.entry.HotMusicBeens;
 import com.example.music.R;
-
-import java.util.List;
 
 /**
  * Created by Administrator on 2018/7/6.

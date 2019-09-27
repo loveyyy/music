@@ -15,17 +15,15 @@ import android.widget.ImageView;
 import androidx.annotation.Nullable;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.music.Beens.PlayingMusicBeens;
-import com.example.music.Beens.RankMusicBeens;
-import com.example.music.Beens.SearchBeens;
-import com.example.music.Beens.SingerBeens;
-import com.example.music.Beens.Singer_MusicBeens;
+import com.example.music.entry.PlayingMusicBeens;
+import com.example.music.entry.RankMusicBeens;
+import com.example.music.entry.SearchBeens;
+import com.example.music.entry.SingerBeens;
+import com.example.music.entry.Singer_MusicBeens;
 import com.example.music.R;
 import com.example.music.UI.Adapter.DrawAdapter;
 import com.example.music.UI.Adapter.GridViewAdapter;
@@ -40,8 +38,6 @@ import com.example.music.Utils.Rereofit.Api;
 import com.example.music.Utils.Rereofit.ApiResponse;
 import com.example.music.Utils.Rereofit.ApiSubscribe;
 import com.example.music.View.PlayerView;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -108,7 +104,7 @@ public class MainHostActivity extends FragmentActivity implements View.OnClickLi
 //            public void onChanged(SearchBeens searchBeens) {
 //                ///更新数据
 //            }
-//        });
+//     });
 //        modelTest.getmusic(this,et_search.getText().toString());
 
         Glide.with(this).load(R.drawable.lable).transform(new GildeCilcleImageUtils(this)).into(ivdrawmaintou);
@@ -119,7 +115,7 @@ public class MainHostActivity extends FragmentActivity implements View.OnClickLi
         leftDrawAdapter.getOnItemClick(new DrawAdapter.OnItemClick() {
             @Override
             public void OnItemClikListener(int pos) {
-                drawerLayout.closeDrawer(Gravity.LEFT);
+                drawerLayout.closeDrawer(Gravity.RIGHT);
                 //{"album":"相信你的人（热血励志版）","albumpic":"http://img1.kuwo.cn/star/albumcover/500/83/95/2541220372.jpg",
                 // "duration":262,"music_singer":"陈奕迅","musicname":"相信你的人(热血励志版)",
                 // "pic":"http://img1.kuwo.cn/star/albumcover/300/83/95/2541220372.jpg","rid":72867626}
@@ -240,7 +236,7 @@ public class MainHostActivity extends FragmentActivity implements View.OnClickLi
     public void onClick(final View v) {
         switch (v.getId()) {
             case R.id.iv_Maintou:
-                drawerLayout.openDrawer(Gravity.LEFT);
+                drawerLayout.openDrawer(Gravity.RIGHT);
                 break;
             case R.id.iv_Search:
                     Api.getInstance().iRetrofit.search("http://www.kuwo.cn/api/www/search/searchMusicBykeyWord",

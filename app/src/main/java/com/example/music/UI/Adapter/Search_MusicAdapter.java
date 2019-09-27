@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.music.Beens.SearchBeens;
+import com.example.music.entry.SearchBeens;
 import com.example.music.R;
 
 public class Search_MusicAdapter extends RecyclerView.Adapter<Search_MusicAdapter.ViewHolder> {
@@ -25,7 +25,7 @@ public class Search_MusicAdapter extends RecyclerView.Adapter<Search_MusicAdapte
     @NonNull
     @Override
     public Search_MusicAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view= LayoutInflater.from(context).inflate(R.layout.rank_itemadapter,parent,false);
+        View view= LayoutInflater.from(context).inflate(R.layout.rankitemadapter,parent,false);
         return new Search_MusicAdapter.ViewHolder(view);
     }
 

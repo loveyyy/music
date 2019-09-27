@@ -7,7 +7,7 @@ import android.widget.ImageView;
 import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
-import com.example.music.Beens.LrcBeen;
+import com.example.music.entry.LrcBeen;
 import com.example.music.R;
 import com.example.music.Utils.GildeCilcleImageUtils;
 import com.example.music.Utils.Rereofit.Api;

@@ -1,4 +1,4 @@
-package com.example.music.Beens;
+package com.example.music.entry;
 
 public class LoveMusicBeens {
     //歌手Id

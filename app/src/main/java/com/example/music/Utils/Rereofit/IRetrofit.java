@@ -9,6 +9,7 @@ package com.example.music.Utils.Rereofit;
 
 import com.example.music.entry.HotMusicBeens;
 import com.example.music.entry.LrcBeen;
+import com.example.music.entry.RankBeens;
 import com.example.music.entry.RankMusicBeens;
 import com.example.music.entry.SearchBeens;
 import com.example.music.entry.SingerBeens;
@@ -21,8 +22,7 @@ import retrofit2.http.*;
 public interface IRetrofit {
     //获得排行榜
     @GET()
-    Observable<HotMusicBeens>getmusic(@Url String url, @Query("pid") String pid, @Query("pn") String pn, @Query("rn") String rn
-                                      );
+    Observable<RankBeens>getmusic(@Url String url, @Query("reqId") String reqId);
 
     //获得歌曲信息
     @GET()
@@ -32,12 +32,13 @@ public interface IRetrofit {
 
     //获得歌曲排行榜
     @GET()
-    Observable<RankMusicBeens>getmusicrank(@Url String url, @Query("bangId") int bangId, @Query("pn") int pn, @Query("rn") int rn);
+    Observable<RankMusicBeens>getmusicrank(@Url String url, @Query("bangId") int bangId, @Query("pn") int pn, @Query("rn") int rn,@Query("reqId") String reqid);
 
 
     //获得歌手推荐
     @GET()
-    Observable<SingerBeens>getsinger(@Url String url, @Query("category") int category, @Query("pn") int pn, @Query("rn") int rn);
+    Observable<SingerBeens>getsinger(@Url String url, @Query("category") int category, @Query("pn") int pn,
+                                     @Query("rn") int rn,@Query("reqId")String reqId);
 
     //获得歌手歌曲信息
     @GET()

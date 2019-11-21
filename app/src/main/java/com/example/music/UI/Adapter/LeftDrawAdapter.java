@@ -15,8 +15,8 @@ import com.example.music.R;
 
 public class LeftDrawAdapter extends RecyclerView.Adapter<LeftDrawAdapter.ViewHolder> {
     private Context context;
-    private String[] titles={"已下载音乐"};
-    private int[] images={R.drawable.ic_local};
+    private String[] titles={"歌手","排行榜","歌单","MV"};
+    private int[] images={R.drawable.ic_local,R.drawable.ic_local,R.drawable.ic_local,R.drawable.ic_local};
     public DrawAdapter.OnItemClick onItemClick;
     public LeftDrawAdapter(Context context){
         this.context=context;

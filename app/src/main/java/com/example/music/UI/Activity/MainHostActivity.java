@@ -13,17 +13,13 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.music.entry.PlayingMusicBeens;
-import com.example.music.entry.RankMusicBeens;
-import com.example.music.entry.SearchBeens;
-import com.example.music.entry.SingerBeens;
-import com.example.music.entry.Singer_MusicBeens;
 import com.example.music.R;
 import com.example.music.UI.Adapter.DrawAdapter;
 import com.example.music.UI.Adapter.GridViewAdapter;
@@ -38,6 +34,13 @@ import com.example.music.Utils.Rereofit.Api;
 import com.example.music.Utils.Rereofit.ApiResponse;
 import com.example.music.Utils.Rereofit.ApiSubscribe;
 import com.example.music.View.PlayerView;
+import com.example.music.databinding.MainhostBinding;
+import com.example.music.entry.PlayingMusicBeens;
+import com.example.music.entry.RankBeens;
+import com.example.music.entry.RankMusicBeens;
+import com.example.music.entry.SearchBeens;
+import com.example.music.entry.SingerBeens;
+import com.example.music.entry.Singer_MusicBeens;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,9 +57,9 @@ public class MainHostActivity extends FragmentActivity implements View.OnClickLi
     private ImageView iv_maintou,ivdrawmaintou,iv_Search;
     private EditText et_search;
 
-    private int[] bangId={17,93,16,158,145};
     private PlayerView playerView;
     private ModelTest modelTest;
+    private MainhostBinding binding;
 
     //选择播放的音乐列表
     private List<PlayingMusicBeens> playingMusicBeensList =new ArrayList<>() ;
@@ -75,7 +78,8 @@ public class MainHostActivity extends FragmentActivity implements View.OnClickLi
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        setContentView(R.layout.mainhost);
+//        setContentView(R.layout.mainhost);
+        binding = DataBindingUtil.setContentView(this, R.layout.mainhost);
         initview();
         initdata();
         setlistener();
@@ -96,17 +100,6 @@ public class MainHostActivity extends FragmentActivity implements View.OnClickLi
     }
 
     public void initdata() {
-//        modelTest = new ViewModelProvider(
-//                this, new ViewModelProvider.AndroidViewModelFactory(getApplication())
-//        ).get(ModelTest.class);
-//        modelTest.getImage().observe(this, new Observer<SearchBeens>() {
-//            @Override
-//            public void onChanged(SearchBeens searchBeens) {
-//                ///更新数据
-//            }
-//     });
-//        modelTest.getmusic(this,et_search.getText().toString());
-
         Glide.with(this).load(R.drawable.lable).transform(new GildeCilcleImageUtils(this)).into(ivdrawmaintou);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         left_recycle.setLayoutManager(layoutManager);
@@ -123,7 +116,9 @@ public class MainHostActivity extends FragmentActivity implements View.OnClickLi
 
             }
         });
-        Api.getInstance().iRetrofit.getsinger("http://www.kuwo.cn/api/www/artist/artistInfo",11,1,6)
+
+
+        Api.getInstance().iRetrofit.getsinger("http://www.kuwo.cn/api/www/artist/artistInfo",11,1,6,"6a225b00-0c43-11ea-a6ea-936af62dfc83")
                 .compose(ApiSubscribe.<SingerBeens>io_main()).subscribe(new ApiResponse<SingerBeens>(this){
 
             @Override
@@ -141,17 +136,23 @@ public class MainHostActivity extends FragmentActivity implements View.OnClickLi
                 });
             }
         });
-        RecyclerView.LayoutManager layoutManager5 = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
-        rcv_ranktype.setLayoutManager(layoutManager5);
-        DrawAdapter drawAdapter1 = new DrawAdapter(this);
-        rcv_ranktype.setAdapter(drawAdapter1);
-        drawAdapter1.getOnItemClick(new DrawAdapter.OnItemClick() {
+        Api.getInstance().iRetrofit.getmusic("http://www.kuwo.cn/api/www/bang/bang/bangMenu","ff0c2ee0-0c10-11ea-bdc7-77259c04a3ef")
+                .compose(ApiSubscribe.<RankBeens>io_main()).subscribe(new ApiResponse<RankBeens>(this) {
             @Override
-            public void OnItemClikListener(int pos) {
-                getdata(bangId[pos]);
+            public void success(final RankBeens data) {
+                RecyclerView.LayoutManager layoutManager5 = new LinearLayoutManager(getBaseContext(), RecyclerView.HORIZONTAL, false);
+                rcv_ranktype.setLayoutManager(layoutManager5);
+                DrawAdapter drawAdapter1 = new DrawAdapter(getBaseContext(),data);
+                rcv_ranktype.setAdapter(drawAdapter1);
+                drawAdapter1.getOnItemClick(new DrawAdapter.OnItemClick() {
+                    @Override
+                    public void OnItemClikListener(int pos) {
+                        getdata(Integer.parseInt(data.getData().get(0).getList().get(pos).getSourceid()));
+                    }
+                });
             }
         });
-        getdata(bangId[0]);
+        getdata(93);
     }
 
     public void setlistener() {
@@ -163,7 +164,7 @@ public class MainHostActivity extends FragmentActivity implements View.OnClickLi
                 .compose(ApiSubscribe.<Singer_MusicBeens>io_main()).subscribe(new ApiResponse<Singer_MusicBeens>(this) {
             @Override
             public void success(final Singer_MusicBeens data) {
-                    //刷新数据
+                //刷新数据
                 RecyclerView.LayoutManager layoutManager1 =new LinearLayoutManager(MainHostActivity.this,RecyclerView.VERTICAL,false);
                 recyclerView.setLayoutManager(layoutManager1);
                 SInger_music_ItemAdapter sInger_music_itemAdapter=new SInger_music_ItemAdapter(MainHostActivity.this,data.getData());
@@ -197,7 +198,7 @@ public class MainHostActivity extends FragmentActivity implements View.OnClickLi
 
 
     private  void getdata(int bangId){
-        Api.getInstance().iRetrofit.getmusicrank("http://www.kuwo.cn/api/www/bang/bang/musicList",bangId,1,30)
+        Api.getInstance().iRetrofit.getmusicrank("http://www.kuwo.cn/api/www/bang/bang/musicList",bangId,1,30,"ff24bff0-0c10-11ea-bdc7-77259c04a3ef")
                 .compose(ApiSubscribe.<RankMusicBeens>io_main()).subscribe(new ApiResponse<RankMusicBeens>(this) {
             @Override
             public void success(final RankMusicBeens data) {

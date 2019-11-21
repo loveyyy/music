@@ -8,6 +8,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
+import androidx.databinding.library.baseAdapters.BR;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -15,7 +18,7 @@ import com.example.music.entry.SingerBeens;
 import com.example.music.R;
 import com.example.music.Utils.GildeCilcleImageUtils;
 
-public class GridViewAdapter extends RecyclerView.Adapter<GridViewAdapter.ViewHolder> {
+public class GridViewAdapter extends RecyclerView.Adapter<BindingViewHolder> {
     private Context context;
     private SingerBeens.DataBean singerBeens;
     private GridViewAdapter.OnItemClick onItemClick;
@@ -26,26 +29,26 @@ public class GridViewAdapter extends RecyclerView.Adapter<GridViewAdapter.ViewHo
 
     @NonNull
     @Override
-    public GridViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater layoutInflater =LayoutInflater.from(context);
-        View v = layoutInflater.inflate(R.layout.grideview_item,parent,false);
-        return new ViewHolder(v);
+    public BindingViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        ViewDataBinding binding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.grideview_item, parent, false);
+        return new BindingViewHolder(binding);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull GridViewAdapter.ViewHolder holder, final int position) {
-        Glide.with(context).load(singerBeens.getArtistList().get(position).getPic()).transform(new GildeCilcleImageUtils(context)).into(holder.iv);
-        holder.tv.setText(singerBeens.getArtistList().get(position).getName());
-        holder.tv1.setText(singerBeens.getArtistList().get(position).getMusicNum()+"");
+    public void onBindViewHolder(@NonNull BindingViewHolder holder, final int position) {
+        ViewDataBinding binding = holder.getBinding();
+        binding.setVariable(BR.singer, singerBeens.getArtistList().get(position));
+        binding.executePendingBindings();
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(onItemClick!=null){
+                if (onItemClick != null) {
                     onItemClick.OnItemClickListener(position);
                 }
             }
         });
     }
+
 
     @Override
     public long getItemId(int position) {
@@ -58,16 +61,7 @@ public class GridViewAdapter extends RecyclerView.Adapter<GridViewAdapter.ViewHo
     }
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        private ImageView iv;
-        private TextView tv,tv1;
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
-             iv = itemView.findViewById(R.id.iv);
-             tv =  itemView.findViewById(R.id.tv_name);
-             tv1 =  itemView.findViewById(R.id.tv_num);
-        }
-    }
+
     //ItemView 的点击接口
     public interface OnItemClick{
         void OnItemClickListener(int pos);

@@ -42,12 +42,13 @@ public class Api {
             public void log(String message)
             {
                 Log.d("Http", message+"");
-
             }
         });
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient.Builder builder = new OkHttpClient.Builder().addInterceptor(loggingInterceptor).connectTimeout(15, TimeUnit.SECONDS).readTimeout(15, TimeUnit.SECONDS).
                 writeTimeout(20, TimeUnit.SECONDS);
+        builder.interceptors().add(new ReceivedCookiesInterceptor());
+        builder.interceptors().add(new AddCookiesInterceptor());
         OkHttpClient okHttpClient = builder.build();
 
         Gson gson = new GsonBuilder()

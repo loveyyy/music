@@ -114,7 +114,7 @@ public class SingerBeens {
             private int albumNum;
             private int mvNum;
             private String pic;
-            private int musicNum;
+            private String musicNum;
             private String pic120;
             private int isStar;
             private String aartist;
@@ -155,11 +155,11 @@ public class SingerBeens {
                 this.pic = pic;
             }
 
-            public int getMusicNum() {
+            public String getMusicNum() {
                 return musicNum;
             }
 
-            public void setMusicNum(int musicNum) {
+            public void setMusicNum(String musicNum) {
                 this.musicNum = musicNum;
             }
 

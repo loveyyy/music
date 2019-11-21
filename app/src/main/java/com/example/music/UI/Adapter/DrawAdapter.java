@@ -1,68 +1,58 @@
 package com.example.music.UI.Adapter;
 
 import android.content.Context;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
+import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
+import androidx.databinding.library.baseAdapters.BR;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.music.R;
+import com.example.music.entry.RankBeens;
 
 
 /**
  * Created by Administrator on 2018/7/7.
  */
 
-public class DrawAdapter extends RecyclerView.Adapter<DrawAdapter.ViewHolder>{
+public class DrawAdapter extends RecyclerView.Adapter<BindingViewHolder>{
     private Context context;
-    String[] images = {"http://img3.kwcdn.kuwo.cn/star/upload/8/9/1563440446.png","http://img3.kwcdn.kuwo.cn/star/upload/9/2/1563490826.png","http://img3.kwcdn.kuwo.cn/star/upload/9/6/1563490832.png",
-            "http://img3.kwcdn.kuwo.cn/star/upload/0/3/1563440448.png","http://img3.kwcdn.kuwo.cn/star/upload/8/2/1562799941.png"};
-    String[] text = {"酷我飙升榜","酷我新歌榜","酷我热歌榜","抖音热歌榜","会员畅听榜"};
-    String[] time = {"今日更新","今日更新","今日更新","今日更新","今日更新"};
     public   OnItemClick onItemClick;
-    public DrawAdapter(Context context){
+    private RankBeens dataBean;
+    public DrawAdapter(Context context, RankBeens dataBean){
         this.context=context;
+        this.dataBean=dataBean;
     }
     @Override
-    public DrawAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view= LayoutInflater.from(context).inflate(R.layout.gridviewadapter,parent,false);
-        return new ViewHolder(view);
+    public BindingViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        ViewDataBinding binding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.gridviewadapter, parent, false);
+        return new BindingViewHolder(binding);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, final int position) {
-
-        Glide.with(context).load(images[position]).into(holder.iv);
-        holder.tvtitle.setText(text[position]);
-
+    public void onBindViewHolder(@NonNull BindingViewHolder holder, final int position) {
+        ViewDataBinding binding = holder.getBinding();
+        binding.setVariable(BR.rank, dataBean.getData().get(0).getList().get(position));
+        binding.executePendingBindings();
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(onItemClick!=null){
+                if (onItemClick != null) {
                     onItemClick.OnItemClikListener(position);
                 }
-
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return text.length;
+        return dataBean.getData().get(0).getList().size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView tvtitle;
-        private ImageView iv;
-        public ViewHolder(View itemView) {
-            super(itemView);
-             iv =  itemView.findViewById(R.id.iv_fengmian);
-             tvtitle =  itemView.findViewById(R.id.tv_title);
-        }
-    }
     public interface OnItemClick{
         void OnItemClikListener(int pos);
     }

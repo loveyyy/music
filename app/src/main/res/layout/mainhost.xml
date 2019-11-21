@@ -1,15 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#ffffff">
+
         <androidx.drawerlayout.widget.DrawerLayout
             android:id="@+id/dl_Main"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:visibility="visible">
-            <include layout="@layout/layout" />
+
+            <include
+                android:id="@+id/v1"
+                layout="@layout/layout" />
+
             <include
                 android:id="@+id/left"
                 android:layout_width="@dimen/dp_200"
@@ -19,5 +25,6 @@
                 android:background="@android:color/white" />
         </androidx.drawerlayout.widget.DrawerLayout>
 
-</FrameLayout>
+    </FrameLayout>
+</layout>
 

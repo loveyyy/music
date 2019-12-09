@@ -17,7 +17,7 @@
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <application
-        android:name=".UI.MyApplication"
+        android:name=".ui.MyApplication"
         android:allowBackup="true"
         android:icon="@drawable/listen"
         android:label="@string/app_name"
@@ -25,25 +25,28 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".UI.Activity.WelcomeActivity" >
+        <activity android:name=".ui.activity.WelcomeActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name=".Server.PlayServer"
+        <service android:name=".server.PlayServer"
             android:exported="true"
             android:enabled="true"
             tools:ignore="InnerclassSeparator" />
-        <service android:name=".Server.DownloadServer"
+        <service android:name=".server.DownloadServer"
             android:exported="true"
             android:enabled="true"
             tools:ignore="InnerclassSeparator" />
-        <activity android:name=".UI.Activity.MainHostActivity"
+        <activity android:name=".ui.activity.MainAcvity"
             tools:ignore="InnerclassSeparator" />
-        <activity android:name=".UI.Activity.TextLrc"
+        <activity android:name=".ui.activity.Bang_Meau_Activity"
             tools:ignore="InnerclassSeparator" />
+        <activity android:name=".ui.activity.TextLrc"
+            tools:ignore="InnerclassSeparator" />
+        <activity android:name=".ui.activity.Singer_Activity"/>
     </application>
 
 </manifest>

@@ -10,7 +10,7 @@
         android:layout_height="match_parent"
         android:scaleType="fitXY"
         />
-    <com.example.music.View.lrcText
+    <com.example.music.view.lrcText
         android:id="@+id/lrctext"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

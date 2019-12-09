@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="playitem"
+            type="com.example.music.entry.PlayingMusicBeens" />
+    </data>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_60"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/iv_playimage"
+                android:layout_width="@dimen/dp_60"
+                android:layout_height="@dimen/dp_60"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:layout_marginBottom="@dimen/dp_3"
+                android:layout_marginTop="@dimen/dp_2"
+                android:background="@drawable/ic_music"
+                android:scaleType="fitXY"
+                imageCilcleUrl="@{playitem.albumpic}"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_paly_songname"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:ellipsize="marquee"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:focusableInTouchMode="true"
+                    android:scrollHorizontally="true"
+                    android:focusable="true"
+                    android:textSize="@dimen/sp_16"
+                    android:text="@{playitem.musicname}"/>
+
+                <TextView
+                    android:id="@+id/tv_paly_singername"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:ellipsize="marquee"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:focusableInTouchMode="true"
+                    android:scrollHorizontally="true"
+                    android:focusable="true"
+                    android:textSize="@dimen/sp_14"
+                    android:text="@{playitem.music_singer}"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+</layout>

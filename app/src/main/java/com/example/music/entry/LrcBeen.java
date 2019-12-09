@@ -7,76 +7,10 @@ import java.util.List;
  */
 
 public class LrcBeen {
-
-    /**
-     * data : {"lrclist":[{"time":"0.35","lineLyric":"缘份一道桥-(电影《长城》片尾曲) - 谭维维&王力宏"},{"time":"1.61","lineLyric":"词：方文山"},{"time":"1.78","lineLyric":"曲：王力宏"},{"time":"3.02","lineLyric":"秦时明月汉时关"},{"time":"9.34","lineLyric":"万里长征人未还"},{"time":"15.52","lineLyric":"但使龙城飞将在"},{"time":"21.31","lineLyric":"不教胡马度阴山"},{"time":"27.3","lineLyric":"狼烟千里乱葬岗"},{"time":"33.49","lineLyric":"乱世孤魂无人访"},{"time":"39.68","lineLyric":"无言苍天笔墨寒"},{"time":"45.74","lineLyric":"笔刀春秋以血偿"},{"time":"50.9","lineLyric":"谈爱恨 不能潦草"},{"time":"54.89","lineLyric":"战鼓敲啊敲"},{"time":"57.06","lineLyric":"用信任 立下誓言我来熬"},{"time":"63.0","lineLyric":"这缘分 像一道桥"},{"time":"66.87","lineLyric":"旌旗飘啊飘"},{"time":"69.07","lineLyric":"你想走"},{"time":"70.86","lineLyric":"就请立马抽刀"},{"time":"73.13","lineLyric":"爱一笔勾销"},{"time":"75.16","lineLyric":"谈爱恨 不能潦草"},{"time":"78.770004","lineLyric":"红尘烧啊烧"},{"time":"81.09","lineLyric":"以生死 无愧证明谁重要"},{"time":"87.59","lineLyric":"这缘分 像一道桥"},{"time":"91.21","lineLyric":"故事瞧一瞧"},{"time":"93.33","lineLyric":"走天涯"},{"time":"94.91","lineLyric":"你我卸下战袍"},{"time":"97.6","lineLyric":"梦回长城谣"},{"time":"112.6","lineLyric":"秦时明月汉时关"},{"time":"118.729996","lineLyric":"万里长征人未还"},{"time":"124.84","lineLyric":"但使龙城飞将在"},{"time":"130.78","lineLyric":"不教胡马度阴山"},{"time":"136.65","lineLyric":"血肉筑城万箭穿"},{"time":"142.94","lineLyric":"盔甲染血映月光"},{"time":"148.95","lineLyric":"远方胡笳催断肠"},{"time":"154.97","lineLyric":"狼嚎骤起震边关"},{"time":"160.49","lineLyric":"谈爱恨 不能潦草"},{"time":"164.12","lineLyric":"战鼓敲啊敲"},{"time":"166.41","lineLyric":"用信任 立下誓言我来熬"},{"time":"172.20999","lineLyric":"这缘分 像一道桥"},{"time":"176.43","lineLyric":"旌旗飘啊飘"},{"time":"178.47","lineLyric":"你想走"},{"time":"180.06","lineLyric":"就请立马抽刀"},{"time":"182.49","lineLyric":"爱一笔勾销"},{"time":"184.58","lineLyric":"谈爱恨 不能潦草"},{"time":"188.37","lineLyric":"红尘烧啊烧"},{"time":"190.3","lineLyric":"以生死 无愧证明谁重要"},{"time":"196.69","lineLyric":"这缘分 像一道桥"},{"time":"200.56","lineLyric":"故事瞧一瞧"},{"time":"202.62","lineLyric":"走天涯"},{"time":"204.2","lineLyric":"你我卸下战袍"},{"time":"207.0","lineLyric":"梦回长城谣"},{"time":"221.0","lineLyric":"这缘分 像一道桥"},{"time":"224.89","lineLyric":"故事瞧一瞧"},{"time":"227.28","lineLyric":"走天涯"},{"time":"228.91","lineLyric":"你我卸下战袍"},{"time":"230.87","lineLyric":"梦回长城谣"}],"songinfo":{"album":"缘份一道桥","albumId":"1362508","artist":"王力宏&谭维维","artistId":"1416","coopFormats":["320kmp3","192kmp3","128kmp3"],"copyRight":"0","duration":"246","formats":"WMA96|WMA128|MP3H|MP3192|MP3128|ALFLAC|AL|AAC48|AAC24|MV700|MV500|MP4L|MP4|EXMV700|EXMV500|EXMP4UL|EXMP4L|EXMP4HV|EXMP4BD|EXMP4","hasEcho":null,"hasMv":"1","id":"10208007","isExt":null,"isNew":null,"isPoint":"1","isbatch":null,"isdownload":"0","isstar":"0","mkvNsig1":"959018602","mkvNsig2":"2688746017","mkvRid":"MV_0","mp3Nsig1":"3425456929","mp3Nsig2":"3824327218","mp3Rid":"MP3_10208007","mp3Size":"","mp4sig1":"","mp4sig2":"","musicrId":"MUSIC_10208007","mutiVer":"0","mvpic":null,"nsig1":"1485433627","nsig2":"2430784127","online":"1","params":null,"pay":"16515324","pic":"http://img1.kwcdn.kuwo.cn/star/albumcover/240/34/92/3595800350.jpg","playCnt":"","rankChange":null,"reason":null,"score":null,"score100":"104","songName":"缘分一道桥","songTimeMinutes":"04:06","tpay":null,"trend":null,"upTime":"","uploader":""},"simpl":{"musiclist":[{"album":"饕餮","albumId":"1365259","artist":"南征北战NZBZ","artistId":"111900","coopFormats":["320kmp3","192kmp3","128kmp3"],"copyRight":"0","duration":"208","formats":"WMA96|AAC24|WMA128|AAC48|AL|MP3H|MP3192|ALFLAC|MP3128","hasEcho":null,"hasMv":"1","id":"13137700","isExt":null,"isNew":null,"isPoint":null,"isbatch":null,"isdownload":null,"isstar":"0","mkvNsig1":null,"mkvNsig2":null,"mkvRid":null,"mp3Nsig1":null,"mp3Nsig2":null,"mp3Rid":null,"mp3Size":"","mp4sig1":"","mp4sig2":"","musicrId":"13137700","mutiVer":null,"mvpic":null,"nsig1":null,"nsig2":null,"online":"1","params":"饕餮;南征北战NZBZ;饕餮;516094573;3314084033;MUSIC_13137700;855407679;1058342843;13137700;2053943005;1067379222;MV_793792;1","pay":"16515324","pic":"","playCnt":"0","rankChange":null,"reason":"根据听过的歌推荐","score":"1","score100":null,"songName":"饕餮","songTimeMinutes":"03:28","tpay":null,"trend":null,"upTime":null,"uploader":null},{"album":"Past Progressive","albumId":"9871623","artist":"张靓颖","artistId":"211","coopFormats":["320kmp3","192kmp3","128kmp3"],"copyRight":"0","duration":"236","formats":"WMA96|AAC24|WMA128|AAC48|AL|MP3H|MP3192|ALFLAC|MP3128","hasEcho":null,"hasMv":"1","id":"11259765","isExt":null,"isNew":null,"isPoint":null,"isbatch":null,"isdownload":null,"isstar":"0","mkvNsig1":null,"mkvNsig2":null,"mkvRid":null,"mp3Nsig1":null,"mp3Nsig2":null,"mp3Rid":null,"mp3Size":"","mp4sig1":"","mp4sig2":"","musicrId":"11259765","mutiVer":null,"mvpic":null,"nsig1":null,"nsig2":null,"online":"1","params":"Battlefield;张靓颖;Past&nbsp;Progressive;3038766789;4001876512;MUSIC_11259765;1496173010;772441870;11259765;4187139590;3223306094;MV_785268;0","pay":"16515324","pic":"","playCnt":"0","rankChange":null,"reason":"根据听过的歌推荐","score":"1","score100":null,"songName":"Battlefield","songTimeMinutes":"03:56","tpay":null,"trend":null,"upTime":null,"uploader":null},{"album":"Here We Are","albumId":"559977","artist":"华晨宇","artistId":"125910","coopFormats":["320kmp3","192kmp3","128kmp3"],"copyRight":"0","duration":"290","formats":"WMA96|AAC24|WMA128|AAC48|AL|MP3H|MP3192|ALFLAC|MP3128","hasEcho":null,"hasMv":"0","id":"7181058","isExt":null,"isNew":null,"isPoint":null,"isbatch":null,"isdownload":null,"isstar":"0","mkvNsig1":null,"mkvNsig2":null,"mkvRid":null,"mp3Nsig1":null,"mp3Nsig2":null,"mp3Rid":null,"mp3Size":"","mp4sig1":"","mp4sig2":"","musicrId":"7181058","mutiVer":null,"mvpic":null,"nsig1":null,"nsig2":null,"online":"1","params":"Here&nbsp;We&nbsp;Are;华晨宇;Here&nbsp;We&nbsp;Are;1053210713;3225816485;MUSIC_7181058;3449180357;3734440247;7181058;0;0;MV_0;0","pay":"0","pic":"","playCnt":"0","rankChange":null,"reason":"根据听过的歌推荐","score":"1","score100":null,"songName":"Here We Are","songTimeMinutes":"04:50","tpay":null,"trend":null,"upTime":null,"uploader":null},{"album":"牵丝戏","albumId":"444778","artist":"银临&Aki阿杰","artistId":"117806","coopFormats":["320kmp3","192kmp3","128kmp3"],"copyRight":"0","duration":"239","formats":"WMA96|AAC24|WMA128|AAC48|AL|MP3H|MP3192|ALFLAC|MP3128","hasEcho":null,"hasMv":"1","id":"6304356","isExt":null,"isNew":null,"isPoint":null,"isbatch":null,"isdownload":null,"isstar":"0","mkvNsig1":null,"mkvNsig2":null,"mkvRid":null,"mp3Nsig1":null,"mp3Nsig2":null,"mp3Rid":null,"mp3Size":"","mp4sig1":"","mp4sig2":"","musicrId":"6304356","mutiVer":null,"mvpic":null,"nsig1":null,"nsig2":null,"online":"1","params":"牵丝戏;银临&Aki阿杰;牵丝戏;1377633237;540355673;MUSIC_6304356;1508622502;4195153725;6304356;2530815087;440799507;MV_597301;1","pay":"0","pic":"","playCnt":"0","rankChange":null,"reason":"根据听过的歌推荐","score":"1","score100":null,"songName":"牵丝戏","songTimeMinutes":"03:59","tpay":null,"trend":null,"upTime":null,"uploader":null}],"playlist":[{"digest":"8","disname":"风雪夜归人","extend":"0","info":"","isnew":"0","name":"风雪夜归人","newcount":"0","nodeid":"0","pic":"http://img1.kwcdn.kuwo.cn/star/userpl2015/40/52/1521160469941_149214040b.jpg","playcnt":"1657","source":"8","sourceid":"380740371","tag":"古风"},{"digest":"8","disname":"听后全身鸡皮疙瘩","extend":"0","info":"","isnew":"0","name":"听后全身鸡皮疙瘩","newcount":"0","nodeid":"0","pic":"http://img1.kwcdn.kuwo.cn/star/userpl2015/45/12/1506936426338_393492045b.jpg","playcnt":"14765","source":"8","sourceid":"2288356221","tag":""}]}}
-     * msg : 成功
-     * msgs : null
-     * profileid : site
-     * reqid : ffb9b8cfX6d12X4cbaXae8cX4575a1bd48ca
-     * status : 200
-     */
-
-    private DataBean data;
-    private String msg;
-    private Object msgs;
-    private String profileid;
-    private String reqid;
-    private int status;
-
-    public DataBean getData() {
-        return data;
-    }
-
-    public void setData(DataBean data) {
-        this.data = data;
-    }
-
-    public String getMsg() {
-        return msg;
-    }
-
-    public void setMsg(String msg) {
-        this.msg = msg;
-    }
-
-    public Object getMsgs() {
-        return msgs;
-    }
-
-    public void setMsgs(Object msgs) {
-        this.msgs = msgs;
-    }
-
-    public String getProfileid() {
-        return profileid;
-    }
-
-    public void setProfileid(String profileid) {
-        this.profileid = profileid;
-    }
-
-    public String getReqid() {
-        return reqid;
-    }
-
-    public void setReqid(String reqid) {
-        this.reqid = reqid;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
-
-    public static class DataBean {
         /**
-         * lrclist : [{"time":"0.35","lineLyric":"缘份一道桥-(电影《长城》片尾曲) - 谭维维&王力宏"},{"time":"1.61","lineLyric":"词：方文山"},{"time":"1.78","lineLyric":"曲：王力宏"},{"time":"3.02","lineLyric":"秦时明月汉时关"},{"time":"9.34","lineLyric":"万里长征人未还"},{"time":"15.52","lineLyric":"但使龙城飞将在"},{"time":"21.31","lineLyric":"不教胡马度阴山"},{"time":"27.3","lineLyric":"狼烟千里乱葬岗"},{"time":"33.49","lineLyric":"乱世孤魂无人访"},{"time":"39.68","lineLyric":"无言苍天笔墨寒"},{"time":"45.74","lineLyric":"笔刀春秋以血偿"},{"time":"50.9","lineLyric":"谈爱恨 不能潦草"},{"time":"54.89","lineLyric":"战鼓敲啊敲"},{"time":"57.06","lineLyric":"用信任 立下誓言我来熬"},{"time":"63.0","lineLyric":"这缘分 像一道桥"},{"time":"66.87","lineLyric":"旌旗飘啊飘"},{"time":"69.07","lineLyric":"你想走"},{"time":"70.86","lineLyric":"就请立马抽刀"},{"time":"73.13","lineLyric":"爱一笔勾销"},{"time":"75.16","lineLyric":"谈爱恨 不能潦草"},{"time":"78.770004","lineLyric":"红尘烧啊烧"},{"time":"81.09","lineLyric":"以生死 无愧证明谁重要"},{"time":"87.59","lineLyric":"这缘分 像一道桥"},{"time":"91.21","lineLyric":"故事瞧一瞧"},{"time":"93.33","lineLyric":"走天涯"},{"time":"94.91","lineLyric":"你我卸下战袍"},{"time":"97.6","lineLyric":"梦回长城谣"},{"time":"112.6","lineLyric":"秦时明月汉时关"},{"time":"118.729996","lineLyric":"万里长征人未还"},{"time":"124.84","lineLyric":"但使龙城飞将在"},{"time":"130.78","lineLyric":"不教胡马度阴山"},{"time":"136.65","lineLyric":"血肉筑城万箭穿"},{"time":"142.94","lineLyric":"盔甲染血映月光"},{"time":"148.95","lineLyric":"远方胡笳催断肠"},{"time":"154.97","lineLyric":"狼嚎骤起震边关"},{"time":"160.49","lineLyric":"谈爱恨 不能潦草"},{"time":"164.12","lineLyric":"战鼓敲啊敲"},{"time":"166.41","lineLyric":"用信任 立下誓言我来熬"},{"time":"172.20999","lineLyric":"这缘分 像一道桥"},{"time":"176.43","lineLyric":"旌旗飘啊飘"},{"time":"178.47","lineLyric":"你想走"},{"time":"180.06","lineLyric":"就请立马抽刀"},{"time":"182.49","lineLyric":"爱一笔勾销"},{"time":"184.58","lineLyric":"谈爱恨 不能潦草"},{"time":"188.37","lineLyric":"红尘烧啊烧"},{"time":"190.3","lineLyric":"以生死 无愧证明谁重要"},{"time":"196.69","lineLyric":"这缘分 像一道桥"},{"time":"200.56","lineLyric":"故事瞧一瞧"},{"time":"202.62","lineLyric":"走天涯"},{"time":"204.2","lineLyric":"你我卸下战袍"},{"time":"207.0","lineLyric":"梦回长城谣"},{"time":"221.0","lineLyric":"这缘分 像一道桥"},{"time":"224.89","lineLyric":"故事瞧一瞧"},{"time":"227.28","lineLyric":"走天涯"},{"time":"228.91","lineLyric":"你我卸下战袍"},{"time":"230.87","lineLyric":"梦回长城谣"}]
-         * songinfo : {"album":"缘份一道桥","albumId":"1362508","artist":"王力宏&谭维维","artistId":"1416","coopFormats":["320kmp3","192kmp3","128kmp3"],"copyRight":"0","duration":"246","formats":"WMA96|WMA128|MP3H|MP3192|MP3128|ALFLAC|AL|AAC48|AAC24|MV700|MV500|MP4L|MP4|EXMV700|EXMV500|EXMP4UL|EXMP4L|EXMP4HV|EXMP4BD|EXMP4","hasEcho":null,"hasMv":"1","id":"10208007","isExt":null,"isNew":null,"isPoint":"1","isbatch":null,"isdownload":"0","isstar":"0","mkvNsig1":"959018602","mkvNsig2":"2688746017","mkvRid":"MV_0","mp3Nsig1":"3425456929","mp3Nsig2":"3824327218","mp3Rid":"MP3_10208007","mp3Size":"","mp4sig1":"","mp4sig2":"","musicrId":"MUSIC_10208007","mutiVer":"0","mvpic":null,"nsig1":"1485433627","nsig2":"2430784127","online":"1","params":null,"pay":"16515324","pic":"http://img1.kwcdn.kuwo.cn/star/albumcover/240/34/92/3595800350.jpg","playCnt":"","rankChange":null,"reason":null,"score":null,"score100":"104","songName":"缘分一道桥","songTimeMinutes":"04:06","tpay":null,"trend":null,"upTime":"","uploader":""}
-         * simpl : {"musiclist":[{"album":"饕餮","albumId":"1365259","artist":"南征北战NZBZ","artistId":"111900","coopFormats":["320kmp3","192kmp3","128kmp3"],"copyRight":"0","duration":"208","formats":"WMA96|AAC24|WMA128|AAC48|AL|MP3H|MP3192|ALFLAC|MP3128","hasEcho":null,"hasMv":"1","id":"13137700","isExt":null,"isNew":null,"isPoint":null,"isbatch":null,"isdownload":null,"isstar":"0","mkvNsig1":null,"mkvNsig2":null,"mkvRid":null,"mp3Nsig1":null,"mp3Nsig2":null,"mp3Rid":null,"mp3Size":"","mp4sig1":"","mp4sig2":"","musicrId":"13137700","mutiVer":null,"mvpic":null,"nsig1":null,"nsig2":null,"online":"1","params":"饕餮;南征北战NZBZ;饕餮;516094573;3314084033;MUSIC_13137700;855407679;1058342843;13137700;2053943005;1067379222;MV_793792;1","pay":"16515324","pic":"","playCnt":"0","rankChange":null,"reason":"根据听过的歌推荐","score":"1","score100":null,"songName":"饕餮","songTimeMinutes":"03:28","tpay":null,"trend":null,"upTime":null,"uploader":null},{"album":"Past Progressive","albumId":"9871623","artist":"张靓颖","artistId":"211","coopFormats":["320kmp3","192kmp3","128kmp3"],"copyRight":"0","duration":"236","formats":"WMA96|AAC24|WMA128|AAC48|AL|MP3H|MP3192|ALFLAC|MP3128","hasEcho":null,"hasMv":"1","id":"11259765","isExt":null,"isNew":null,"isPoint":null,"isbatch":null,"isdownload":null,"isstar":"0","mkvNsig1":null,"mkvNsig2":null,"mkvRid":null,"mp3Nsig1":null,"mp3Nsig2":null,"mp3Rid":null,"mp3Size":"","mp4sig1":"","mp4sig2":"","musicrId":"11259765","mutiVer":null,"mvpic":null,"nsig1":null,"nsig2":null,"online":"1","params":"Battlefield;张靓颖;Past&nbsp;Progressive;3038766789;4001876512;MUSIC_11259765;1496173010;772441870;11259765;4187139590;3223306094;MV_785268;0","pay":"16515324","pic":"","playCnt":"0","rankChange":null,"reason":"根据听过的歌推荐","score":"1","score100":null,"songName":"Battlefield","songTimeMinutes":"03:56","tpay":null,"trend":null,"upTime":null,"uploader":null},{"album":"Here We Are","albumId":"559977","artist":"华晨宇","artistId":"125910","coopFormats":["320kmp3","192kmp3","128kmp3"],"copyRight":"0","duration":"290","formats":"WMA96|AAC24|WMA128|AAC48|AL|MP3H|MP3192|ALFLAC|MP3128","hasEcho":null,"hasMv":"0","id":"7181058","isExt":null,"isNew":null,"isPoint":null,"isbatch":null,"isdownload":null,"isstar":"0","mkvNsig1":null,"mkvNsig2":null,"mkvRid":null,"mp3Nsig1":null,"mp3Nsig2":null,"mp3Rid":null,"mp3Size":"","mp4sig1":"","mp4sig2":"","musicrId":"7181058","mutiVer":null,"mvpic":null,"nsig1":null,"nsig2":null,"online":"1","params":"Here&nbsp;We&nbsp;Are;华晨宇;Here&nbsp;We&nbsp;Are;1053210713;3225816485;MUSIC_7181058;3449180357;3734440247;7181058;0;0;MV_0;0","pay":"0","pic":"","playCnt":"0","rankChange":null,"reason":"根据听过的歌推荐","score":"1","score100":null,"songName":"Here We Are","songTimeMinutes":"04:50","tpay":null,"trend":null,"upTime":null,"uploader":null},{"album":"牵丝戏","albumId":"444778","artist":"银临&Aki阿杰","artistId":"117806","coopFormats":["320kmp3","192kmp3","128kmp3"],"copyRight":"0","duration":"239","formats":"WMA96|AAC24|WMA128|AAC48|AL|MP3H|MP3192|ALFLAC|MP3128","hasEcho":null,"hasMv":"1","id":"6304356","isExt":null,"isNew":null,"isPoint":null,"isbatch":null,"isdownload":null,"isstar":"0","mkvNsig1":null,"mkvNsig2":null,"mkvRid":null,"mp3Nsig1":null,"mp3Nsig2":null,"mp3Rid":null,"mp3Size":"","mp4sig1":"","mp4sig2":"","musicrId":"6304356","mutiVer":null,"mvpic":null,"nsig1":null,"nsig2":null,"online":"1","params":"牵丝戏;银临&Aki阿杰;牵丝戏;1377633237;540355673;MUSIC_6304356;1508622502;4195153725;6304356;2530815087;440799507;MV_597301;1","pay":"0","pic":"","playCnt":"0","rankChange":null,"reason":"根据听过的歌推荐","score":"1","score100":null,"songName":"牵丝戏","songTimeMinutes":"03:59","tpay":null,"trend":null,"upTime":null,"uploader":null}],"playlist":[{"digest":"8","disname":"风雪夜归人","extend":"0","info":"","isnew":"0","name":"风雪夜归人","newcount":"0","nodeid":"0","pic":"http://img1.kwcdn.kuwo.cn/star/userpl2015/40/52/1521160469941_149214040b.jpg","playcnt":"1657","source":"8","sourceid":"380740371","tag":"古风"},{"digest":"8","disname":"听后全身鸡皮疙瘩","extend":"0","info":"","isnew":"0","name":"听后全身鸡皮疙瘩","newcount":"0","nodeid":"0","pic":"http://img1.kwcdn.kuwo.cn/star/userpl2015/45/12/1506936426338_393492045b.jpg","playcnt":"14765","source":"8","sourceid":"2288356221","tag":""}]}
+         * lrclist : [{"time":"0.0","lineLyric":"谁 (DJ何鹏版) - 雪十郎"},{"time":"2.12","lineLyric":"词：张世东"},{"time":"3.24","lineLyric":"曲：蔡华垒"},{"time":"4.28","lineLyric":"制作人：赵振海"},{"time":"5.74","lineLyric":"DJ：DJ何鹏"},{"time":"21.43","lineLyric":"谁的苦酒敬月光"},{"time":"24.2","lineLyric":"谁的真心喂豺狼"},{"time":"26.57","lineLyric":"谁的梦想在流浪"},{"time":"28.86","lineLyric":"谁的青春不迷茫"},{"time":"31.35","lineLyric":"谁把热血染残阳"},{"time":"33.59","lineLyric":"谁把诗集装行囊"},{"time":"36.22","lineLyric":"谁把汗水熬成汤"},{"time":"38.47","lineLyric":"谁把脚掌磨成钢"},{"time":"40.43","lineLyric":"谁是我 我是谁"},{"time":"42.76","lineLyric":"时光变成了盗贼"},{"time":"45.19","lineLyric":"惊扰少年英雄梦"},{"time":"47.46","lineLyric":"掠走天真和无畏"},{"time":"49.97","lineLyric":"爱过谁 恨过谁"},{"time":"52.36","lineLyric":"我们错过谁和谁"},{"time":"54.74","lineLyric":"岁月犹如东流水"},{"time":"57.19","lineLyric":"鲜衣怒马追不回"},{"time":"84.22","lineLyric":"谁的苦酒敬月光"},{"time":"86.58","lineLyric":"谁的真心喂豺狼"},{"time":"89.16","lineLyric":"谁的梦想在流浪"},{"time":"91.24","lineLyric":"谁的青春不迷茫"},{"time":"93.83","lineLyric":"谁把热血染残阳"},{"time":"96.130005","lineLyric":"谁把诗集装行囊"},{"time":"98.54","lineLyric":"谁把汗水熬成汤"},{"time":"100.96","lineLyric":"谁把脚掌磨成钢"},{"time":"102.69","lineLyric":"谁是我 我是谁"},{"time":"105.18","lineLyric":"时光变成了盗贼"},{"time":"107.55","lineLyric":"惊扰少年英雄梦"},{"time":"109.94","lineLyric":"掠走天真和无畏"},{"time":"112.509995","lineLyric":"爱过谁 恨过谁"},{"time":"114.770004","lineLyric":"我们错过谁和谁"},{"time":"117.2","lineLyric":"岁月犹如东流水"},{"time":"119.59","lineLyric":"鲜衣怒马追不回"},{"time":"145.95999","lineLyric":"谁是我 我是谁"},{"time":"148.35","lineLyric":"时光变成了盗贼"},{"time":"150.78","lineLyric":"惊扰少年英雄梦"},{"time":"153.1","lineLyric":"掠走天真和无畏"},{"time":"155.51","lineLyric":"爱过谁 恨过谁"},{"time":"157.94","lineLyric":"我们错过谁和谁"},{"time":"160.35","lineLyric":"岁月犹如东流水"},{"time":"162.65","lineLyric":"鲜衣怒马追不回"},{"time":"168.18","lineLyric":"谁是我 我是谁"},{"time":"169.93","lineLyric":"时光变成了盗贼"},{"time":"172.36","lineLyric":"惊扰少年英雄梦"},{"time":"174.69","lineLyric":"掠走天真和无畏"},{"time":"177.11","lineLyric":"爱过谁 恨过谁"},{"time":"179.55","lineLyric":"我们错过谁和谁"},{"time":"182.02","lineLyric":"岁月犹如东流水"},{"time":"184.34","lineLyric":"鲜衣怒马追不回"}]
+         * songinfo : {"album":"谁","albumId":"10563943","artist":"雪十郎","artistId":"40221","contentType":"0","coopFormats":["320kmp3","192kmp3","128kmp3"],"copyRight":"0","duration":"213","formats":"WMA96|WMA128|MP3H|MP3192|MP3128|ALFLAC|AL|AAC48|AAC24|EXMV700|EXMP4L|EXMP4UL|EXMV500|EXMP4|EXMP4BD|EXMP4HV","hasEcho":null,"hasMv":"0","id":"76218509","isExt":null,"isNew":null,"isPoint":"0","isbatch":null,"isdownload":"0","isstar":"0","mkvNsig1":"1941596967","mkvNsig2":"3427095781","mkvRid":"MV_1728002","mp3Nsig1":"1216449758","mp3Nsig2":"1893640188","mp3Rid":"MP3_76218509","mp3Size":"","mp4sig1":"","mp4sig2":"","musicrId":"MUSIC_76218509","mutiVer":"0","mvpic":null,"nsig1":"4095656350","nsig2":"830192075","online":"1","params":null,"pay":"16515324","pic":"http://img1.kwcdn.kuwo.cn/star/albumcover/240/92/43/1771090539.jpg","playCnt":"","rankChange":null,"reason":null,"score":null,"score100":"100","songName":"谁(DJ何鹏版)","songTimeMinutes":"03:33","tpay":null,"trend":null,"upTime":"","uploader":""}
+         * simpl : {"musiclist":[{"album":"逞强","albumId":"7394588","artist":"杨小壮","artistId":"2553219","contentType":null,"coopFormats":["320kmp3","192kmp3","128kmp3"],"copyRight":"0","duration":"210","formats":"WMA96|AAC24|WMA128|AAC48|AL|MP3H|MP3192|ALFLAC|MP3128","hasEcho":null,"hasMv":"1","id":"56194509","isExt":null,"isNew":null,"isPoint":null,"isbatch":null,"isdownload":null,"isstar":"0","mkvNsig1":null,"mkvNsig2":null,"mkvRid":null,"mp3Nsig1":null,"mp3Nsig2":null,"mp3Rid":null,"mp3Size":"","mp4sig1":"","mp4sig2":"","musicrId":"56194509","mutiVer":null,"mvpic":null,"nsig1":null,"nsig2":null,"online":"1","params":"逞强;杨小壮;逞强;2807076914;1349071886;MUSIC_56194509;740622103;277336084;56194509;0;0;MV_0;0","pay":"16515324","pic":"","playCnt":"0","rankChange":null,"reason":null,"score":null,"score100":null,"songName":"逞强","songTimeMinutes":"03:30","tpay":null,"trend":null,"upTime":null,"uploader":null},{"album":"李绮绮， Vol. 1","albumId":"7208739","artist":"李绮绮","artistId":"2547221","contentType":null,"coopFormats":["320kmp3","192kmp3","128kmp3"],"copyRight":"0","duration":"226","formats":"WMA96|AAC24|WMA128|AAC48|AL|MP3H|MP3192|ALFLAC|MP3128","hasEcho":null,"hasMv":"1","id":"54873385","isExt":null,"isNew":null,"isPoint":null,"isbatch":null,"isdownload":null,"isstar":"0","mkvNsig1":null,"mkvNsig2":null,"mkvRid":null,"mp3Nsig1":null,"mp3Nsig2":null,"mp3Rid":null,"mp3Size":"","mp4sig1":"","mp4sig2":"","musicrId":"54873385","mutiVer":null,"mvpic":null,"nsig1":null,"nsig2":null,"online":"1","params":"酒梦;李绮绮;李绮绮, Vol. 1;1130433053;3149742081;MUSIC_54873385;2696769374;1160037533;54873385;0;0;MV_0;0","pay":"16515324","pic":"","playCnt":"0","rankChange":null,"reason":null,"score":null,"score100":null,"songName":"酒梦","songTimeMinutes":"03:46","tpay":null,"trend":null,"upTime":null,"uploader":null},{"album":"找一个字代替","albumId":"10549128","artist":"小阿枫","artistId":"2535202","contentType":null,"coopFormats":["320kmp3","192kmp3","128kmp3"],"copyRight":"0","duration":"268","formats":"WMA96|AAC24|WMA128|AAC48|AL|MP3H|MP3192|ALFLAC|MP3128","hasEcho":null,"hasMv":"1","id":"74585682","isExt":null,"isNew":null,"isPoint":null,"isbatch":null,"isdownload":null,"isstar":"0","mkvNsig1":null,"mkvNsig2":null,"mkvRid":null,"mp3Nsig1":null,"mp3Nsig2":null,"mp3Rid":null,"mp3Size":"","mp4sig1":"","mp4sig2":"","musicrId":"74585682","mutiVer":null,"mvpic":null,"nsig1":null,"nsig2":null,"online":"1","params":"找一个字代替;小阿枫;找一个字代替;2739984980;2875847052;MUSIC_74585682;365801915;4224016680;74585682;0;0;MV_0;0","pay":"16515324","pic":"","playCnt":"0","rankChange":null,"reason":null,"score":null,"score100":null,"songName":"找一个字代替","songTimeMinutes":"04:28","tpay":null,"trend":null,"upTime":null,"uploader":null},{"album":"女儿情","albumId":"10619723","artist":"小阿枫","artistId":"2535202","contentType":null,"coopFormats":["320kmp3","192kmp3","128kmp3"],"copyRight":"0","duration":"109","formats":"WMA96|AAC24|WMA128|AAC48|AL|MP3H|MP3192|ALFLAC|MP3128","hasEcho":null,"hasMv":"1","id":"75851683","isExt":null,"isNew":null,"isPoint":null,"isbatch":null,"isdownload":null,"isstar":"0","mkvNsig1":null,"mkvNsig2":null,"mkvRid":null,"mp3Nsig1":null,"mp3Nsig2":null,"mp3Rid":null,"mp3Size":"","mp4sig1":"","mp4sig2":"","musicrId":"75851683","mutiVer":null,"mvpic":null,"nsig1":null,"nsig2":null,"online":"1","params":"女儿情;小阿枫;女儿情;399568526;2683580280;MUSIC_75851683;1945305283;1182440821;75851683;0;0;MV_0;0","pay":"16515324","pic":"","playCnt":"0","rankChange":null,"reason":null,"score":null,"score100":null,"songName":"女儿情","songTimeMinutes":"01:49","tpay":null,"trend":null,"upTime":null,"uploader":null}],"playlist":[]}
          */
 
         private SonginfoBean songinfo;
@@ -109,48 +43,49 @@ public class LrcBeen {
 
         public static class SonginfoBean {
             /**
-             * album : 缘份一道桥
-             * albumId : 1362508
-             * artist : 王力宏&谭维维
-             * artistId : 1416
+             * album : 谁
+             * albumId : 10563943
+             * artist : 雪十郎
+             * artistId : 40221
+             * contentType : 0
              * coopFormats : ["320kmp3","192kmp3","128kmp3"]
              * copyRight : 0
-             * duration : 246
-             * formats : WMA96|WMA128|MP3H|MP3192|MP3128|ALFLAC|AL|AAC48|AAC24|MV700|MV500|MP4L|MP4|EXMV700|EXMV500|EXMP4UL|EXMP4L|EXMP4HV|EXMP4BD|EXMP4
+             * duration : 213
+             * formats : WMA96|WMA128|MP3H|MP3192|MP3128|ALFLAC|AL|AAC48|AAC24|EXMV700|EXMP4L|EXMP4UL|EXMV500|EXMP4|EXMP4BD|EXMP4HV
              * hasEcho : null
-             * hasMv : 1
-             * id : 10208007
+             * hasMv : 0
+             * id : 76218509
              * isExt : null
              * isNew : null
-             * isPoint : 1
+             * isPoint : 0
              * isbatch : null
              * isdownload : 0
              * isstar : 0
-             * mkvNsig1 : 959018602
-             * mkvNsig2 : 2688746017
-             * mkvRid : MV_0
-             * mp3Nsig1 : 3425456929
-             * mp3Nsig2 : 3824327218
-             * mp3Rid : MP3_10208007
+             * mkvNsig1 : 1941596967
+             * mkvNsig2 : 3427095781
+             * mkvRid : MV_1728002
+             * mp3Nsig1 : 1216449758
+             * mp3Nsig2 : 1893640188
+             * mp3Rid : MP3_76218509
              * mp3Size :
              * mp4sig1 :
              * mp4sig2 :
-             * musicrId : MUSIC_10208007
+             * musicrId : MUSIC_76218509
              * mutiVer : 0
              * mvpic : null
-             * nsig1 : 1485433627
-             * nsig2 : 2430784127
+             * nsig1 : 4095656350
+             * nsig2 : 830192075
              * online : 1
              * params : null
              * pay : 16515324
-             * pic : http://img1.kwcdn.kuwo.cn/star/albumcover/240/34/92/3595800350.jpg
+             * pic : http://img1.kwcdn.kuwo.cn/star/albumcover/240/92/43/1771090539.jpg
              * playCnt :
              * rankChange : null
              * reason : null
              * score : null
-             * score100 : 104
-             * songName : 缘分一道桥
-             * songTimeMinutes : 04:06
+             * score100 : 100
+             * songName : 谁(DJ何鹏版)
+             * songTimeMinutes : 03:33
              * tpay : null
              * trend : null
              * upTime :
@@ -161,6 +96,7 @@ public class LrcBeen {
             private String albumId;
             private String artist;
             private String artistId;
+            private String contentType;
             private String copyRight;
             private String duration;
             private String formats;
@@ -234,6 +170,14 @@ public class LrcBeen {
 
             public void setArtistId(String artistId) {
                 this.artistId = artistId;
+            }
+
+            public String getContentType() {
+                return contentType;
+            }
+
+            public void setContentType(String contentType) {
+                this.contentType = contentType;
             }
 
             public String getCopyRight() {
@@ -575,7 +519,7 @@ public class LrcBeen {
 
         public static class SimplBean {
             private List<MusiclistBean> musiclist;
-            private List<PlaylistBean> playlist;
+            private List<?> playlist;
 
             public List<MusiclistBean> getMusiclist() {
                 return musiclist;
@@ -585,27 +529,28 @@ public class LrcBeen {
                 this.musiclist = musiclist;
             }
 
-            public List<PlaylistBean> getPlaylist() {
+            public List<?> getPlaylist() {
                 return playlist;
             }
 
-            public void setPlaylist(List<PlaylistBean> playlist) {
+            public void setPlaylist(List<?> playlist) {
                 this.playlist = playlist;
             }
 
             public static class MusiclistBean {
                 /**
-                 * album : 饕餮
-                 * albumId : 1365259
-                 * artist : 南征北战NZBZ
-                 * artistId : 111900
+                 * album : 逞强
+                 * albumId : 7394588
+                 * artist : 杨小壮
+                 * artistId : 2553219
+                 * contentType : null
                  * coopFormats : ["320kmp3","192kmp3","128kmp3"]
                  * copyRight : 0
-                 * duration : 208
+                 * duration : 210
                  * formats : WMA96|AAC24|WMA128|AAC48|AL|MP3H|MP3192|ALFLAC|MP3128
                  * hasEcho : null
                  * hasMv : 1
-                 * id : 13137700
+                 * id : 56194509
                  * isExt : null
                  * isNew : null
                  * isPoint : null
@@ -621,22 +566,22 @@ public class LrcBeen {
                  * mp3Size :
                  * mp4sig1 :
                  * mp4sig2 :
-                 * musicrId : 13137700
+                 * musicrId : 56194509
                  * mutiVer : null
                  * mvpic : null
                  * nsig1 : null
                  * nsig2 : null
                  * online : 1
-                 * params : 饕餮;南征北战NZBZ;饕餮;516094573;3314084033;MUSIC_13137700;855407679;1058342843;13137700;2053943005;1067379222;MV_793792;1
+                 * params : 逞强;杨小壮;逞强;2807076914;1349071886;MUSIC_56194509;740622103;277336084;56194509;0;0;MV_0;0
                  * pay : 16515324
                  * pic :
                  * playCnt : 0
                  * rankChange : null
-                 * reason : 根据听过的歌推荐
-                 * score : 1
+                 * reason : null
+                 * score : null
                  * score100 : null
-                 * songName : 饕餮
-                 * songTimeMinutes : 03:28
+                 * songName : 逞强
+                 * songTimeMinutes : 03:30
                  * tpay : null
                  * trend : null
                  * upTime : null
@@ -647,6 +592,7 @@ public class LrcBeen {
                 private String albumId;
                 private String artist;
                 private String artistId;
+                private Object contentType;
                 private String copyRight;
                 private String duration;
                 private String formats;
@@ -679,8 +625,8 @@ public class LrcBeen {
                 private String pic;
                 private String playCnt;
                 private Object rankChange;
-                private String reason;
-                private String score;
+                private Object reason;
+                private Object score;
                 private Object score100;
                 private String songName;
                 private String songTimeMinutes;
@@ -720,6 +666,14 @@ public class LrcBeen {
 
                 public void setArtistId(String artistId) {
                     this.artistId = artistId;
+                }
+
+                public Object getContentType() {
+                    return contentType;
+                }
+
+                public void setContentType(Object contentType) {
+                    this.contentType = contentType;
                 }
 
                 public String getCopyRight() {
@@ -978,19 +932,19 @@ public class LrcBeen {
                     this.rankChange = rankChange;
                 }
 
-                public String getReason() {
+                public Object getReason() {
                     return reason;
                 }
 
-                public void setReason(String reason) {
+                public void setReason(Object reason) {
                     this.reason = reason;
                 }
 
-                public String getScore() {
+                public Object getScore() {
                     return score;
                 }
 
-                public void setScore(String score) {
+                public void setScore(Object score) {
                     this.score = score;
                 }
 
@@ -1058,158 +1012,22 @@ public class LrcBeen {
                     this.coopFormats = coopFormats;
                 }
             }
-
-            public static class PlaylistBean {
-                /**
-                 * digest : 8
-                 * disname : 风雪夜归人
-                 * extend : 0
-                 * info :
-                 * isnew : 0
-                 * name : 风雪夜归人
-                 * newcount : 0
-                 * nodeid : 0
-                 * pic : http://img1.kwcdn.kuwo.cn/star/userpl2015/40/52/1521160469941_149214040b.jpg
-                 * playcnt : 1657
-                 * source : 8
-                 * sourceid : 380740371
-                 * tag : 古风
-                 */
-
-                private String digest;
-                private String disname;
-                private String extend;
-                private String info;
-                private String isnew;
-                private String name;
-                private String newcount;
-                private String nodeid;
-                private String pic;
-                private String playcnt;
-                private String source;
-                private String sourceid;
-                private String tag;
-
-                public String getDigest() {
-                    return digest;
-                }
-
-                public void setDigest(String digest) {
-                    this.digest = digest;
-                }
-
-                public String getDisname() {
-                    return disname;
-                }
-
-                public void setDisname(String disname) {
-                    this.disname = disname;
-                }
-
-                public String getExtend() {
-                    return extend;
-                }
-
-                public void setExtend(String extend) {
-                    this.extend = extend;
-                }
-
-                public String getInfo() {
-                    return info;
-                }
-
-                public void setInfo(String info) {
-                    this.info = info;
-                }
-
-                public String getIsnew() {
-                    return isnew;
-                }
-
-                public void setIsnew(String isnew) {
-                    this.isnew = isnew;
-                }
-
-                public String getName() {
-                    return name;
-                }
-
-                public void setName(String name) {
-                    this.name = name;
-                }
-
-                public String getNewcount() {
-                    return newcount;
-                }
-
-                public void setNewcount(String newcount) {
-                    this.newcount = newcount;
-                }
-
-                public String getNodeid() {
-                    return nodeid;
-                }
-
-                public void setNodeid(String nodeid) {
-                    this.nodeid = nodeid;
-                }
-
-                public String getPic() {
-                    return pic;
-                }
-
-                public void setPic(String pic) {
-                    this.pic = pic;
-                }
-
-                public String getPlaycnt() {
-                    return playcnt;
-                }
-
-                public void setPlaycnt(String playcnt) {
-                    this.playcnt = playcnt;
-                }
-
-                public String getSource() {
-                    return source;
-                }
-
-                public void setSource(String source) {
-                    this.source = source;
-                }
-
-                public String getSourceid() {
-                    return sourceid;
-                }
-
-                public void setSourceid(String sourceid) {
-                    this.sourceid = sourceid;
-                }
-
-                public String getTag() {
-                    return tag;
-                }
-
-                public void setTag(String tag) {
-                    this.tag = tag;
-                }
-            }
         }
 
         public static class LrclistBean {
             /**
-             * time : 0.35
-             * lineLyric : 缘份一道桥-(电影《长城》片尾曲) - 谭维维&王力宏
+             * time : 0.0
+             * lineLyric : 谁 (DJ何鹏版) - 雪十郎
              */
 
-            private double time;
+            private String time;
             private String lineLyric;
 
-            public double getTime() {
+            public String getTime() {
                 return time;
             }
 
-            public void setTime(double time) {
+            public void setTime(String time) {
                 this.time = time;
             }
 
@@ -1221,5 +1039,4 @@ public class LrcBeen {
                 this.lineLyric = lineLyric;
             }
         }
-    }
 }

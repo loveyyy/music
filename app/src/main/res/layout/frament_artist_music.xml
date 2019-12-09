@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_30"
+            android:layout_marginLeft="@dimen/dp_18"
+            android:layout_marginRight="@dimen/dp_17"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="@dimen/dp_114"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/dp_65"
+                android:gravity="center|start"
+                android:textColor="#000000"
+                android:text="歌曲" />
+
+            <TextView
+                android:layout_width="@dimen/dp_114"
+                android:layout_height="match_parent"
+                android:gravity="center|start"
+                android:textColor="#000000"
+                android:text="专辑" />
+
+            <TextView
+                android:layout_width="@dimen/dp_32"
+                android:layout_height="match_parent"
+                android:gravity="center|start"
+                android:textColor="#000000"
+                android:text="时长" />
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcv_artist_music"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+</layout>

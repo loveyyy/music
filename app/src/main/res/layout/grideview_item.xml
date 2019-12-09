@@ -5,20 +5,20 @@
     <data>
         <variable
             name="singer"
-            type="com.example.music.entry.SingerBeens.DataBean.ArtistListBean" />
+            type="com.example.music.model.Artist_list.ArtistListBean" />
     </data>
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="@dimen/dp_100"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/iv"
             android:layout_width="@dimen/dp_60"
             android:layout_gravity="center"
             android:layout_height="@dimen/dp_60"
-            app:imageUrl="@{singer.pic}"/>
+            app:imageCilcleUrl="@{singer.pic}"/>
 
         <TextView
             android:id="@+id/tv_name"

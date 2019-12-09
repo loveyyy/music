@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="bangMusicList"
+            type="com.example.music.model.Bang_Music_list.MusicListBean"/>
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="horizontal" android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_80"
+        android:background="@drawable/bord_corn">
+        <LinearLayout
+            android:layout_width="@dimen/dp_85"
+            android:layout_height="match_parent">
+            <ImageView
+                android:id="@+id/fengmian"
+                android:layout_width="@dimen/dp_60"
+                android:layout_height="@dimen/dp_60"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:layout_gravity="center"
+                app:imageCilcleUrl="@{bangMusicList.albumpic}"
+                />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="@dimen/dp_85"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:text="@{bangMusicList.name}"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/singer"
+            android:layout_width="@dimen/dp_85"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:text="@{bangMusicList.artist}"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/zhuanji"
+            android:layout_width="@dimen/dp_85"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:text="@{bangMusicList.album}"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+</layout>

@@ -1,5 +1,6 @@
 package com.example.music.ui.custom;
 
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -8,7 +9,9 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.RelativeLayout;
 
@@ -16,6 +19,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.music.R;
+import com.example.music.server.DownloadServer;
 import com.example.music.ui.activity.TextLrc;
 import com.example.music.ui.adapter.VP_Paly_Apt;
 import com.example.music.utils.ACache;
@@ -27,21 +31,21 @@ import com.example.music.http.Api;
 import com.example.music.http.ApiResponse;
 import com.example.music.http.ApiSubscribe;
 import com.example.music.model.BaseRespon;
+import com.example.music.utils.PlayController;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
 public class PlayerView extends RelativeLayout {
-    private ServiceConnection serviceConnection;
-    private MusicInterface mi;
-    private boolean isBind = false;
     private PlayerBinding playerBinding;
     private ACache aCache;
     private MyBroadcastReceiver myBroadcastReceiver;
-    private String songurl;
     private int pos;
     private ArrayList<PlayingMusicBeens> playingMusicBeens=new ArrayList<>();
     private Context context;
     private  VP_Paly_Apt vp_paly_apt;
+    private PlayController playController;
+    private boolean isdown=false;
 
 
     public PlayerView(Context context) {
@@ -53,24 +57,12 @@ public class PlayerView extends RelativeLayout {
         playerBinding= DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.player,
                 this,true);
         aCache=ACache.get(context);
-        serviceConnection = new ServiceConnection() {
-            @Override
-            public void onServiceConnected(ComponentName name, IBinder service) {
-                mi = (PlayServer.MusicController) service;
-            }
-
-            @Override
-            public void onServiceDisconnected(ComponentName name) {
-
-            }
-        };
-        //绑定服务
-        Intent intent = new Intent(context, PlayServer.class);
-        isBind = context.bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+        playController=new PlayController(getContext());
         this.context=context;
         myBroadcastReceiver=new MyBroadcastReceiver();
          IntentFilter filter = new IntentFilter();
         filter.addAction("com.example.music.pro");
+        filter.setPriority(1000);
         context.registerReceiver(myBroadcastReceiver, filter);
         refresh();
         setonclick();
@@ -91,9 +83,18 @@ public class PlayerView extends RelativeLayout {
         vp_paly_apt=new VP_Paly_Apt(context,playingMusicBeens);
         playerBinding.vpPlay.setAdapter(vp_paly_apt);
         playerBinding.vpPlay.setCurrentItem(pos);
+
+       /* if(playController.get_state()==2){
+            //已暂停
+            playerBinding.ivPlay.setBackgroundResource(R.drawable.play);
+        }else if(playController.get_state()==1){
+            //已播放
+            playerBinding.ivPlay.setBackgroundResource(R.drawable.stop);
+        }*/
     }
 
 
+    @SuppressLint("ClickableViewAccessibility")
     private void setonclick() {
         playerBinding.vpPlay.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -114,43 +115,56 @@ public class PlayerView extends RelativeLayout {
 
             }
         });
-        playerBinding.ibtnPlayS.setOnClickListener(new OnClickListener() {
+        playerBinding.ivPlay.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mi.PlayWithButton()==1){
+                if(playController.get_state()==2){
                     //已暂停
-                    playerBinding.ibtnPlayS.setImage(R.drawable.play);
-                }else {
+                    playerBinding.ivPlay.setBackgroundResource(R.drawable.play);
+                    playController.play_Paush();
+                }else if(playController.get_state()==1){
                     //已播放
-                    playerBinding.ibtnPlayS.setImage(R.drawable.stop);
+                    playerBinding.ivPlay.setBackgroundResource(R.drawable.stop);
+                    playController.play_Paush();
+                }else {
                     playmusci(playingMusicBeens.get(pos).getRid());
                 }
+
             }
         });
-//        ibtn_download.setOnClickListener(new OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                //下载
-//                Intent intent1 = new Intent(context, DownloadServer.class);
+
+        playerBinding.vpPlay.setOnTouchListener(new OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if(motionEvent.getAction()==MotionEvent.ACTION_DOWN){
+                    isdown=true;
+                    return true;
+                }
+                if(motionEvent.getAction()==MotionEvent.ACTION_UP){
+                    if(isdown){
+                        isdown=false;
+                        Intent intent = new Intent();
+                        intent.putExtra("musicid", playingMusicBeens.get(pos).getRid());
+                        intent.putExtra("image",playingMusicBeens.get(pos).getAlbumpic());
+                        intent.setClass(context, TextLrc.class);
+                        context.startActivity(intent);
+                        return true;
+                    }
+                }
+                isdown=false;
+                return false;
+            }
+        });
+
+        playerBinding.ibtnDownload.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent1 = new Intent(context, DownloadServer.class);
 //                intent1.putExtra("adress", songurl);
 //                intent1.putExtra("filename",playingMusicBeens.get(pos).getMusicname()+".map");
 //                intent1.putExtra("name",playingMusicBeens.get(pos).getMusicname());
 //                intent1.putExtra("json",new Gson().toJson(playingMusicBeens.get(pos),PlayingMusicBeens.class));
-//                context.startService(intent1);
-//            }
-//        });
-//
-//
-        playerBinding.ibtnDownload.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                int progress = playerBinding.ibtnPlayS.getProgress();
-                intent.putExtra("musicid", playingMusicBeens.get(pos).getRid());
-                intent.putExtra("progress", progress);
-                intent.putExtra("image",playingMusicBeens.get(pos).getAlbumpic());
-                intent.setClass(context, TextLrc.class);
-                context.startActivity(intent);
+                context.startService(intent1);
             }
         });
 
@@ -170,20 +184,8 @@ public class PlayerView extends RelativeLayout {
     }
 
     private void playmusci(String rid){
-        Api.getInstance().iRetrofit.music_info(
-                "mp3",rid,"url",
-                "convert_url3",
-                "128kmp3","web",String.valueOf(System.currentTimeMillis())," 4d09d450-174a-11ea-91a9-0b8d42e7dcee").
-                compose(ApiSubscribe.<BaseRespon>io_main()).subscribe(new ApiResponse<BaseRespon>(context){
-
-            @Override
-            public void success(BaseRespon data1) {
-                //获得歌曲播放地址
-                songurl=data1.getUrl();
-                mi.Play(songurl);
-                playerBinding.ibtnPlayS.setImage(R.drawable.stop);
-            }
-        });
+        playController.play(rid);
+        playerBinding.ivPlay.setBackgroundResource(R.drawable.stop);
     }
 
     public class MyBroadcastReceiver extends BroadcastReceiver {
@@ -191,17 +193,20 @@ public class PlayerView extends RelativeLayout {
     public void onReceive(Context context, Intent intent) {
      //这里的intent可以获取发送广播时传入的数据
          int i=intent.getIntExtra("pro",0);
-        playerBinding.ibtnPlayS.setProgress(i*100/playingMusicBeens.get(pos).getDuration());
-     }
+         if(i/(playingMusicBeens.get(pos).getDuration()*10)==0){
+             playerBinding.cirPro.setProgress(1);
+         }else{
+             playerBinding.cirPro.setProgress(i/(playingMusicBeens.get(pos).getDuration()*10));
+         }
+
+      }
     }
 
 
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        if (isBind) {
-            context.unbindService(serviceConnection);
-        }
+        playController.onDestory();
         if(myBroadcastReceiver!=null){
             context.unregisterReceiver(myBroadcastReceiver);
         }

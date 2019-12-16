@@ -1,18 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#ffff">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <ImageView
-        android:id="@+id/iv_bac"
+    <data>
+
+    </data>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="fitXY"
-        />
-    <com.example.music.view.lrcText
-        android:id="@+id/lrctext"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:background="#708090"
+        android:orientation="vertical">
 
-</FrameLayout>
+        <ImageView
+            android:id="@+id/iv_bac"
+            android:layout_width="@dimen/dp_120"
+            android:layout_height="@dimen/dp_120"
+            android:layout_marginTop="@dimen/dp_60"
+            android:layout_gravity="center_horizontal" />
+
+        <com.example.music.view.LrcText
+            android:id="@+id/lrctext"
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/dp_10"
+            android:layout_height="@dimen/dp_260" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_30"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/ib_lrc_last"
+                android:layout_width="@dimen/dp_45"
+                android:layout_height="@dimen/dp_45"
+                android:layout_marginLeft="@dimen/dp_37"
+                android:layout_marginRight="@dimen/dp_38"
+                android:background="@drawable/ic_lrc_last" />
+
+            <ImageButton
+                android:id="@+id/ib_lrc_play"
+                android:layout_width="@dimen/dp_45"
+                android:layout_height="@dimen/dp_45"
+                android:layout_marginLeft="@dimen/dp_37"
+                android:layout_marginRight="@dimen/dp_38"
+                android:background="@drawable/ic_lrc_play" />
+
+            <ImageButton
+                android:id="@+id/ib_lrc_next"
+                android:layout_width="@dimen/dp_45"
+                android:layout_height="@dimen/dp_45"
+                android:layout_marginLeft="@dimen/dp_37"
+                android:background="@drawable/ic_lrc_next" />
+
+        </LinearLayout>
+    </LinearLayout>
+</layout>

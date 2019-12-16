@@ -25,6 +25,8 @@ import com.example.music.model.Music_list_index;
 import com.example.music.model.Music_list_title;
 import com.example.music.model.Radio_info;
 import com.example.music.model.Radio_list;
+import com.example.music.model.Rec_List;
+import com.example.music.model.Rec_List_Info;
 
 import java.util.List;
 
@@ -46,34 +48,21 @@ public interface IRetrofit {
     Observable<BaseRespon<Music_list>> Music_list(@Query("loginUid")String mid, @Query("reqId")String reqId);
 
 
-    //推荐歌单 title
-    @GET("/api/www/playlist/index/tags")
-    Observable<BaseRespon<List<Music_list_index>>> Music_list_index(@Query("reqId")String reqId);
-
-
-
 
     //推荐歌单 更多 //order ==new  hot
     @GET("/api/pc/classify/playlist/getRcmPlayList")
-    Observable<BaseRespon<List<Music_list>>> Music_list_more(@Query("pn")String pn,
-                                                              @Query("rn")String rn,
-                                                              @Query("order")String order,
-                                                              @Query("reqId")String reqId);
+    Observable<BaseRespon<Rec_List>> Music_list_more(@Query("loginUid") String loginUid,@Query("loginSid") String loginSid,
+                                                     @Query("pn")String pn,
+                                                     @Query("rn")String rn,
+                                                     @Query("order")String order,
+                                                     @Query("reqId")String reqId);
 
-
-    //推荐歌单 更多 title
-    @GET("/api/www/playlist/getTagList")
-    Observable<BaseRespon<List<Music_list_title>>> Music_list_more_title(@Query("pn")String pn,
-                                                                         @Query("rn")String rn,
-                                                                         @Query("order")String order,
-                                                                         @Query("reqId")String reqId);
 
     //推荐歌单 进入 title
-    @GET("/api/pc/classify/playlist/getTagPlayList")
-    Observable<BaseRespon<List<Music_list>>> Music_list_classify_list(@Query("pn")String pn,
-                                                                         @Query("rn")String rn,
-                                                                         @Query("id")String order,
-                                                                         @Query("reqId")String reqId);
+    @GET("/api/www/playlist/playListInfo")
+    Observable<BaseRespon<Rec_List_Info>> Music_list_info(@Query("pid") String pid, @Query("pn")String pn,
+                                                          @Query("rn")String rn,
+                                                          @Query("reqId")String reqId);
 
 
 

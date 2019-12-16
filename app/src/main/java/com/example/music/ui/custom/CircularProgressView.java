@@ -32,7 +32,6 @@ public class CircularProgressView extends View {
     private RectF mRectF;       // 绘制区域
     private int[] mColorArray;  // 圆环渐变色
     private int mProgress;      // 圆环进度(0-100)
-    private Bitmap bitmap;
 
 
     public CircularProgressView(Context context) {
@@ -75,11 +74,6 @@ public class CircularProgressView extends View {
         // 初始化进度
         mProgress = typedArray.getInteger(R.styleable.CircularProgressView_progress, 0);
         typedArray.recycle();
-
-        BitmapFactory.Options options=new BitmapFactory.Options();
-        options.outWidth=context.getResources().getDimensionPixelSize(R.dimen.dp_20);
-        options.outHeight=context.getResources().getDimensionPixelSize(R.dimen.dp_20);
-        bitmap = BitmapFactory.decodeResource(context.getResources(),R.drawable.play,options);
     }
 
     @Override
@@ -102,10 +96,6 @@ public class CircularProgressView extends View {
         super.onDraw(canvas);
         canvas.drawArc(mRectF, 0, 360, false, mBackPaint);
         canvas.drawArc(mRectF, 275, 360 * mProgress / 100, false, mProgPaint);
-
-        if(bitmap!=null){
-            canvas.drawBitmap(bitmap , 0 , 0 , null);
-        }
 
     }
 
@@ -160,12 +150,6 @@ public class CircularProgressView extends View {
      */
     public void setBackWidth(int width) {
         mBackPaint.setStrokeWidth(width);
-        invalidate();
-    }
-
-    public void setImage(int img) {
-        bitmap=BitmapFactory.decodeResource(getResources() , img);
-        bitmap=getNewBitmap(bitmap,getResources().getDimensionPixelSize(R.dimen.dp_20),getResources().getDimensionPixelSize(R.dimen.dp_20));
         invalidate();
     }
 

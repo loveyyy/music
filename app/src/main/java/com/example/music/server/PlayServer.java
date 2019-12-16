@@ -27,6 +27,7 @@ public class PlayServer extends Service  {
     private MediaPlayer mediaPlayer;
     private Timer timer;
     private int i = 0;
+    private int state=0;
     private boolean isstop;
     private MyBroadcastReceiver myBroadcastReceiver;
 
@@ -85,23 +86,32 @@ public class PlayServer extends Service  {
                     }
                 });
                 starttime();
+                state=1;
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
 
         @Override
-        public int PlayWithButton() {
+        public void PlayWithButton() {
+            if(mediaPlayer!=null){
                 if(mediaPlayer.isPlaying()){
                     mediaPlayer.pause();
+                    state=2;
                     isstop=true;
-                    return  1;
                 }else{
                     mediaPlayer.start();
+                    state=1;
                     isstop=false;
-                    return 0;
                 }
+            }
         }
+
+        @Override
+        public int get_play_state() {
+            return state;
+        }
+
 
         @Override
         public void PlayWithSb(int progress) {
@@ -118,9 +128,7 @@ public class PlayServer extends Service  {
         if(myBroadcastReceiver!=null){
             unregisterReceiver(myBroadcastReceiver);
         }
-
     }
-
 
     private void starttime(){
         if(timer!=null){
@@ -135,10 +143,10 @@ public class PlayServer extends Service  {
                     Intent intent=new Intent();
                     intent.setAction("com.example.music.pro");
                     intent.putExtra("pro",i);
-                    sendBroadcast(intent);
+                    sendOrderedBroadcast(intent,null);
                 }
             }
-        }, 0, 1000);
+        }, 0, 1);
     }
 
 
@@ -146,9 +154,9 @@ public class PlayServer extends Service  {
         @Override
         public void onReceive(Context context, Intent intent) {
             //这里的intent可以获取发送广播时传入的数据
-            int pos=intent.getIntExtra("current",0);
-            mediaPlayer.seekTo(pos);
-            i=pos;
+            double pos=intent.getDoubleExtra("current",0);
+            mediaPlayer.seekTo((int) pos);
+            i=(int)pos;
         }
     }
 }

@@ -6,7 +6,6 @@
     </data>
 
     <RelativeLayout
-        android:id="@+id/Rela_Play"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_68"
         android:background="@drawable/play_bac">
@@ -23,17 +22,28 @@
             android:layout_marginRight="@dimen/dp_20"
             android:orientation="horizontal">
 
-            <com.example.music.ui.custom.CircularProgressView
-                android:id="@+id/ibtn_play_s"
-                android:layout_width="@dimen/dp_30"
-                android:layout_height="@dimen/dp_30"
-                app:backColor="#FFFFFFFF"
-                app:progColor="@color/colorAccent"
-                app:progWidth="@dimen/dp_1"
-                app:backWidth="@dimen/dp_1"
-                app:progress="1"
+            <RelativeLayout
+                android:layout_width="@dimen/dp_25"
                 android:layout_gravity="center"
-                android:layout_marginLeft="@dimen/dp_10" />
+                android:layout_height="@dimen/dp_25">
+                <com.example.music.ui.custom.CircularProgressView
+                    android:id="@+id/cir_pro"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:backColor="#FFFFFFFF"
+                    app:progColor="@color/colorAccent"
+                    app:progWidth="@dimen/dp_1"
+                    app:backWidth="@dimen/dp_1"
+                    app:progress="1" />
+
+                <ImageView
+                    android:id="@+id/iv_play"
+                    android:layout_width="@dimen/dp_15"
+                    android:layout_height="@dimen/dp_15"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/play"/>
+            </RelativeLayout>
+
 
 
             <ImageButton
@@ -41,7 +51,7 @@
                 android:layout_width="@dimen/dp_25"
                 android:layout_height="@dimen/dp_25"
                 android:layout_gravity="center"
-                android:background="@drawable/ic_download"
+                android:background="@drawable/ic_down"
                 android:layout_marginLeft="@dimen/dp_10" />
 
         </LinearLayout>

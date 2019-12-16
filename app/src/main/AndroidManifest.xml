@@ -47,6 +47,7 @@
         <activity android:name=".ui.activity.TextLrc"
             tools:ignore="InnerclassSeparator" />
         <activity android:name=".ui.activity.Singer_Activity"/>
+        <activity android:name=".ui.activity.Rec_List_Info_Activity"/>
     </application>
 
 </manifest>

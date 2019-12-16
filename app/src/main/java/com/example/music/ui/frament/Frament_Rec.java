@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.music.R;
 import com.example.music.ui.activity.Bang_Meau_Activity;
+import com.example.music.ui.activity.Rec_List_Info_Activity;
 import com.example.music.ui.activity.Singer_Activity;
 import com.example.music.ui.adapter.Bang_MeauAdapter;
 import com.example.music.ui.adapter.GridViewAdapter;
@@ -57,7 +58,7 @@ public class Frament_Rec extends Fragment {
     private void setVM(){
         framentRecVM.Music_list.observe(this, new Observer<BaseRespon<Music_list>>() {
             @Override
-            public void onChanged(BaseRespon<Music_list> listBaseRespon) {
+            public void onChanged(final BaseRespon<Music_list> listBaseRespon) {
                 RecyclerView.LayoutManager layoutManager=new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL,false);
                 framentRecBinding.rcvMusicListMain.setLayoutManager(layoutManager);
                 Music_ListAdapter music_listAdapter=new Music_ListAdapter(getContext(),listBaseRespon.getData());
@@ -65,6 +66,10 @@ public class Frament_Rec extends Fragment {
                     @Override
                     public void OnItemClickListener(int pos) {
                         //推荐歌单点击事件
+                        Intent intent=new Intent();
+                        intent.setClass(getContext(), Rec_List_Info_Activity.class);
+                        intent.putExtra("rid",listBaseRespon.getData().getList().get(pos).getId());
+                        startActivity(intent);
                     }
                 });
                 framentRecBinding.rcvMusicListMain.setAdapter(music_listAdapter);

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="rec_list_info"
+            type="com.example.music.model.Rec_List_Info.MusicListBean" />
+    </data>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_60"
+        android:layout_marginLeft="@dimen/dp_18"
+        android:layout_marginRight="@dimen/dp_17"
+        android:background="@drawable/bord_corn">
+
+        <ImageView
+            android:layout_width="@dimen/dp_45"
+            android:layout_height="@dimen/dp_45"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/dp_10"
+            app:imageCilcleUrl="@{rec_list_info.pic}" />
+
+        <TextView
+            android:layout_width="@dimen/dp_114"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:gravity="center|start"
+            android:text="@{rec_list_info.name}" />
+
+        <TextView
+            android:layout_width="@dimen/dp_114"
+            android:layout_height="match_parent"
+            android:gravity="center|start"
+            android:text="@{rec_list_info.artist}" />
+
+        <TextView
+            android:layout_width="@dimen/dp_32"
+            android:layout_height="match_parent"
+            android:gravity="center|start"
+            android:text="@{String.valueOf(rec_list_info.duration)}" />
+
+    </LinearLayout>
+</layout>

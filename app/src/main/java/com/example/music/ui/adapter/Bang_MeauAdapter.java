@@ -27,7 +27,6 @@ public class Bang_MeauAdapter extends RecyclerView.Adapter<BindingViewHolder> {
     private Context context;
     private BangMeauaptBinding bangMeauaptBinding;
     private Bang_MeauAdapter.OnItemClick onItemClick;
-    private Bang_MeauAdapter.OnChildClick onChildClick;
     public Bang_MeauAdapter(Context context, List<Bang_list> bang_meaus){
         this.bang_meaus=bang_meaus;
         this.context=context;
@@ -54,13 +53,6 @@ public class Bang_MeauAdapter extends RecyclerView.Adapter<BindingViewHolder> {
             }
         });
 
-        bang_meau_itemApt.setOnItemClick(new Bang_Meau_ItemApt.OnItemClick() {
-            @Override
-            public void OnItemClickListener(int pos) {
-                onChildClick.OnChildClickListener(pos);
-            }
-        });
-
 
     }
 
@@ -77,11 +69,4 @@ public class Bang_MeauAdapter extends RecyclerView.Adapter<BindingViewHolder> {
         this.onItemClick=click;
     }
 
-    //ItemView 的点击接口
-    public interface OnChildClick{
-        void OnChildClickListener(int pos);
-    }
-    public void setOnChildClick(Bang_MeauAdapter.OnChildClick click){
-        this.onChildClick=click;
-    }
 }

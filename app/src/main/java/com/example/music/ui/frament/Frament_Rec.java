@@ -89,13 +89,6 @@ public class Frament_Rec extends Fragment {
                 framentRecBinding.rcvRankMain.setLayoutManager(new LinearLayoutManager(getContext(),RecyclerView.HORIZONTAL,false));
                 Bang_MeauAdapter bang_meauAdapter=new Bang_MeauAdapter(getContext(),listBaseRespon.getData());
                 framentRecBinding.rcvRankMain.setAdapter(bang_meauAdapter);
-                bang_meauAdapter.setOnChildClick(new Bang_MeauAdapter.OnChildClick() {
-                    @Override
-                    public void OnChildClickListener(int pos) {
-                        //单个排行榜点击事件--播放单曲 并且跳转到播放页
-
-                    }
-                });
                 bang_meauAdapter.setOnItemClick(new Bang_MeauAdapter.OnItemClick() {
                     @Override
                     public void OnItemClickListener(int pos) {

@@ -76,20 +76,26 @@ public class PlayController {
     }
 
     public  int get_state(){
-        return mi.get_play_state();
+        if(mi!=null){
+            return  mi.get_play_state();
+        }else{
+            return 0;
+        }
     }
 
-    public  void play_Next(){
+    public  String play_Next(){
         pos++;
         aCache.remove("pos");
         aCache.put("pos",pos);
         play(playingMusicBeens.get(pos).getRid());
+        return  playingMusicBeens.get(pos).getRid();
     }
 
-    public void play_last(){
+    public String play_last(){
         pos--;
         aCache.remove("pos");
         play(playingMusicBeens.get(pos).getRid());
+        return  playingMusicBeens.get(pos).getRid();
     }
 
     public void play(String rid){
@@ -113,6 +119,10 @@ public class PlayController {
         intent.setAction("com.example.music.lrc");
         intent.putExtra("current",pro);
         context.sendBroadcast(intent);
+    }
+
+    public  int get_pro(){
+       return mi.get_plat_pro();
     }
 
 

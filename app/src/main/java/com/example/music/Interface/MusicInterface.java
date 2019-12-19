@@ -11,5 +11,6 @@ public interface MusicInterface {
     void Play(String Musicuri);
     void PlayWithButton();
     int get_play_state();
+    int get_plat_pro();
     void PlayWithSb(int progress);
 }

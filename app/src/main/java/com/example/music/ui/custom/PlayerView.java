@@ -15,6 +15,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.viewpager.widget.ViewPager;
 
@@ -46,6 +47,7 @@ public class PlayerView extends RelativeLayout {
     private  VP_Paly_Apt vp_paly_apt;
     private PlayController playController;
     private boolean isdown=false;
+    private boolean play=true;
 
 
     public PlayerView(Context context) {
@@ -82,15 +84,13 @@ public class PlayerView extends RelativeLayout {
         }
         vp_paly_apt=new VP_Paly_Apt(context,playingMusicBeens);
         playerBinding.vpPlay.setAdapter(vp_paly_apt);
+        play=false;
         playerBinding.vpPlay.setCurrentItem(pos);
-
-       /* if(playController.get_state()==2){
-            //已暂停
-            playerBinding.ivPlay.setBackgroundResource(R.drawable.play);
-        }else if(playController.get_state()==1){
-            //已播放
+        if(playController.get_state()==1){
             playerBinding.ivPlay.setBackgroundResource(R.drawable.stop);
-        }*/
+        }else{
+            playerBinding.ivPlay.setBackgroundResource(R.drawable.play);
+        }
     }
 
 
@@ -99,7 +99,7 @@ public class PlayerView extends RelativeLayout {
         playerBinding.vpPlay.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
+                play=true;
             }
 
             @Override
@@ -107,7 +107,10 @@ public class PlayerView extends RelativeLayout {
                 pos=position;
                 aCache.remove("pos");
                 aCache.put("pos",position);
-                playmusci(playingMusicBeens.get(pos).getRid());
+                if(play){
+                    playController.play(playingMusicBeens.get(pos).getRid());
+                    playerBinding.ivPlay.setBackgroundResource(R.drawable.stop);
+                }
             }
 
             @Override
@@ -119,15 +122,13 @@ public class PlayerView extends RelativeLayout {
             @Override
             public void onClick(View v) {
                 if(playController.get_state()==2){
-                    //已暂停
+                    //正暂停
                     playerBinding.ivPlay.setBackgroundResource(R.drawable.play);
-                    playController.play_Paush();
+                    playController.play(playingMusicBeens.get(pos).getRid());
                 }else if(playController.get_state()==1){
                     //已播放
                     playerBinding.ivPlay.setBackgroundResource(R.drawable.stop);
                     playController.play_Paush();
-                }else {
-                    playmusci(playingMusicBeens.get(pos).getRid());
                 }
 
             }
@@ -167,7 +168,6 @@ public class PlayerView extends RelativeLayout {
                 context.startService(intent1);
             }
         });
-
     }
 
     public   void play(final ArrayList<PlayingMusicBeens> playingMusicBeens , final int pos){
@@ -177,30 +177,28 @@ public class PlayerView extends RelativeLayout {
         aCache.put("pos",pos);
         this.playingMusicBeens=playingMusicBeens;
         this.pos=pos;
-        playmusci(playingMusicBeens.get(pos).getRid());
         vp_paly_apt=new VP_Paly_Apt(context,playingMusicBeens);
         playerBinding.vpPlay.setAdapter(vp_paly_apt);
+        play=true;
         playerBinding.vpPlay.setCurrentItem(pos);
     }
 
-    private void playmusci(String rid){
-        playController.play(rid);
-        playerBinding.ivPlay.setBackgroundResource(R.drawable.stop);
-    }
 
     public class MyBroadcastReceiver extends BroadcastReceiver {
      @Override
     public void onReceive(Context context, Intent intent) {
      //这里的intent可以获取发送广播时传入的数据
          int i=intent.getIntExtra("pro",0);
-         if(i/(playingMusicBeens.get(pos).getDuration()*10)==0){
-             playerBinding.cirPro.setProgress(1);
-         }else{
-             playerBinding.cirPro.setProgress(i/(playingMusicBeens.get(pos).getDuration()*10));
+         if(i!=0){
+             if(i/(playingMusicBeens.get(pos).getDuration()*10)==0){
+                 playerBinding.cirPro.setProgress(1);
+             }else{
+                 playerBinding.cirPro.setProgress(i/(playingMusicBeens.get(pos).getDuration()*10));
+             }
          }
-
       }
     }
+
 
 
     @Override

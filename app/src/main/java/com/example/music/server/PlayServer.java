@@ -72,30 +72,30 @@ public class PlayServer extends Service  {
     public class MusicController extends Binder implements MusicInterface {
 
         @Override
-        public void Play(String Musicuri) {
-            init();
-            try {
-                mediaPlayer.reset();
-                mediaPlayer.setDataSource(Musicuri);
-                mediaPlayer.prepareAsync();
-                mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                    @Override
-                    public void onPrepared(MediaPlayer mp) {
-                        mediaPlayer.setLooping(false);
-                        mediaPlayer.start();
-                    }
-                });
-                starttime();
-                state=1;
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            public void Play(String Musicuri) {
+                init();
+                try {
+                    mediaPlayer.reset();
+                    mediaPlayer.setDataSource(Musicuri);
+                    mediaPlayer.prepareAsync();
+                    mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                        @Override
+                        public void onPrepared(MediaPlayer mp) {
+                            mediaPlayer.setLooping(false);
+                            mediaPlayer.start();
+                        }
+                    });
+                    starttime();
+                    state=1;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
         }
 
         @Override
         public void PlayWithButton() {
             if(mediaPlayer!=null){
-                if(mediaPlayer.isPlaying()){
+                if(state==1){
                     mediaPlayer.pause();
                     state=2;
                     isstop=true;
@@ -109,7 +109,16 @@ public class PlayServer extends Service  {
 
         @Override
         public int get_play_state() {
-            return state;
+            if(isstop){
+                return 2;
+            }else{
+                return 1;
+            }
+        }
+
+        @Override
+        public int get_plat_pro() {
+            return i;
         }
 
 
@@ -146,7 +155,7 @@ public class PlayServer extends Service  {
                     sendOrderedBroadcast(intent,null);
                 }
             }
-        }, 0, 1);
+        }, 0, 1000);
     }
 
 
@@ -154,9 +163,9 @@ public class PlayServer extends Service  {
         @Override
         public void onReceive(Context context, Intent intent) {
             //这里的intent可以获取发送广播时传入的数据
-            double pos=intent.getDoubleExtra("current",0);
-            mediaPlayer.seekTo((int) pos);
-            i=(int)pos;
+            int pos=intent.getIntExtra("current",0);
+            mediaPlayer.seekTo(pos*1000);
+            i=pos;
         }
     }
 }

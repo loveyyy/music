@@ -73,21 +73,29 @@ public class LrcText extends TextView implements View.OnTouchListener{
 
         @Override
         public void handleMessage(Message msg) {
-            if(msg.what==10){
-                if(currentLine>=dataBean.size()-1){
-                    Toast.makeText(getContext(),"播放完成",Toast.LENGTH_SHORT).show();
-                }else{
-                    currentLine++;
-                    invalidate(); // 刷新,会再次调用onDraw方法
-                }
-            }else{
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        IsDrawLine=false;
+            switch (msg.what){
+                case 10:
+                    //播放下一列歌词
+                    if(currentLine>=dataBean.size()-1){
+                        Toast.makeText(getContext(),"播放完成",Toast.LENGTH_SHORT).show();
+                    }else{
+                        currentLine++;
+                        invalidate(); // 刷新,会再次调用onDraw方法
                     }
-                },3000);
-
+                    break;
+                case 11:
+                    //播放当前歌词
+                    invalidate();
+                    break;
+                case 12:
+                    //滑动事件
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            IsDrawLine=false;
+                        }
+                    },3000);
+                    break;
             }
         }
 
@@ -100,7 +108,6 @@ public class LrcText extends TextView implements View.OnTouchListener{
         myBroadcastReceiver=new MyBroadcastReceiver();
         IntentFilter filter = new IntentFilter();
         filter.addAction("com.example.music.pro");
-        filter.setPriority(-1000);
         context.registerReceiver(myBroadcastReceiver, filter);
 
         this.context =context;
@@ -202,6 +209,19 @@ public class LrcText extends TextView implements View.OnTouchListener{
         handler.removeCallbacksAndMessages(null);
         IsDrawLine=false;
         IsSrcoll=false;
+
+        if(playController.get_state()==1){
+            if(currentLine==0){
+                currentLine=findShowLine(playController.get_pro());
+                handler.sendEmptyMessage(11);
+            }else{
+                if(playController.get_pro()>=Double.valueOf(dataBean.get(currentLine+1).getTime())){
+                    handler.sendEmptyMessage(10);
+                }else{
+                    handler.sendEmptyMessage(11);
+                }
+            }
+        }
     }
 
 
@@ -211,12 +231,12 @@ public class LrcText extends TextView implements View.OnTouchListener{
             int right = dataBean.size();
             while (left <= right) {
                 int middle = (left + right) / 2;
-                double middleTime = Double.valueOf(dataBean.get(middle).getTime())*1000;
+                double middleTime = Double.valueOf(dataBean.get(middle).getTime());
 
                 if (time < middleTime) {
                     right = middle - 1;
                 } else {
-                    if (middle + 1 >= dataBean.size() || time < Double.valueOf(dataBean.get(middle + 1).getTime())*1000) {
+                    if (middle + 1 >= dataBean.size() || time < Double.valueOf(dataBean.get(middle + 1).getTime())) {
                         return middle;
                     }
                     left = middle + 1;
@@ -294,10 +314,12 @@ public class LrcText extends TextView implements View.OnTouchListener{
             progree=intent.getIntExtra("pro",0);
             if(currentLine==0){
                 currentLine=findShowLine(progree);
-                handler.sendEmptyMessage(10);
+                handler.sendEmptyMessage(11);
             }else{
-                if(progree>=Double.valueOf(dataBean.get(currentLine+1).getTime())*1000){
+                if(progree>=Double.valueOf(dataBean.get(currentLine+1).getTime())){
                     handler.sendEmptyMessage(10);
+                }else{
+                    handler.sendEmptyMessage(11);
                 }
             }
 

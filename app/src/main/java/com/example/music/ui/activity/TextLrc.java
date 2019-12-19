@@ -44,25 +44,30 @@ public class TextLrc extends AppCompatActivity {
             @Override
             public void onChanged(BaseRespon<LrcBeen> baseRespon) {
                 lrcBinding.lrctext.send(baseRespon.getData().getLrclist());
-
             }
         });
         lrcBinding.ibLrcLast.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                playController.play_last();
+                lrc_vm.Get_lrc(getBaseContext(),playController.play_last(),"9e7818b0-1a2e-11ea-88f6-3d2b7f71a652");
             }
         });
         lrcBinding.ibLrcNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                playController.play_Next();
+                lrc_vm.Get_lrc(getBaseContext(),playController.play_Next(),"9e7818b0-1a2e-11ea-88f6-3d2b7f71a652");
             }
         });
         lrcBinding.ibLrcPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 playController.play_Paush();
+                if(playController.get_state()==1){
+                    lrcBinding.ibLrcPlay.setBackgroundResource(R.drawable.ic_lrc_stop);
+                }else{
+                    lrcBinding.ibLrcPlay.setBackgroundResource(R.drawable.ic_lrc_play);
+                }
+
             }
         });
     }

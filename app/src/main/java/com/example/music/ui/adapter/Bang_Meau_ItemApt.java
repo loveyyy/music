@@ -46,7 +46,10 @@ public class Bang_Meau_ItemApt extends RecyclerView.Adapter<BindingViewHolder> {
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onItemClick.OnItemClickListener(position);
+                if(onItemClick!=null){
+                    onItemClick.OnItemClickListener(position);
+                }
+
             }
         });
     }

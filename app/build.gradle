@@ -48,6 +48,9 @@ dependencies {
     //eventbus
     implementation 'org.greenrobot:eventbus:3.1.1'
 
+    //jwt
+    implementation 'io.jsonwebtoken:jjwt:0.9.1'
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'

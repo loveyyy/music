@@ -1,9 +1,7 @@
 package com.example.music.ui.activity;
 
-import android.app.usage.UsageEvents;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.KeyEvent;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,7 +16,7 @@ import com.example.music.R;
 import com.example.music.ui.adapter.Music_ItemAdapter;
 import com.example.music.viewmodel.Bang_Meau_Vm;
 import com.example.music.databinding.BangMeauActivityBinding;
-import com.example.music.entry.PlayingMusicBeens;
+import com.example.music.model.PlayingMusicBeens;
 import com.example.music.model.Bang_Music_list;
 import com.example.music.model.BaseRespon;
 import com.jaeger.library.StatusBarUtil;

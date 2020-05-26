@@ -1,4 +1,4 @@
-package com.example.music.entry;
+package com.example.music.model;
 
 
 import java.io.Serializable;

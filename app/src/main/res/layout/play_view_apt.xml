@@ -4,7 +4,7 @@
     <data>
         <variable
             name="playitem"
-            type="com.example.music.entry.PlayingMusicBeens" />
+            type="com.example.music.model.PlayingMusicBeens" />
     </data>
 
     <LinearLayout

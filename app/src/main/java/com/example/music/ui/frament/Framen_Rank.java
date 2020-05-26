@@ -69,4 +69,10 @@ public class Framen_Rank extends Fragment {
     private void initdata() {
         bang_meau_vm.Get_Bang_Menu(getContext(),"ec08f70-159e-11ea-adf3-798fb627bfc6");
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+    }
 }

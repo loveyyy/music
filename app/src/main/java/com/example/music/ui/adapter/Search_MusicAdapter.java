@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.music.entry.SearchBeens;
+import com.example.music.model.SearchBeens;
 import com.example.music.R;
 
 public class Search_MusicAdapter extends RecyclerView.Adapter<Search_MusicAdapter.ViewHolder> {

@@ -21,15 +21,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-import com.example.music.entry.LrcBeen;
+import com.example.music.model.LrcBeen;
 import com.example.music.R;
 import com.example.music.utils.PlayController;
 
-import org.greenrobot.eventbus.EventBus;
-
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * Created by Administrator on 2018/5/19.
@@ -55,14 +51,12 @@ public class LrcText extends TextView implements View.OnTouchListener{
     private Typeface currentTypeface = Typeface.DEFAULT_BOLD;
     //其他歌词字体
     private Typeface otherTypeface = Typeface.DEFAULT;
-    private boolean hanschange;
     private boolean IsDrawLine=false;
     private boolean IsSrcoll=false;
 
-    private boolean issend=true;
-
     private  float offset;
     private int progree;
+    private int oldProgress;
     private GestureDetector detector;
     private PlayController playController;
     private Context context;
@@ -133,6 +127,7 @@ public class LrcText extends TextView implements View.OnTouchListener{
 
         timePaint.setColor(timeColor);
         timePaint.setTextAlign(Paint.Align.CENTER);
+        IsDrawLine=false;
     }
 
     public LrcText(Context context) {
@@ -151,7 +146,6 @@ public class LrcText extends TextView implements View.OnTouchListener{
                 path.close(); // 使这些点构成封闭的多边形
                 canvas.drawPath(path, p);
                 canvas.drawLine(30,getHeight()/2,getWidth(),getHeight()/2,currentPaint);
-
                 for(int i=0;i<dataBean.size();i++){
                     LrcBeen.LrclistBean lyric;
                     if(i<currentLine){
@@ -205,7 +199,6 @@ public class LrcText extends TextView implements View.OnTouchListener{
 
     public void send(List<LrcBeen.LrclistBean> lrcBeens) {
         dataBean =lrcBeens;
-        hanschange=true;
         handler.removeCallbacksAndMessages(null);
         IsDrawLine=false;
         IsSrcoll=false;
@@ -263,7 +256,7 @@ public class LrcText extends TextView implements View.OnTouchListener{
                 }else if(offset<0){
                     currentLine= (int) (currentLine+(Math.floor(Math.abs(offset))/getResources().getDimensionPixelSize(R.dimen.dp_30)));
                 }
-                playController.set_pro((int) (Double.valueOf(dataBean.get(currentLine).getTime())*1000));
+                playController.set_pro((Double.valueOf(dataBean.get(currentLine).getTime()).intValue()));
                 invalidate();
                 return true;
             }else{
@@ -274,7 +267,6 @@ public class LrcText extends TextView implements View.OnTouchListener{
 
         @Override
         public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-            Log.e("onScroll","xxxx"+distanceY);
                 offset += -distanceY;
                 if(dataBean!=null){
                     IsDrawLine=true;
@@ -312,15 +304,27 @@ public class LrcText extends TextView implements View.OnTouchListener{
         public void onReceive(Context context, Intent intent) {
             //这里获取的是播放的进度
             progree=intent.getIntExtra("pro",0);
+            if(IsDrawLine=true){
+                if(progree-oldProgress>15){
+                    IsDrawLine=false;
+                }
+            }else{
+                oldProgress=progree;
+            }
             if(currentLine==0){
                 currentLine=findShowLine(progree);
                 handler.sendEmptyMessage(11);
             }else{
-                if(progree>=Double.valueOf(dataBean.get(currentLine+1).getTime())){
+                if(currentLine==dataBean.size()-1){
                     handler.sendEmptyMessage(10);
                 }else{
-                    handler.sendEmptyMessage(11);
+                    if(progree>=Double.valueOf(dataBean.get(currentLine+1).getTime())){
+                        handler.sendEmptyMessage(10);
+                    }else{
+                        handler.sendEmptyMessage(11);
+                    }
                 }
+
             }
 
         }

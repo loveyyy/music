@@ -14,7 +14,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.music.R;
 import com.example.music.databinding.LrcBinding;
-import com.example.music.entry.LrcBeen;
+import com.example.music.model.LrcBeen;
 import com.example.music.model.BaseRespon;
 import com.example.music.utils.PlayController;
 import com.example.music.utils.imageutils.GildeCilcleImageUtils;

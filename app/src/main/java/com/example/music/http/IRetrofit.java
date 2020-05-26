@@ -7,7 +7,7 @@ package com.example.music.http;
  */
 
 
-import com.example.music.entry.LrcBeen;
+import com.example.music.model.LrcBeen;
 import com.example.music.model.Activity_music;
 import com.example.music.model.Arisit_Info;
 import com.example.music.model.Artist_Album;
@@ -21,8 +21,6 @@ import com.example.music.model.Bang_list;
 import com.example.music.model.Bang_meau;
 import com.example.music.model.BaseRespon;
 import com.example.music.model.Music_list;
-import com.example.music.model.Music_list_index;
-import com.example.music.model.Music_list_title;
 import com.example.music.model.Radio_info;
 import com.example.music.model.Radio_list;
 import com.example.music.model.Rec_List;

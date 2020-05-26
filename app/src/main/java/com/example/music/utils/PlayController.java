@@ -1,23 +1,18 @@
 package com.example.music.utils;
 
-import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.IBinder;
-import android.util.Log;
 
 import com.example.music.Interface.MusicInterface;
-import com.example.music.R;
-import com.example.music.entry.PlayingMusicBeens;
+import com.example.music.model.PlayingMusicBeens;
 import com.example.music.http.Api;
 import com.example.music.http.ApiResponse;
 import com.example.music.http.ApiSubscribe;
 import com.example.music.model.BaseRespon;
 import com.example.music.server.PlayServer;
-import com.example.music.ui.custom.PlayerView;
 
 import java.util.ArrayList;
 
@@ -52,6 +47,7 @@ public class PlayController {
             public void onServiceDisconnected(ComponentName name) {
             }
         };
+
         if(!isBind){
             Intent intent = new Intent(context, PlayServer.class);
             isBind = context.bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
@@ -67,6 +63,10 @@ public class PlayController {
         }
         if(aCache.getAsObject("pos")!=null){
             pos= (int) aCache.getAsObject("pos");
+        }
+
+        if(aCache.getAsObject("progress")!=null){
+            pro= (int) aCache.getAsObject("progress");
         }
 
     }
@@ -85,9 +85,14 @@ public class PlayController {
 
     public  String play_Next(){
         pos++;
+        if(pos==playingMusicBeens.size()){
+            pos=0;
+            play(playingMusicBeens.get(0).getRid());
+        }else{
+            play(playingMusicBeens.get(pos).getRid());
+        }
         aCache.remove("pos");
         aCache.put("pos",pos);
-        play(playingMusicBeens.get(pos).getRid());
         return  playingMusicBeens.get(pos).getRid();
     }
 

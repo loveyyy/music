@@ -1,7 +1,6 @@
 package com.example.music.ui.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,7 @@ import androidx.viewpager.widget.PagerAdapter;
 import com.example.music.BR;
 import com.example.music.R;
 import com.example.music.databinding.PlayViewAptBinding;
-import com.example.music.entry.PlayingMusicBeens;
+import com.example.music.model.PlayingMusicBeens;
 
 import java.util.ArrayList;
 

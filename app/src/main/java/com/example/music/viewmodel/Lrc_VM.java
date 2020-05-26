@@ -5,7 +5,7 @@ import android.content.Context;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.music.entry.LrcBeen;
+import com.example.music.model.LrcBeen;
 import com.example.music.http.Api;
 import com.example.music.http.ApiResponse;
 import com.example.music.http.ApiSubscribe;

@@ -57,13 +57,12 @@ public class PlayServer extends Service  {
         mediaPlayer.pause();
         timer.cancel();
         return super.onUnbind(intent);
-
     }
 
     private void init() {
-        i = 0;
         if (mediaPlayer == null) {
             mediaPlayer = new MediaPlayer();
+            i = 0;
         }
     }
 
@@ -73,6 +72,7 @@ public class PlayServer extends Service  {
 
         @Override
             public void Play(String Musicuri) {
+                i=0;
                 init();
                 try {
                     mediaPlayer.reset();
@@ -98,22 +98,16 @@ public class PlayServer extends Service  {
                 if(state==1){
                     mediaPlayer.pause();
                     state=2;
-                    isstop=true;
                 }else{
                     mediaPlayer.start();
                     state=1;
-                    isstop=false;
                 }
             }
         }
 
         @Override
         public int get_play_state() {
-            if(isstop){
-                return 2;
-            }else{
-                return 1;
-            }
+            return state;
         }
 
         @Override

@@ -16,6 +16,7 @@ import com.example.music.http.Api;
 import com.example.music.http.ApiResponse;
 import com.example.music.http.ApiSubscribe;
 import com.example.music.model.BaseRespon;
+import com.jaeger.library.StatusBarUtil;
 
 import okhttp3.ResponseBody;
 
@@ -40,6 +41,7 @@ public class WelcomeActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         welcomeBinding= DataBindingUtil.setContentView(this,R.layout.welcome);
+        StatusBarUtil.setTranslucentForImageViewInFragment(this, 0, null);
         welcomeBinding.IvWlcome.setBackgroundResource(R.drawable.welcome);
 
         Api.getInstance().iRetrofit.all().compose(ApiSubscribe.<ResponseBody>io_main())

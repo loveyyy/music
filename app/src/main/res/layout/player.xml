@@ -7,7 +7,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_68"
+        android:layout_height="@dimen/dp_58"
         android:background="@drawable/play_bac">
 
         <androidx.viewpager.widget.ViewPager
@@ -19,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="@dimen/dp_20"
+            android:layout_marginRight="@dimen/dp_25"
             android:orientation="horizontal">
 
             <RelativeLayout
@@ -30,7 +30,7 @@
                     android:id="@+id/cir_pro"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    app:backColor="#FFFFFFFF"
+                    app:backColor="#FFdbdbdb"
                     app:progColor="@color/colorAccent"
                     app:progWidth="@dimen/dp_1"
                     app:backWidth="@dimen/dp_1"
@@ -48,11 +48,11 @@
 
             <ImageButton
                 android:id="@+id/ibtn_download"
-                android:layout_width="@dimen/dp_25"
-                android:layout_height="@dimen/dp_25"
+                android:layout_width="@dimen/dp_20"
+                android:layout_height="@dimen/dp_20"
                 android:layout_gravity="center"
-                android:background="@drawable/ic_down"
-                android:layout_marginLeft="@dimen/dp_10" />
+                android:background="@drawable/ic_list"
+                android:layout_marginLeft="@dimen/dp_22" />
 
         </LinearLayout>
 

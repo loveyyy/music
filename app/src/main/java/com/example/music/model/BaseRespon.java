@@ -16,4 +16,5 @@ public class BaseRespon<T> {
     private String reqId;
     private String url;
     private T data;
+    private Boolean success;
 }

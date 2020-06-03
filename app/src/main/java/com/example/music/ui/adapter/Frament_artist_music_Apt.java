@@ -2,6 +2,7 @@ package com.example.music.ui.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -24,6 +25,7 @@ import java.util.List;
 public class Frament_artist_music_Apt extends RecyclerView.Adapter<BindingViewHolder> {
     private Context context;
     private List<Artist_Music.ListBean> artistListBeans;
+    private Frament_artist_music_Apt.OnItemClick onItemClick;
     public Frament_artist_music_Apt(Context context, List<Artist_Music.ListBean> artistListBeans){
         this.context=context;
         this.artistListBeans=artistListBeans;
@@ -37,13 +39,29 @@ public class Frament_artist_music_Apt extends RecyclerView.Adapter<BindingViewHo
     }
 
     @Override
-    public void onBindViewHolder(@NonNull BindingViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull BindingViewHolder holder, final int position) {
         ViewDataBinding dataBinding=holder.getBinding();
         dataBinding.setVariable(BR.artistmusic,artistListBeans.get(position));
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(onItemClick!=null){
+                    onItemClick.OnItemClickListener(position);
+                }
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
         return artistListBeans.size();
+    }
+
+    //ItemView 的点击接口
+    public interface OnItemClick{
+        void OnItemClickListener(int pos);
+    }
+    public void setOnItemClick(Frament_artist_music_Apt.OnItemClick click){
+        this.onItemClick=click;
     }
 }

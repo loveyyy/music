@@ -5,29 +5,37 @@
 
     </data>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#708090"
+        android:background="@drawable/lrc_bac"
         android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/iv_bac"
-            android:layout_width="@dimen/dp_120"
-            android:layout_height="@dimen/dp_120"
-            android:layout_marginTop="@dimen/dp_60"
-            android:layout_gravity="center_horizontal" />
+        <RelativeLayout
+            android:layout_width="@dimen/dp_150"
+            android:layout_height="@dimen/dp_150"
+            android:background="@drawable/ic_heijiao"
+           android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/dp_45">
+            <ImageView
+                android:id="@+id/iv_bac"
+                android:layout_width="@dimen/dp_80"
+                android:layout_height="@dimen/dp_80"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center_horizontal" />
+        </RelativeLayout>
+
 
         <com.example.music.view.LrcText
             android:id="@+id/lrctext"
             android:layout_width="match_parent"
-            android:layout_marginTop="@dimen/dp_10"
+            android:layout_centerInParent="true"
             android:layout_height="@dimen/dp_260" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_30"
+            android:layout_marginTop="@dimen/dp_500"
             android:orientation="horizontal">
 
             <ImageButton
@@ -54,5 +62,5 @@
                 android:background="@drawable/ic_lrc_next" />
 
         </LinearLayout>
-    </LinearLayout>
+    </RelativeLayout>
 </layout>

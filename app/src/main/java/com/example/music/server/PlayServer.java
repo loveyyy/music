@@ -12,6 +12,7 @@ import android.os.IBinder;
 import androidx.annotation.Nullable;
 
 import com.example.music.Interface.MusicInterface;
+import com.example.music.model.PlayingMusicBeens;
 import com.example.music.ui.custom.PlayerView;
 
 import java.io.IOException;
@@ -25,15 +26,23 @@ import java.util.TimerTask;
 
 public class PlayServer extends Service  {
     private MediaPlayer mediaPlayer;
+    //计时器
     private Timer timer;
+    //当前进度
     private int i = 0;
-    private int state=0;
-    private boolean isstop;
+    //当前播放状态
+    public static  final int PLAYING=0;
+    public static  final int PAUSE=1;
+    public static  final int STOP=2;
+
+    private int state=2;
+    //广播
     private MyBroadcastReceiver myBroadcastReceiver;
 
     @Override
     public void onCreate() {
         super.onCreate();
+        //注册广播
         myBroadcastReceiver=new MyBroadcastReceiver();
         IntentFilter filter = new IntentFilter();
         filter.addAction("com.example.music.lrc");
@@ -60,6 +69,7 @@ public class PlayServer extends Service  {
     }
 
     private void init() {
+        //初始化
         if (mediaPlayer == null) {
             mediaPlayer = new MediaPlayer();
             i = 0;
@@ -86,27 +96,35 @@ public class PlayServer extends Service  {
                         }
                     });
                     starttime();
-                    state=1;
+                    state=PLAYING;
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
         }
 
         @Override
-        public void PlayWithButton() {
+        public int PlayOrStop() {
             if(mediaPlayer!=null){
-                if(state==1){
+                if(state==PLAYING){
                     mediaPlayer.pause();
-                    state=2;
+                    state=PAUSE;
+                    timer.cancel();
                 }else{
                     mediaPlayer.start();
-                    state=1;
+                    state=PLAYING;
+                    starttime();
                 }
+            }else{
+                state=2;
             }
+            return  state;
         }
 
         @Override
         public int get_play_state() {
+            if(mediaPlayer==null){
+                state=2;
+            }
             return state;
         }
 
@@ -115,14 +133,6 @@ public class PlayServer extends Service  {
             return i;
         }
 
-
-        @Override
-        public void PlayWithSb(int progress) {
-            if (mediaPlayer != null) {
-                mediaPlayer.seekTo(progress*1000);
-                i = progress;
-            }
-        }
     }
 
     @Override
@@ -141,13 +151,11 @@ public class PlayServer extends Service  {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                if(!isstop){
                     i++;
                     Intent intent=new Intent();
                     intent.setAction("com.example.music.pro");
                     intent.putExtra("pro",i);
                     sendOrderedBroadcast(intent,null);
-                }
             }
         }, 0, 1000);
     }

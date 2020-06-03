@@ -15,15 +15,16 @@ import com.example.music.databinding.PlayViewAptBinding;
 import com.example.music.model.PlayingMusicBeens;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Create By morningsun  on 2019-12-06
  */
 public class VP_Paly_Apt extends PagerAdapter {
-    private ArrayList<PlayingMusicBeens> playingMusicBeens;
+    private List<PlayingMusicBeens> playingMusicBeens;
     private Context context;
 
-    public VP_Paly_Apt(Context context, ArrayList<PlayingMusicBeens> playingMusicBeens ) {
+    public VP_Paly_Apt(Context context, List<PlayingMusicBeens> playingMusicBeens ) {
         this.playingMusicBeens = playingMusicBeens;
         this.context = context;
     }

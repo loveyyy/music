@@ -2,6 +2,7 @@ package com.example.music.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -37,14 +38,19 @@ public class Rec_List_Info_Activity extends AppCompatActivity {
         rec_vm.rec_list_info.observe(this, new Observer<BaseRespon<Rec_List_Info>>() {
             @Override
             public void onChanged(BaseRespon<Rec_List_Info> rec_list_infoBaseRespon) {
-                Glide.with(getBaseContext()).load(rec_list_infoBaseRespon.getData().getImg()).into(recListInfoActivityBinding.ivRec);
-                recListInfoActivityBinding.ivRecName.setText(rec_list_infoBaseRespon.getData().getName());
-                recListInfoActivityBinding.ivRecInfo.setText(rec_list_infoBaseRespon.getData().getDesc());
-                recListInfoActivityBinding.ivRecInfo1.setText(rec_list_infoBaseRespon.getData().getInfo());
+                try {
+                    Glide.with(getBaseContext()).load(rec_list_infoBaseRespon.getData().getImg()).into(recListInfoActivityBinding.ivRec);
+                    recListInfoActivityBinding.ivRecName.setText(rec_list_infoBaseRespon.getData().getName());
+                    recListInfoActivityBinding.ivRecInfo.setText(rec_list_infoBaseRespon.getData().getDesc());
+                    recListInfoActivityBinding.ivRecInfo1.setText(rec_list_infoBaseRespon.getData().getInfo());
 
-                recListInfoActivityBinding.rcvRec.setLayoutManager(new LinearLayoutManager(getBaseContext(), RecyclerView.VERTICAL,false));
-                Rcv_Rec_List_apt rcv_rec_list_apt=new Rcv_Rec_List_apt(getBaseContext(),rec_list_infoBaseRespon.getData().getMusicList());
-                recListInfoActivityBinding.rcvRec.setAdapter(rcv_rec_list_apt);
+                    recListInfoActivityBinding.rcvRec.setLayoutManager(new LinearLayoutManager(getBaseContext(), RecyclerView.VERTICAL,false));
+                    Rcv_Rec_List_apt rcv_rec_list_apt=new Rcv_Rec_List_apt(getBaseContext(),rec_list_infoBaseRespon.getData().getMusicList());
+                    recListInfoActivityBinding.rcvRec.setAdapter(rcv_rec_list_apt);
+                }catch (NullPointerException e){
+                    Toast.makeText(getApplicationContext(),"请返回重试",Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
     }

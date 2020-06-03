@@ -54,9 +54,9 @@ public class LrcText extends TextView implements View.OnTouchListener{
     private boolean IsDrawLine=false;
     private boolean IsSrcoll=false;
 
+
     private  float offset;
     private int progree;
-    private int oldProgress;
     private GestureDetector detector;
     private PlayController playController;
     private Context context;
@@ -70,11 +70,18 @@ public class LrcText extends TextView implements View.OnTouchListener{
             switch (msg.what){
                 case 10:
                     //播放下一列歌词
-                    if(currentLine>=dataBean.size()-1){
-                        Toast.makeText(getContext(),"播放完成",Toast.LENGTH_SHORT).show();
+                    if(dataBean!=null){
+                        if(currentLine>=dataBean.size()-1){
+                            currentLine=0;
+                            handler.removeCallbacksAndMessages(null);
+                            playController.PlayModel();
+                            Toast.makeText(getContext(),"播放完成",Toast.LENGTH_SHORT).show();
+                        }else{
+                            currentLine++;
+                            invalidate(); // 刷新,会再次调用onDraw方法
+                        }
                     }else{
-                        currentLine++;
-                        invalidate(); // 刷新,会再次调用onDraw方法
+                        invalidate();
                     }
                     break;
                 case 11:
@@ -88,7 +95,7 @@ public class LrcText extends TextView implements View.OnTouchListener{
                         public void run() {
                             IsDrawLine=false;
                         }
-                    },3000);
+                    },15000);
                     break;
             }
         }
@@ -146,6 +153,7 @@ public class LrcText extends TextView implements View.OnTouchListener{
                 path.close(); // 使这些点构成封闭的多边形
                 canvas.drawPath(path, p);
                 canvas.drawLine(30,getHeight()/2,getWidth(),getHeight()/2,currentPaint);
+
                 for(int i=0;i<dataBean.size();i++){
                     LrcBeen.LrclistBean lyric;
                     if(i<currentLine){
@@ -174,47 +182,41 @@ public class LrcText extends TextView implements View.OnTouchListener{
 
             if(dataBean!=null&&!IsDrawLine){
                 for(int i=0;i<dataBean.size();i++){
-                LrcBeen.LrclistBean lyric;
-                if(i<currentLine){
-                    //绘制播放过的歌词
-                    lyric = dataBean.get(i);
-                    canvas.drawText(lyric.getLineLyric(), getWidth() / 2,
-                            getHeight() / 2 + lineSpace * (i - currentLine), otherPaint);
+                    LrcBeen.LrclistBean lyric;
+                    if(i<currentLine){
+                        //绘制播放过的歌词
+                        lyric = dataBean.get(i);
+                        canvas.drawText(lyric.getLineLyric(), getWidth() / 2,
+                                getHeight() / 2 + lineSpace * (i - currentLine), otherPaint);
 
-                } else if(i==currentLine){
-                    // 绘制正在播放的歌词
-                    lyric = dataBean.get(currentLine);
-                    canvas.drawText(lyric.getLineLyric(), getWidth() / 2,
-                            getHeight() / 2, currentPaint);
-                }else{
-                    lyric = dataBean.get(i);
-                    canvas.drawText(lyric.getLineLyric(), getWidth() / 2,
-                            getHeight() / 2 + lineSpace * (i -currentLine), otherPaint);
-                }
+                    } else if(i==currentLine){
+                        // 绘制正在播放的歌词
+                        lyric = dataBean.get(currentLine);
+                        canvas.drawText(lyric.getLineLyric(), getWidth() / 2,
+                                getHeight() / 2, currentPaint);
+                    }else{
+                        lyric = dataBean.get(i);
+                        canvas.drawText(lyric.getLineLyric(), getWidth() / 2,
+                                getHeight() / 2 + lineSpace * (i -currentLine), otherPaint);
+                    }
             }
         }
 
         super.onDraw(canvas);
     }
 
-    public void send(List<LrcBeen.LrclistBean> lrcBeens) {
+    public void init(List<LrcBeen.LrclistBean> lrcBeens) {
         dataBean =lrcBeens;
         handler.removeCallbacksAndMessages(null);
         IsDrawLine=false;
         IsSrcoll=false;
+        currentLine=0;
 
-        if(playController.get_state()==1){
-            if(currentLine==0){
-                currentLine=findShowLine(playController.get_pro());
-                handler.sendEmptyMessage(11);
-            }else{
-                if(playController.get_pro()>=Double.valueOf(dataBean.get(currentLine+1).getTime())){
-                    handler.sendEmptyMessage(10);
-                }else{
-                    handler.sendEmptyMessage(11);
-                }
-            }
-        }
+//        if(playController.get_pro()>=Double.valueOf(dataBean.get(currentLine+1).getTime())){
+//            handler.sendEmptyMessage(10);
+//        }else{
+//            handler.sendEmptyMessage(11);
+//        }
     }
 
 
@@ -304,28 +306,20 @@ public class LrcText extends TextView implements View.OnTouchListener{
         public void onReceive(Context context, Intent intent) {
             //这里获取的是播放的进度
             progree=intent.getIntExtra("pro",0);
-            if(IsDrawLine=true){
-                if(progree-oldProgress>15){
-                    IsDrawLine=false;
-                }
-            }else{
-                oldProgress=progree;
+            if(IsDrawLine){
+               handler.sendEmptyMessage(12);
             }
-            if(currentLine==0){
-                currentLine=findShowLine(progree);
-                handler.sendEmptyMessage(11);
-            }else{
-                if(currentLine==dataBean.size()-1){
-                    handler.sendEmptyMessage(10);
-                }else{
-                    if(progree>=Double.valueOf(dataBean.get(currentLine+1).getTime())){
-                        handler.sendEmptyMessage(10);
-                    }else{
-                        handler.sendEmptyMessage(11);
-                    }
-                }
-
-            }
+            currentLine=findShowLine(progree);
+            handler.sendEmptyMessage(10);
+//            if(currentLine==dataBean.size()-1){
+//                handler.sendEmptyMessage(10);
+//            }else{
+//                if(progree>=Double.valueOf(dataBean.get(currentLine+1).getTime())){
+//
+//                }else{
+//                    handler.sendEmptyMessage(11);
+//                }
+//            }
 
         }
     }

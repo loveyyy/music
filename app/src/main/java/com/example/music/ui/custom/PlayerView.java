@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -16,27 +15,31 @@ import androidx.databinding.DataBindingUtil;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.music.R;
-import com.example.music.server.DownloadServer;
+import com.example.music.databinding.PlayerBinding;
+import com.example.music.model.PlayingMusicBeens;
+import com.example.music.server.PlayServer;
 import com.example.music.ui.activity.TextLrc;
 import com.example.music.ui.adapter.VP_Paly_Apt;
 import com.example.music.utils.ACache;
-import com.example.music.databinding.PlayerBinding;
-import com.example.music.model.PlayingMusicBeens;
 import com.example.music.utils.PlayController;
+import com.example.music.utils.greendao.DaoUtils;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class PlayerView extends RelativeLayout {
+public class PlayerView extends RelativeLayout implements PlayController.BindSuccess, PlayController.PlayNextMusic {
     private PlayerBinding playerBinding;
     private ACache aCache;
     private MyBroadcastReceiver myBroadcastReceiver;
     private int pos;
-    private ArrayList<PlayingMusicBeens> playingMusicBeens=new ArrayList<>();
+    private List<PlayingMusicBeens> playingMusicBeens=new ArrayList<>();
     private Context context;
     private  VP_Paly_Apt vp_paly_apt;
     private PlayController playController;
     private boolean isdown=false;
     private boolean play=false;
+    private DaoUtils daoUtils;
+    private showList showList;
 
 
     public PlayerView(Context context) {
@@ -45,18 +48,21 @@ public class PlayerView extends RelativeLayout {
 
     public PlayerView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        playerBinding= DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.player,
+        playerBinding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.player,
                 this,true);
         aCache=ACache.get(context);
         playController=new PlayController(getContext());
+        playController.SetOnBindSuccess(this);
+        playController.SetOnPlayNextMusic(this);
         this.context=context;
+        daoUtils=new DaoUtils(context);
         myBroadcastReceiver=new MyBroadcastReceiver();
          IntentFilter filter = new IntentFilter();
         filter.addAction("com.example.music.pro");
         filter.setPriority(1000);
         context.registerReceiver(myBroadcastReceiver, filter);
-        refresh();
         setonclick();
+        refresh();
     }
 
     public PlayerView(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -65,37 +71,18 @@ public class PlayerView extends RelativeLayout {
     }
 
     public  void refresh(){
-        if(aCache.getAsObject("play_music")!=null){
-            playingMusicBeens= (ArrayList<PlayingMusicBeens>) aCache.getAsObject("play_music");
-        }
+         playingMusicBeens=daoUtils.queryAllMessage();
+
         if(aCache.getAsObject("pos")!=null){
             pos= (int) aCache.getAsObject("pos");
+        }else{
+            pos=0;
         }
-        if(aCache.getAsObject("progress")!=null){
-            if(pos>=playingMusicBeens.size()-1){
-                pos=0;
-                aCache.put("pos",0);
-                playerBinding.cirPro.setProgress(1);
-            }else{
-                if((int)aCache.getAsObject("progress")/(playingMusicBeens.get(pos).getDuration())==0){
-                    playerBinding.cirPro.setProgress(1);
-                }else{
-                    playerBinding.cirPro.setProgress((int)aCache.getAsObject("progress")/(playingMusicBeens.get(pos).getDuration()*10));
-                }
-            }
 
-        }
         vp_paly_apt=new VP_Paly_Apt(context,playingMusicBeens);
         playerBinding.vpPlay.setAdapter(vp_paly_apt);
-        if(playController.get_state()==1){
-            play=false;
-            playerBinding.vpPlay.setCurrentItem(pos);
-            playerBinding.ivPlay.setBackgroundResource(R.drawable.stop);
-        }else{
-            play=true;
-            playerBinding.vpPlay.setCurrentItem(pos);
-            playerBinding.ivPlay.setBackgroundResource(R.drawable.play);
-        }
+        play=false;
+        playerBinding.vpPlay.setCurrentItem(pos);
     }
 
 
@@ -110,8 +97,7 @@ public class PlayerView extends RelativeLayout {
             @Override
             public void onPageSelected(int position) {
                 pos=position;
-                aCache.remove("pos");
-                aCache.put("pos",position);
+                aCache.put("pos",pos);
                 if(play){
                     playController.play(playingMusicBeens.get(pos).getRid());
                     playerBinding.ivPlay.setBackgroundResource(R.drawable.stop);
@@ -127,14 +113,16 @@ public class PlayerView extends RelativeLayout {
         playerBinding.ivPlay.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(playController.get_state()==2){
+                int state =playController.play_Paush();
+                if(state== PlayServer.PLAYING){
                     //正暂停
                     playerBinding.ivPlay.setBackgroundResource(R.drawable.stop);
-                    playController.play_Paush();
-                }else if(playController.get_state()==1){
+                }else if(state==PlayServer.PAUSE){
                     //已播放
                     playerBinding.ivPlay.setBackgroundResource(R.drawable.play);
-                    playController.play_Paush();
+                }else{
+                    playController.play(playingMusicBeens.get(pos).getRid());
+                    playerBinding.ivPlay.setBackgroundResource(R.drawable.stop);
                 }
             }
         });
@@ -150,8 +138,7 @@ public class PlayerView extends RelativeLayout {
                     if(isdown){
                         isdown=false;
                         Intent intent = new Intent();
-                        intent.putExtra("musicid", playingMusicBeens.get(pos).getRid());
-                        intent.putExtra("image",playingMusicBeens.get(pos).getAlbumpic());
+                        intent.putExtra("pos", pos);
                         intent.setClass(context, TextLrc.class);
                         context.startActivity(intent);
                         return true;
@@ -165,29 +152,50 @@ public class PlayerView extends RelativeLayout {
         playerBinding.ibtnDownload.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent1 = new Intent(context, DownloadServer.class);
-//                intent1.putExtra("adress", songurl);
-//                intent1.putExtra("filename",playingMusicBeens.get(pos).getMusicname()+".map");
-//                intent1.putExtra("name",playingMusicBeens.get(pos).getMusicname());
-//                intent1.putExtra("json",new Gson().toJson(playingMusicBeens.get(pos),PlayingMusicBeens.class));
-                context.startService(intent1);
+                //显示播放列表
+                if(showList!=null){
+                    showList.OnShowList(playingMusicBeens);
+                }
             }
         });
     }
 
-    public   void play(final ArrayList<PlayingMusicBeens> playingMusicBeens , final int pos){
-        aCache.remove("play_music");
-        aCache.remove("pos");
-        aCache.remove("progress");
-        aCache.put("play_music", playingMusicBeens);
+    public   void play(final List<PlayingMusicBeens> playingMusicBeens , final int pos){
+        if(daoUtils.queryAllMessage().isEmpty()){
+            daoUtils.insertMultMuisc(playingMusicBeens);
+        }else{
+            daoUtils.deleteAll();
+            daoUtils.insertMultMuisc(playingMusicBeens);
+        }
         aCache.put("pos",pos);
-        aCache.put("progress",playerBinding.cirPro.getProgress());
         this.playingMusicBeens=playingMusicBeens;
         this.pos=pos;
         vp_paly_apt=new VP_Paly_Apt(context,playingMusicBeens);
         playerBinding.vpPlay.setAdapter(vp_paly_apt);
         play=true;
         playerBinding.vpPlay.setCurrentItem(pos);
+        if(pos==0){
+            playController.play(playingMusicBeens.get(pos).getRid());
+            playerBinding.ivPlay.setBackgroundResource(R.drawable.stop);
+        }
+    }
+
+    @Override
+    public void OnBindSunccess() {
+        if(playController.get_state()==PlayServer.PLAYING){
+            playerBinding.ivPlay.setBackgroundResource(R.drawable.stop);
+            playerBinding.cirPro.setProgress(playController.get_pro()*100/(playingMusicBeens.get(pos).getDuration()));
+        }else if(playController.get_state()==PlayServer.PAUSE){
+            playerBinding.ivPlay.setBackgroundResource(R.drawable.play);
+            playerBinding.cirPro.setProgress(1);
+        }else{
+            playerBinding.ivPlay.setBackgroundResource(R.drawable.play);
+        }
+    }
+
+    @Override
+    public void OnPlayNextMusic(int pos) {
+        refresh();
     }
 
 
@@ -197,9 +205,21 @@ public class PlayerView extends RelativeLayout {
      //这里的intent可以获取发送广播时传入的数据
          int i=intent.getIntExtra("pro",0);
          if(i!=0){
-             playerBinding.cirPro.setProgress(i*100/(playingMusicBeens.get(pos).getDuration()));
+             if(i!=playingMusicBeens.get(pos).getDuration()){
+                 playerBinding.cirPro.setProgress(i*100/(playingMusicBeens.get(pos).getDuration()));
+             }else{
+                playController.PlayModel();
+             }
          }
       }
+    }
+
+    public interface showList{
+        void OnShowList(List<PlayingMusicBeens> playingMusicBeens);
+    }
+
+    public void SetShowList(showList showList){
+        this.showList=showList;
     }
 
 

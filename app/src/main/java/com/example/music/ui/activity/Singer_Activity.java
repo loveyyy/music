@@ -5,6 +5,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -16,11 +17,15 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.music.Interface.PlayMusic;
 import com.example.music.R;
 import com.example.music.databinding.SingerActivityBinding;
 import com.example.music.model.Arisit_Info;
 import com.example.music.model.BaseRespon;
+import com.example.music.model.PlayingMusicBeens;
 import com.example.music.ui.adapter.Vp_Artist_apt;
+import com.example.music.ui.custom.CustomDialogFragment;
+import com.example.music.ui.custom.PlayerView;
 import com.example.music.ui.frament.Frament_Artist_Mv;
 import com.example.music.ui.frament.Frament_Artist_albums;
 import com.example.music.ui.frament.Frament_artist_music;
@@ -35,7 +40,7 @@ import java.util.List;
 /**
  * Create By morningsun  on 2019-12-07
  */
-public class Singer_Activity extends FragmentActivity {
+public class Singer_Activity extends FragmentActivity implements PlayMusic, PlayerView.showList {
     private SingerActivityBinding singerActivityBinding;
     private List<Fragment> fragments = new ArrayList();
     private Singer_VM singer_vm;
@@ -54,17 +59,24 @@ public class Singer_Activity extends FragmentActivity {
         singer_vm.Artist_info.observe(this, new Observer<BaseRespon<Arisit_Info>>() {
             @Override
             public void onChanged(BaseRespon<Arisit_Info> arisit_infoBaseRespon) {
-                RequestOptions requestOptions = new RequestOptions().transform(new GildeCilcleImageUtils());
-                Glide.with(getBaseContext()).load(arisit_infoBaseRespon.getData().getPic())
-                        .apply(requestOptions).into(singerActivityBinding.ivArtist);
-                singerActivityBinding.ivArtistName.setText(arisit_infoBaseRespon.getData().getName());
-                singerActivityBinding.ivArtistInfo.setText("单曲："+arisit_infoBaseRespon.getData().getMusicNum()+
-                        "       专辑："+arisit_infoBaseRespon.getData().getAlbumNum()+
-                        "       MV："+arisit_infoBaseRespon.getData().getMvNum()+
-                        "       粉丝："+arisit_infoBaseRespon.getData().getArtistFans());
-                singerActivityBinding.ivArtistInfo1.setText("国籍："+arisit_infoBaseRespon.getData().getCountry()+
-                        "       语言："+arisit_infoBaseRespon.getData().getLanguage()+
-                        "       出生地："+arisit_infoBaseRespon.getData().getBirthplace());
+                try {
+                    RequestOptions requestOptions = new RequestOptions().transform(new GildeCilcleImageUtils());
+                    Glide.with(getBaseContext()).load(arisit_infoBaseRespon.getData().getPic())
+                            .apply(requestOptions).into(singerActivityBinding.ivArtist);
+                    singerActivityBinding.ivArtistName.setText(arisit_infoBaseRespon.getData().getName());
+                    singerActivityBinding.ivArtistInfo.setText("单曲："+arisit_infoBaseRespon.getData().getMusicNum()+
+                            "       专辑："+arisit_infoBaseRespon.getData().getAlbumNum()+
+                            "       MV："+arisit_infoBaseRespon.getData().getMvNum()+
+                            "       粉丝："+arisit_infoBaseRespon.getData().getArtistFans());
+                    singerActivityBinding.ivArtistInfo1.setText("国籍："+arisit_infoBaseRespon.getData().getCountry()+
+                            "       语言："+arisit_infoBaseRespon.getData().getLanguage()+
+                            "       出生地："+arisit_infoBaseRespon.getData().getBirthplace());
+
+
+                }catch (NullPointerException e){
+                    Toast.makeText(getApplicationContext(),"请返回重试",Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
     }
@@ -74,6 +86,7 @@ public class Singer_Activity extends FragmentActivity {
         artistid=intent.getIntExtra("artistid",0);
         singer_vm.Get_Artist_info(getBaseContext(),String.valueOf(artistid),"db2f93e0-189a-11ea-b707-4b7b2a81b695");
 
+        singerActivityBinding.playview.SetShowList(this);
         fragments.add(new Frament_artist_music());
         fragments.add(new Frament_Artist_albums());
         fragments.add(new Frament_Artist_Mv());
@@ -143,4 +156,14 @@ public class Singer_Activity extends FragmentActivity {
     }
 
 
+    @Override
+    public void Play(List<PlayingMusicBeens> playingMusicBeens, int pos) {
+        singerActivityBinding.playview.play(playingMusicBeens,pos);
+    }
+
+    @Override
+    public void OnShowList(List<PlayingMusicBeens> playingMusicBeens) {
+        CustomDialogFragment customDialogFragment=new CustomDialogFragment(playingMusicBeens,getApplicationContext());
+        customDialogFragment.show(getSupportFragmentManager(),"SingerActivity");
+    }
 }

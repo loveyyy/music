@@ -8,56 +8,27 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#FFFFFFFF">
-        <LinearLayout
-            android:orientation="vertical"
+
+        <androidx.drawerlayout.widget.DrawerLayout
+            android:id="@+id/dl_main"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="@dimen/dp_68">
+            android:layout_height="match_parent">
 
-            <LinearLayout
-                android:id="@+id/Rl1"
+            <include
+                android:id="@+id/main"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_50"
-                android:focusable="true"
-                android:layout_marginTop="@dimen/dp_10"
-                android:focusableInTouchMode="true"
-                android:orientation="horizontal">
+                android:layout_height="match_parent"
+                layout="@layout/main"/>
 
-                <ImageView
-                    android:id="@+id/iv_Maintou"
-                    android:layout_width="@dimen/dp_30"
-                    android:layout_height="@dimen/dp_30"
-                    android:layout_gravity="center"
-                    android:background="@drawable/ic_meau" />
+            <include
+                android:id="@+id/left"
+                android:layout_width="@dimen/dp_200"
+                android:layout_height="match_parent"
+                android:layout_gravity="start"
+                layout="@layout/account_layout"
+                android:background="@android:color/white"/>
+        </androidx.drawerlayout.widget.DrawerLayout>
 
-                <com.google.android.material.tabs.TabLayout
-                    android:id="@+id/tab_Main"
-                    android:layout_width="@dimen/dp_300"
-                    android:layout_height="match_parent"
-                    app:tabBackground="@android:color/transparent"
-                    app:tabRippleColor="@android:color/transparent"
-                    app:tabIndicatorColor="@android:color/transparent"
-                    />
-
-                <ImageView
-                    android:id="@+id/iv_Search"
-                    android:layout_width="@dimen/dp_30"
-                    android:layout_height="@dimen/dp_30"
-                    android:layout_gravity="center"
-                    android:background="@drawable/ic_search" />
-            </LinearLayout>
-
-            <androidx.viewpager.widget.ViewPager
-                android:id="@+id/Vp_Main"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-
-        </LinearLayout>
-        <com.example.music.ui.custom.PlayerView
-            android:id="@+id/playview"
-            android:layout_width="match_parent"
-            android:layout_alignParentBottom="true"
-            android:layout_height="@dimen/dp_58" />
     </RelativeLayout>
 
 </layout>

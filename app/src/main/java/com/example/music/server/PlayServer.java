@@ -8,9 +8,11 @@ import android.content.IntentFilter;
 import android.media.MediaPlayer;
 import android.os.Binder;
 import android.os.IBinder;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.example.music.Interface.MusicInterface;
 import com.example.music.model.PlayingMusicBeens;
 import com.example.music.ui.custom.PlayerView;
@@ -24,7 +26,7 @@ import java.util.TimerTask;
  * Created by Administrator on 2018/5/17.
  */
 
-public class PlayServer extends Service  {
+public class PlayServer extends Service {
     private MediaPlayer mediaPlayer;
     //计时器
     private Timer timer;
@@ -74,7 +76,49 @@ public class PlayServer extends Service  {
             mediaPlayer = new MediaPlayer();
             i = 0;
         }
+
+        mediaPlayer.setOnInfoListener(new MediaPlayer.OnInfoListener() {
+            @Override
+            public boolean onInfo(MediaPlayer mp, int what, int extra) {
+                LogUtils.e("onInfo"+what,extra);
+                return false;
+            }
+        });
+
+        mediaPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+            @Override
+            public boolean onError(MediaPlayer mp, int what, int extra) {
+                LogUtils.e("onError"+what,extra);
+                return false;
+            }
+        });
+
+        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                LogUtils.e("onCompletion");
+            }
+        });
+
+        mediaPlayer.setOnBufferingUpdateListener(new MediaPlayer.OnBufferingUpdateListener() {
+            @Override
+            public void onBufferingUpdate(MediaPlayer mp, int percent) {
+                LogUtils.e("onBufferingUpdate"+percent);
+            }
+        });
+
+
+       mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+           @Override
+           public void onPrepared(MediaPlayer mp) {
+               LogUtils.e("onPrepared");
+           }
+       });
+
+
+
     }
+
 
 
     //必须继承binder，才能作为中间人对象返回

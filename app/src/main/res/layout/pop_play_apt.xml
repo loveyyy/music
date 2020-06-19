@@ -6,7 +6,7 @@
             type="com.example.music.model.PlayingMusicBeens"/>
     </data>
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="horizontal" android:layout_width="match_parent"
         android:layout_height="@dimen/dp_40"
         android:background="@drawable/bord_corn">
@@ -15,8 +15,17 @@
             android:id="@+id/pop_name"
             android:layout_width="wrap_content"
             android:gravity="center"
-            android:layout_gravity="center"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/dp_20"
             android:layout_height="wrap_content" />
-    </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/ib_download"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_down"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/dp_20"
+            android:layout_centerVertical="true"/>
+    </RelativeLayout>
 </layout>

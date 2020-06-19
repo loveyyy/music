@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -24,6 +25,7 @@ import java.util.List;
 public class Pop_PlayAdapter extends RecyclerView.Adapter<BindingViewHolder> {
     private Context context;
     private List<PlayingMusicBeens> playingMusicBeens;
+    private DownLoadClick downLoadClick;
     public Pop_PlayAdapter(Context context, List<PlayingMusicBeens> playingMusicBeens){
         this.context=context;
         this.playingMusicBeens=playingMusicBeens;
@@ -40,14 +42,32 @@ public class Pop_PlayAdapter extends RecyclerView.Adapter<BindingViewHolder> {
     public void onBindViewHolder(@NonNull BindingViewHolder holder, final int position) {
         ViewDataBinding binding = holder.getBinding();
         TextView textView= binding.getRoot().findViewById(R.id.pop_name);
+        ImageButton imageButton=binding.getRoot().findViewById(R.id.ib_download);
         textView.setText(playingMusicBeens.get(position).getMusicname()+"--"+playingMusicBeens.get(position).getMusic_singer());
         binding.executePendingBindings();
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(downLoadClick!=null){
+                    downLoadClick.OnDownLoad(position);
+                }
+            }
+        });
     }
 
 
     @Override
     public int getItemCount() {
         return playingMusicBeens.size();
+    }
+
+
+    public interface DownLoadClick{
+        void OnDownLoad(int pos);
+    }
+
+    public void SetOnDownLoadClick(DownLoadClick downloadClick){
+        this.downLoadClick=downloadClick;
     }
 
 }

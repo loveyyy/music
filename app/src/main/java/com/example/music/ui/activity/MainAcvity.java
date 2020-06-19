@@ -2,6 +2,7 @@ package com.example.music.ui.activity;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
 
@@ -44,18 +45,18 @@ public class MainAcvity extends FragmentActivity implements PlayerView.showList 
     }
 
     private void initdata() {
-        mainactivityBinding.playview.SetShowList(this);
+        mainactivityBinding.main.playview.SetShowList(this);
         fragments.add(new Frament_Rec());
         fragments.add(new Framen_Rank());
         fragments.add(new Frament_Singer());
         fragments.add(new Frament_Music());
         fragments.add(new Framnet_MV());
         VpMainAdapter vpMainAdapter = new VpMainAdapter(getSupportFragmentManager(), fragments, getApplicationContext());
-        mainactivityBinding.VpMain.setAdapter(vpMainAdapter);
-        mainactivityBinding.VpMain.setOffscreenPageLimit(4);
-        mainactivityBinding.tabMain.setupWithViewPager(mainactivityBinding.VpMain);
+        mainactivityBinding.main.VpMain.setAdapter(vpMainAdapter);
+        mainactivityBinding.main.VpMain.setOffscreenPageLimit(4);
+        mainactivityBinding.main.tabMain.setupWithViewPager(mainactivityBinding.main.VpMain);
 
-        mainactivityBinding.VpMain.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        mainactivityBinding.main.VpMain.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -79,14 +80,14 @@ public class MainAcvity extends FragmentActivity implements PlayerView.showList 
 
 
         for (int j = 0; j < fragments.size(); j++) {
-            TabLayout.Tab tab = mainactivityBinding.tabMain.getTabAt(j);
+            TabLayout.Tab tab = mainactivityBinding.main.tabMain.getTabAt(j);
             if (tab != null) {
                 tab.setCustomView(vpMainAdapter.getCustomView(j));
             }
         }
-        mainactivityBinding.VpMain.setCurrentItem(0);
+        mainactivityBinding.main.VpMain.setCurrentItem(0);
 
-        mainactivityBinding.tabMain.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        mainactivityBinding.main.tabMain.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 View view = tab.getCustomView();
@@ -109,12 +110,19 @@ public class MainAcvity extends FragmentActivity implements PlayerView.showList 
             }
         });
         StatusBarUtil.setLightMode(MainAcvity.this);
+
+        mainactivityBinding.main.ivMaintou.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mainactivityBinding.dlMain.openDrawer(Gravity.LEFT);
+            }
+        });
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
-        mainactivityBinding.playview.refresh();
+        mainactivityBinding.main.playview.refresh();
     }
 
     @Override

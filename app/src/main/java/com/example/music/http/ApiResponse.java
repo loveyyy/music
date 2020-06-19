@@ -4,17 +4,19 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.NetworkUtils;
+import com.example.music.model.BaseRespon;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
+import okhttp3.ResponseBody;
 
 public abstract class ApiResponse<T> implements Observer<T> {
-    private Context mContext;
     private Disposable d;
 
-    public ApiResponse(Context context) {
-        mContext=context;
+    public ApiResponse() {
+
     }
 
     public abstract void success(T data);
@@ -23,12 +25,6 @@ public abstract class ApiResponse<T> implements Observer<T> {
     @Override
     public void onSubscribe(Disposable d) {
         this.d = d;
-        if (!NetworkUtils.isConnected()) {
-            Toast.makeText(mContext,"未连接网络",Toast.LENGTH_SHORT).show();
-            if (d.isDisposed()) {
-                d.dispose();
-            }
-        }
     }
 
     @Override
@@ -44,8 +40,7 @@ public abstract class ApiResponse<T> implements Observer<T> {
         if (d.isDisposed()) {
             d.dispose();
         }
-        Log.e(mContext.getClass().getName(),e.getMessage());
-        Toast.makeText(mContext,ApiException.exceptionHandler(e),Toast.LENGTH_SHORT).show();
+        LogUtils.e(e.getMessage());
     }
 
     @Override

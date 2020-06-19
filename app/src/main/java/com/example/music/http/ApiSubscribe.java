@@ -11,10 +11,20 @@ import io.reactivex.schedulers.Schedulers;
 public class ApiSubscribe {
     public static <T> ObservableTransformer<T, T> io_main() {
         return new ObservableTransformer<T, T>() {
-        @Override
-        public ObservableSource<T> apply(Observable<T> upstream) {
-            return upstream.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+            @Override
+            public ObservableSource<T> apply(Observable<T> upstream) {
+                return upstream.subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread());
+            }
+        };
+    }
+
+    public static <T> ObservableTransformer<T, T> io_io() {
+        return new ObservableTransformer<T, T>() {
+            @Override
+            public ObservableSource<T> apply(Observable<T> upstream) {
+                return upstream.subscribeOn(Schedulers.io())
+                        .observeOn(Schedulers.io());
             }
         };
     }

@@ -61,6 +61,6 @@ public class Frament_Singer extends Fragment {
     }
 
     private void initdata() {
-        singer_vm.Get_Artist_list(getContext(),"0","1","100","d8bbee10-1895-11ea-b707-4b7b2a81b695");
+        singer_vm.Get_Artist_list("0","1","100","d8bbee10-1895-11ea-b707-4b7b2a81b695");
     }
 }

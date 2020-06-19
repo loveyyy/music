@@ -5,6 +5,8 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Environment;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,11 +20,21 @@ import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.example.music.R;
+import com.example.music.http.Api;
+import com.example.music.http.ApiResponse;
+import com.example.music.http.ApiSubscribe;
+import com.example.music.model.BaseRespon;
+import com.example.music.model.DownLoadInfo;
+import com.example.music.model.DownlodMusciInfo;
 import com.example.music.model.PlayingMusicBeens;
+import com.example.music.server.DownloadTask;
+import com.example.music.server.TaskDispatcher;
 import com.example.music.ui.adapter.Pop_PlayAdapter;
 import com.example.music.utils.ACache;
 
+import java.io.File;
 import java.util.List;
 
 public class CustomDialogFragment extends DialogFragment {
@@ -33,13 +45,8 @@ public class CustomDialogFragment extends DialogFragment {
     private ImageView iv_play_model;
     private TextView tv_play_model;
     private int play_model = 0;
-
     private ACache aCache;
 
-
-    public interface ConfirmListener {
-        void onClickComplete(String tittle);
-    }
 
     private List<PlayingMusicBeens> playingMusicBeens;
 
@@ -89,8 +96,33 @@ public class CustomDialogFragment extends DialogFragment {
 
         RecyclerView.LayoutManager layoutManager=new LinearLayoutManager(getContext(),RecyclerView.VERTICAL,false);
         Pop_PlayAdapter pop_playAdapter=new Pop_PlayAdapter(getContext(),playingMusicBeens);
+        pop_playAdapter.SetOnDownLoadClick(new Pop_PlayAdapter.DownLoadClick() {
+            @Override
+            public void OnDownLoad(int pos) {
+                //查询链接
+                Api.getInstance().iRetrofit.downloadMuisc(playingMusicBeens.get(pos).getMusicid().split("_")[1],
+                        "kuwo","id",1,"XMLHttpRequest")
+                        .compose(ApiSubscribe.<BaseRespon<List<DownlodMusciInfo>>>io_main())
+                        .subscribe(new ApiResponse<BaseRespon<List<DownlodMusciInfo>>>() {
+                            @Override
+                            public void success(BaseRespon<List<DownlodMusciInfo>> data) {
+                                DownLoadInfo downLoadInfo=new DownLoadInfo();
+                                downLoadInfo.setUrl(data.getData().get(0).getUrl());
+                                downLoadInfo.setFilename(data.getData().get(0).getAuthor()+"-"+data.getData().get(0).getTitle()+".mp3");
+                                downLoadInfo.setFilepath(Environment.getExternalStorageDirectory().getPath() + File.separator + "mv");
+
+                                DownloadTask downloadTask=new DownloadTask();
+                                downloadTask.setDownLoadInfo(downLoadInfo);
+                                TaskDispatcher.getInstance().enqueue(downloadTask);
+                            }
+
+                        });
+
+            }
+        });
         rcv_pop_list.setLayoutManager(layoutManager);
         rcv_pop_list.setAdapter(pop_playAdapter);
+
     }
 
     private void initEvent(){

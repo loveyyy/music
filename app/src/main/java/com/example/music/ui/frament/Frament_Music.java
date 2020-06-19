@@ -42,7 +42,7 @@ public class Frament_Music extends Fragment {
     }
 
     private void initdata() {
-        frament_music_vm.Get_Music_list_more(getContext(),"1857627817","3255031405","1","30","new","ec08f70-159e-11ea-adf3-798fb627bfc6");
+        frament_music_vm.Get_Music_list_more("1857627817","3255031405","1","30","new","ec08f70-159e-11ea-adf3-798fb627bfc6");
     }
 
     private void setVM(){

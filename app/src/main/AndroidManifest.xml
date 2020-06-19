@@ -36,10 +36,6 @@
             android:exported="true"
             android:enabled="true"
             tools:ignore="InnerclassSeparator" />
-        <service android:name=".server.DownloadServer"
-            android:exported="true"
-            android:enabled="true"
-            tools:ignore="InnerclassSeparator" />
         <activity android:name=".ui.activity.MainAcvity"
             tools:ignore="InnerclassSeparator" />
         <activity android:name=".ui.activity.Bang_Meau_Activity"

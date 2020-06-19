@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 
+import com.example.music.model.DownLoadInfo;
 import com.example.music.model.PlayingMusicBeens;
 import com.example.music.model.PlayingMusicBeensDao;
 
@@ -23,14 +24,17 @@ public class DaoUtils {
         mManager.init(context);
     }
 
-    /**
-     * 完成meizi记录的插入，如果表未创建
-     * @return
-     */
     public boolean insertMuisc(PlayingMusicBeens playingMusicBeens){
         boolean flag = false;
         flag = mManager.getDaoSession().getPlayingMusicBeensDao().insert(playingMusicBeens) == -1 ? false : true;
         Log.i(TAG, "insert Meizi :" + flag + "-->" + playingMusicBeens.toString());
+        return flag;
+    }
+
+    public boolean insertDownload(DownLoadInfo downLoadInfo){
+        boolean flag = false;
+        flag = mManager.getDaoSession().getDownLoadInfoDao().insert(downLoadInfo) == -1 ? false : true;
+        Log.i(TAG, "insert Meizi :" + flag + "-->" + downLoadInfo.toString());
         return flag;
     }
 
@@ -72,6 +76,22 @@ public class DaoUtils {
     }
 
     /**
+     * 修改一条数据
+     * @return
+     */
+    public boolean updateDownload(DownLoadInfo downLoadInfo){
+        boolean flag = false;
+        try {
+            mManager.getDaoSession().update(downLoadInfo);
+            flag = true;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return flag;
+    }
+
+
+    /**
      * 删除单条记录
      * @return
      */
@@ -86,6 +106,9 @@ public class DaoUtils {
         }
         return flag;
     }
+
+
+
 
     /**
      * 删除所有记录

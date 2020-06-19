@@ -58,7 +58,7 @@ public class Frament_Artist_Mv extends Fragment {
     }
 
     private void initdata() {
-        singer_vm.Get_Artist_Mv(getContext(),String.valueOf(artistid),"1","30","cdc01810-189a-11ea-b707-4b7b2a81b695");
+        singer_vm.Get_Artist_Mv(String.valueOf(artistid),"1","30","cdc01810-189a-11ea-b707-4b7b2a81b695");
     }
 
     @Override

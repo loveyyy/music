@@ -52,7 +52,7 @@ public class Frament_Rec extends Fragment {
     }
 
     private void initdata() {
-        framentRecVM.Get_Bananer_list(getContext(),"ec08f70-159e-11ea-adf3-798fb627bfc6");
+        framentRecVM.Get_Bananer_list("ec08f70-159e-11ea-adf3-798fb627bfc6");
     }
 
     private void setVM(){
@@ -68,7 +68,7 @@ public class Frament_Rec extends Fragment {
                         //推荐歌单点击事件
                         Intent intent=new Intent();
                         intent.setClass(getContext(), Rec_List_Info_Activity.class);
-                        intent.putExtra("rid",listBaseRespon.getData().getList().get(pos).getId());
+                        intent.putExtra("rid",listBaseRespon.getData().getList().get(pos).getId().toString());
                         startActivity(intent);
                     }
                 });
@@ -80,7 +80,7 @@ public class Frament_Rec extends Fragment {
             public void onChanged(BaseRespon<List<Bananer>> bananerBaseRespon) {
                 framentRecBinding.customMain.initdata(bananerBaseRespon.getData());
                 framentRecBinding.customMain.start();
-                framentRecVM.Get_Bang_list(getContext(),"ec08f70-159e-11ea-adf3-798fb627bfc6");
+                framentRecVM.Get_Bang_list("ec08f70-159e-11ea-adf3-798fb627bfc6");
             }
         });
         framentRecVM.Bang_meau.observe(this, new Observer<BaseRespon<List<Bang_list>>>() {
@@ -121,7 +121,7 @@ public class Frament_Rec extends Fragment {
                         startActivity(intent);
                     }
                 });
-                framentRecVM.Get_Music_list(getContext(),"ec08f70-159e-11ea-adf3-798fb627bfc6","0");
+                framentRecVM.Get_Music_list("ec08f70-159e-11ea-adf3-798fb627bfc6","0");
             }
         });
     }

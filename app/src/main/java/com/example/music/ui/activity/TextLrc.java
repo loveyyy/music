@@ -59,14 +59,14 @@ public class TextLrc extends AppCompatActivity implements PlayController.PlayNex
             @Override
             public void onClick(View view) {
                 playingMusicBeens=playController.play_last();
-                lrc_vm.Get_lrc(getBaseContext(),playingMusicBeens.getRid(),"9e7818b0-1a2e-11ea-88f6-3d2b7f71a652");
+                lrc_vm.Get_lrc(playingMusicBeens.getRid(),"9e7818b0-1a2e-11ea-88f6-3d2b7f71a652");
             }
         });
         lrcBinding.ibLrcNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 playingMusicBeens=playController.play_Next();
-                lrc_vm.Get_lrc(getBaseContext(),playingMusicBeens.getRid(),"9e7818b0-1a2e-11ea-88f6-3d2b7f71a652");
+                lrc_vm.Get_lrc(playingMusicBeens.getRid(),"9e7818b0-1a2e-11ea-88f6-3d2b7f71a652");
             }
         });
         lrcBinding.ibLrcPlay.setOnClickListener(new View.OnClickListener() {
@@ -97,7 +97,7 @@ public class TextLrc extends AppCompatActivity implements PlayController.PlayNex
         playingMusicBeens = new DaoUtils(this).queryAllMessage().get(pos);
         RequestOptions requestOptions = new RequestOptions().transform(new GildeCilcleImageUtils());
         Glide.with(this).load(playingMusicBeens.getAlbumpic()).apply(requestOptions).into(lrcBinding.ivBac);
-        lrc_vm.Get_lrc(this,playingMusicBeens.getRid(),"9e7818b0-1a2e-11ea-88f6-3d2b7f71a652");
+        lrc_vm.Get_lrc(playingMusicBeens.getRid(),"9e7818b0-1a2e-11ea-88f6-3d2b7f71a652");
     }
 
 
@@ -112,6 +112,6 @@ public class TextLrc extends AppCompatActivity implements PlayController.PlayNex
         playingMusicBeens = new DaoUtils(this).queryAllMessage().get(pos);
         RequestOptions requestOptions = new RequestOptions().transform(new GildeCilcleImageUtils());
         Glide.with(this).load(playingMusicBeens.getAlbumpic()).apply(requestOptions).into(lrcBinding.ivBac);
-        lrc_vm.Get_lrc(this,playingMusicBeens.getRid(),"9e7818b0-1a2e-11ea-88f6-3d2b7f71a652");
+        lrc_vm.Get_lrc(playingMusicBeens.getRid(),"9e7818b0-1a2e-11ea-88f6-3d2b7f71a652");
     }
 }

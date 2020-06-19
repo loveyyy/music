@@ -53,7 +53,7 @@ public class VpMainAdapter extends FragmentPagerAdapter {
                     tv.setText("歌单");
                     break;
                 case 4:
-                    tv.setText("MV");
+                    tv.setText("我的");
                     break;
             }
         return view;

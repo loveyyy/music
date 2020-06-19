@@ -56,7 +56,7 @@ public class Rec_List_Info_Activity extends AppCompatActivity {
     }
     private void initData() {
         Intent intent=getIntent();
-        rec_vm.Get_rec_list_info(this,intent.getStringExtra("rid"),"1","30","bbf263b0-1b36-11ea-9235-b7165f37904a");
+        rec_vm.Get_rec_list_info(intent.getStringExtra("rid"),"1","30","bbf263b0-1b36-11ea-9235-b7165f37904a");
     }
 
 

@@ -140,7 +140,7 @@ public class PlayController {
                 "mp3",rid,"url",
                 "convert_url3",
                 "128kmp3","web",String.valueOf(System.currentTimeMillis())," 4d09d450-174a-11ea-91a9-0b8d42e7dcee").
-                compose(ApiSubscribe.<BaseRespon>io_main()).subscribe(new ApiResponse<BaseRespon>(context){
+                compose(ApiSubscribe.<BaseRespon>io_main()).subscribe(new ApiResponse<BaseRespon>(){
 
             @Override
             public void success(BaseRespon data1) {

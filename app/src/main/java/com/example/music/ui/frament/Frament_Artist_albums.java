@@ -56,7 +56,7 @@ public class Frament_Artist_albums extends Fragment {
     }
 
     private void initdata() {
-        singer_vm.Get_Artist_Album(getContext(),String.valueOf(artistid),"1","30","cdc01810-189a-11ea-b707-4b7b2a81b695");
+        singer_vm.Get_Artist_Album(String.valueOf(artistid),"1","30","cdc01810-189a-11ea-b707-4b7b2a81b695");
     }
 
     @Override

@@ -7,6 +7,7 @@ package com.example.music.http;
  */
 
 
+import com.example.music.model.DownlodMusciInfo;
 import com.example.music.model.LrcBeen;
 import com.example.music.model.Activity_music;
 import com.example.music.model.Arisit_Info;
@@ -131,32 +132,6 @@ public interface IRetrofit {
                                                                   @Query("reqId")String reqId);
 
 
-    //电台
-    @GET("/api/www/radio/index/radioList")
-    Observable<BaseRespon<Radio_list>> Radio_list(@Query("reqId")String reqId);
-
-    //电台详情
-    @GET("/api/www/music/musicInfo")
-    Observable<BaseRespon<Radio_list>> Radio_info(@Query("mid")String mid,
-                                                  @Query("reqId")String reqId);
-
-    //mv
-    @GET("/api/www/music/mvList")
-    Observable<BaseRespon<Radio_info>> Mv_list(@Query("pid")String pid,
-                                               @Query("pn")String pn,
-                                               @Query("rn")String rn,
-                                               @Query("reqId")String reqId);
-
-//format: mp3
-//rid: 76218509 musicrid
-//response: url
-//type: convert_url3
-//br: 128kmp3
-//from: web
-//t: 1575541847488
-//reqId: 4d09d450-174a-11ea-91a9-0b8d42e7dcee
-
-
     //播放音乐
     @GET("/url")
     Observable<BaseRespon> music_info(@Query("format")String format,@Query("rid")String rid,
@@ -168,5 +143,18 @@ public interface IRetrofit {
     //获取歌词
     @GET("http://m.kuwo.cn/newh5/singles/songinfoandlrc")
     Observable<BaseRespon<LrcBeen>> music_lrc(@Query("musicId")String musicId, @Query("reqId")String reqId);
+
+
+    //获取歌曲下载地址
+    @FormUrlEncoded
+    @POST("http://www.333ttt.com/up/tool/")
+    Observable<BaseRespon<List<DownlodMusciInfo>>> downloadMuisc(@Field("input") String musicId, @Field("type")String type,
+                                                           @Field("filter") String filter,@Field("page") int page,
+                                                           @Header("X-Requested-With") String header);
+
+    @Streaming
+    @GET()
+    Observable<ResponseBody> download(@Url() String url, @Header("RANGE")String header);
+
 
 }

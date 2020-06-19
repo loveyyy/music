@@ -113,17 +113,20 @@ public class PlayerView extends RelativeLayout implements PlayController.BindSuc
         playerBinding.ivPlay.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                int state =playController.play_Paush();
+                int state =playController.get_state();
                 if(state== PlayServer.PLAYING){
                     //正暂停
                     playerBinding.ivPlay.setBackgroundResource(R.drawable.stop);
+                    playController.play_Paush();
                 }else if(state==PlayServer.PAUSE){
                     //已播放
                     playerBinding.ivPlay.setBackgroundResource(R.drawable.play);
+                    playController.play_Paush();
                 }else{
-                    playController.play(playingMusicBeens.get(pos).getRid());
                     playerBinding.ivPlay.setBackgroundResource(R.drawable.stop);
+                    playController.play(playingMusicBeens.get(pos).getRid());
                 }
+
             }
         });
 

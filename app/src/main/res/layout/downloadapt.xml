@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="downloadApt"
+            type="com.example.music.model.DownLoadInfo" />
+    </data>
+
+    <RelativeLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_40">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="@dimen/dp_20"
+            android:layout_centerVertical="true"
+            android:textSize="@dimen/sp_12"
+            android:gravity="start"
+            android:maxLines="1"
+            android:textColor="#FF111111"
+            android:text="@{downloadApt.filename}" />
+
+        <RelativeLayout
+            android:id="@+id/rl_download"
+            android:layout_width="@dimen/dp_25"
+            android:layout_gravity="center"
+            android:layout_height="@dimen/dp_25"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dp_20">
+            <com.example.music.ui.custom.CircularProgressView
+                android:id="@+id/pro_down"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:backColor="#FFdbdbdb"
+                app:progColor="@color/colorAccent"
+                app:progWidth="@dimen/dp_1"
+                app:backWidth="@dimen/dp_1"
+                app:progress="1" />
+
+            <ImageView
+                android:id="@+id/iv_down"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/play"/>
+        </RelativeLayout>
+    </RelativeLayout>
+</layout>

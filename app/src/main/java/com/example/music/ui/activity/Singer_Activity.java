@@ -84,7 +84,7 @@ public class Singer_Activity extends FragmentActivity implements PlayMusic, Play
     private void initdata() {
         Intent intent=getIntent();
         artistid=intent.getIntExtra("artistid",0);
-        singer_vm.Get_Artist_info(getBaseContext(),String.valueOf(artistid),"db2f93e0-189a-11ea-b707-4b7b2a81b695");
+        singer_vm.Get_Artist_info(String.valueOf(artistid),"db2f93e0-189a-11ea-b707-4b7b2a81b695");
 
         singerActivityBinding.playview.SetShowList(this);
         fragments.add(new Frament_artist_music());

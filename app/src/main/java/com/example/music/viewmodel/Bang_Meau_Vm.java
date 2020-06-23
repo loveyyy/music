@@ -2,6 +2,7 @@ package com.example.music.viewmodel;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -17,6 +18,7 @@ import com.example.music.http.ApiResponse;
 import com.example.music.http.ApiSubscribe;
 import com.example.music.model.Bang_Music_list;
 import com.example.music.model.BaseRespon;
+import com.example.music.ui.MyApplication;
 import com.example.music.ui.base.BaseVM;
 import com.example.music.ui.base.IModelView;
 
@@ -33,48 +35,13 @@ public class Bang_Meau_Vm  extends BaseVM {
         super(application);
     }
 
-    public void Get_Bang_Music_list(String bangId,String pn,String rn,String reqId){
-        Api.getInstance().iRetrofit.Bang_Music_list(bangId,pn,rn,reqId).compose(ApiSubscribe.<BaseRespon<Bang_Music_list>>io_main())
+    public void Get_Bang_Music_list(String bangId,String pn,String rn){
+        Api.getInstance().iRetrofit.Bang_Music_list(bangId,pn,rn,getaCache().getAsString("reqid")).compose(ApiSubscribe.<BaseRespon<Bang_Music_list>>io_main())
                 .subscribe(new ApiResponse<BaseRespon<Bang_Music_list>>() {
                     @Override
                     public void success(BaseRespon<Bang_Music_list> data) {
                         Bang_Music_list.setValue(data);
                     }
                 });
-    }
-
-    @Override
-    public void onAny(LifecycleOwner owner, Lifecycle.Event event) {
-        Log.e("LifeCycle","onAny");
-    }
-
-    @Override
-    public void onCreate() {
-        Log.e("LifeCycle","onCreate");
-    }
-
-    @Override
-    public void onDestroy() {
-        Log.e("LifeCycle","onDestroy");
-    }
-
-    @Override
-    public void onStart() {
-        Log.e("LifeCycle","onStart");
-    }
-
-    @Override
-    public void onStop() {
-        Log.e("LifeCycle","onStop");
-    }
-
-    @Override
-    public void onResume() {
-        Log.e("LifeCycle","onResume");
-    }
-
-    @Override
-    public void onPause() {
-        Log.e("LifeCycle","onPause");
     }
 }

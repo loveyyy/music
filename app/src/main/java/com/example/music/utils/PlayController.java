@@ -14,6 +14,7 @@ import com.example.music.http.ApiSubscribe;
 import com.example.music.model.BaseRespon;
 import com.example.music.model.PlayingMusicBeens;
 import com.example.music.server.PlayServer;
+import com.example.music.server.TaskDispatcher;
 import com.example.music.utils.greendao.DaoUtils;
 
 import java.util.ArrayList;
@@ -31,14 +32,32 @@ public class PlayController {
 
     private Context context;
     private ACache aCache;
-    //当前播放列表下标
-    private int pos;
+
     private BindSuccess bindSuccess;
     private PlayNextMusic playNextMusic;
+    private StateChange stateChange;
 
     //当前播放列表
     private List<PlayingMusicBeens> playingMusicBeens=new ArrayList<>();
+    //当前播放列表下标
+    private int pos;
 
+    private static PlayController instance;
+
+
+    /**
+     *线程安全单例模式
+     */
+    public static PlayController getInstance(Context context) {
+        if (instance == null) {
+            synchronized (PlayController.class) {
+                if (instance == null) {
+                    instance = new PlayController(context);
+                }
+            }
+        }
+        return instance;
+    }
 
     public PlayController(final Context context) {
         this.context=context;
@@ -76,12 +95,20 @@ public class PlayController {
 
     }
 
+
+
     public  int play_Paush(){
         if(mi!=null){
-            return mi.PlayOrStop();
+            int a=mi.PlayOrStop();
+            NotificationUtils.getInstance().sendNotification(playingMusicBeens.get(pos),1,context);
+            if(stateChange!=null){
+                stateChange.OnStateChange(a);
+            }
+            return a;
         }else{
             return 3;
         }
+
     }
 
     public  int get_state(){
@@ -96,9 +123,9 @@ public class PlayController {
         pos++;
         if(pos==playingMusicBeens.size()){
             pos=0;
-            play(playingMusicBeens.get(0).getRid());
+            play(playingMusicBeens.get(0));
         }else{
-            play(playingMusicBeens.get(pos).getRid());
+            play(playingMusicBeens.get(pos));
         }
         aCache.put("pos",pos);
         playNextMusic.OnPlayNextMusic(pos);
@@ -112,13 +139,13 @@ public class PlayController {
         }
         if(play_state==0){
            pos++;
-           play(playingMusicBeens.get(pos).getRid());
+           play(playingMusicBeens.get(pos));
         }else if(play_state==1){
-            play(playingMusicBeens.get(pos).getRid());
+            play(playingMusicBeens.get(pos));
         }else{
             Random random=new Random();
             pos=random.nextInt(playingMusicBeens.size());
-            play(playingMusicBeens.get(pos).getRid());
+            play(playingMusicBeens.get(pos));
         }
         if(playNextMusic!=null){
             aCache.put("pos",pos);
@@ -131,13 +158,13 @@ public class PlayController {
     public PlayingMusicBeens play_last(){
         pos--;
         aCache.put("pos",pos);
-        play(playingMusicBeens.get(pos).getRid());
+        play(playingMusicBeens.get(pos));
         return  playingMusicBeens.get(pos);
     }
 
-    public void play(String rid){
+    public void play(final PlayingMusicBeens playingMusicBeens){
         Api.getInstance().iRetrofit.music_info(
-                "mp3",rid,"url",
+                "mp3",playingMusicBeens.getRid(),"url",
                 "convert_url3",
                 "128kmp3","web",String.valueOf(System.currentTimeMillis())," 4d09d450-174a-11ea-91a9-0b8d42e7dcee").
                 compose(ApiSubscribe.<BaseRespon>io_main()).subscribe(new ApiResponse<BaseRespon>(){
@@ -146,6 +173,7 @@ public class PlayController {
             public void success(BaseRespon data1) {
                 //获得歌曲播放地址
                 mi.Play(data1.getUrl());
+                NotificationUtils.getInstance().sendNotification(playingMusicBeens,1,context);
             }
         });
     }
@@ -181,6 +209,33 @@ public class PlayController {
         this.playNextMusic=playNextMusic;
     }
 
+    public interface StateChange{
+        void OnStateChange(int state);
+    }
+
+    public void SetStateChange(StateChange stateChange){
+        this.stateChange=stateChange;
+    }
+
+
+    public List<PlayingMusicBeens> getPlayingMusicBeens() {
+        return playingMusicBeens;
+    }
+
+    public void setPlayingMusicBeens(List<PlayingMusicBeens> playingMusicBeens) {
+        this.playingMusicBeens = playingMusicBeens;
+    }
+
+
+
+
+    public int getPos() {
+        return pos;
+    }
+
+    public void setPos(int pos) {
+        this.pos = pos;
+    }
 
     public void onDestory(){
         if (isBind) {

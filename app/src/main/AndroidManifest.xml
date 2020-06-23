@@ -44,6 +44,15 @@
             tools:ignore="InnerclassSeparator" />
         <activity android:name=".ui.activity.Singer_Activity"/>
         <activity android:name=".ui.activity.Rec_List_Info_Activity"/>
+        <receiver
+            android:name="com.example.music.server.NotificationReceiver"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="play" /><!-- 定制play广播 -->
+                <action android:name="last" /><!-- 定制last广播 -->
+                <action android:name="next" /><!-- ...... -->
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

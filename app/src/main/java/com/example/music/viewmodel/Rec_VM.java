@@ -25,8 +25,8 @@ public class Rec_VM extends BaseVM {
         super(application);
     }
 
-    public void Get_rec_list_info(String pid,  String pn, String rn, String reqid){
-        Api.getInstance().iRetrofit.Music_list_info(pid,pn,rn,reqid).compose(ApiSubscribe.<BaseRespon<Rec_List_Info>>io_main())
+    public void Get_rec_list_info(String pid,  String pn, String rn){
+        Api.getInstance().iRetrofit.Music_list_info(pid,pn,rn,getaCache().getAsString("reqid")).compose(ApiSubscribe.<BaseRespon<Rec_List_Info>>io_main())
                 .subscribe(new ApiResponse<BaseRespon<Rec_List_Info>>() {
                     @Override
                     public void success(BaseRespon<Rec_List_Info> data) {

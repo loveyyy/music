@@ -37,6 +37,7 @@ public abstract  class BaseFrament<DB extends ViewDataBinding> extends Fragment 
         initview(db);
         SetVM();
         setonclick();
+        initData();
         if (!hasCreateView && getUserVisibleHint()) {
             onFragmentVisibleChange(true);
             isFragmentVisible = true;
@@ -47,6 +48,7 @@ public abstract  class BaseFrament<DB extends ViewDataBinding> extends Fragment 
     protected abstract void initview(DB bindView);
     protected abstract void SetVM();
     protected abstract void setonclick();
+    protected abstract void initData();
     public Context getMContext() {
         return mContext;
     }

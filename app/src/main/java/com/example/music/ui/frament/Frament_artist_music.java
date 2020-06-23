@@ -82,7 +82,7 @@ public class Frament_artist_music extends Fragment {
     }
 
     private void initdata() {
-        singer_vm.Get_Artist_Music(String.valueOf(artistid),"1","30","cdc01810-189a-11ea-b707-4b7b2a81b695");
+        singer_vm.Get_Artist_Music(String.valueOf(artistid),"1","30");
     }
 
     @Override

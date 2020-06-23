@@ -18,6 +18,7 @@ import com.example.music.model.LrcBeen;
 import com.example.music.model.BaseRespon;
 import com.example.music.model.PlayingMusicBeens;
 import com.example.music.server.PlayServer;
+import com.example.music.ui.base.BaseActivity;
 import com.example.music.utils.PlayController;
 import com.example.music.utils.greendao.DaoUtils;
 import com.example.music.utils.imageutils.GildeCilcleImageUtils;
@@ -29,24 +30,36 @@ import com.jaeger.library.StatusBarUtil;
  * Created by Administrator on 2018/7/3.
  */
 
-public class TextLrc extends AppCompatActivity implements PlayController.PlayNextMusic {
+public class TextLrc extends BaseActivity<LrcBinding,Lrc_VM> implements PlayController.PlayNextMusic {
     private LrcBinding lrcBinding;
     private Lrc_VM lrc_vm;
     private PlayController playController;
     private PlayingMusicBeens playingMusicBeens;
+
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        lrcBinding= DataBindingUtil.setContentView(this,R.layout.lrc);
-        StatusBarUtil.setTranslucentForImageViewInFragment(this, 0, null);
-        lrc_vm= ViewModelProviders.of(this).get(Lrc_VM.class);
-        playController=new PlayController(this);
-        playController.SetOnPlayNextMusic(this);
-        setonclick();
-        initdata();
+    public int getLayout() {
+        return R.layout.lrc;
     }
 
-    public void setonclick(){
+    @Override
+    public boolean isLight() {
+        return false;
+    }
+
+    @Override
+    protected void initView(LrcBinding bindView) {
+        lrcBinding=bindView;
+        playController=PlayController.getInstance(getBaseContext());
+        playController.SetOnPlayNextMusic(this);
+    }
+
+    @Override
+    protected void setVM(Lrc_VM vm) {
+        lrc_vm=vm;
+    }
+
+    @Override
+    protected void setListener() {
         lrc_vm.lrc.observe(this, new Observer<BaseRespon<LrcBeen>>() {
             @Override
             public void onChanged(BaseRespon<LrcBeen> baseRespon) {
@@ -59,14 +72,14 @@ public class TextLrc extends AppCompatActivity implements PlayController.PlayNex
             @Override
             public void onClick(View view) {
                 playingMusicBeens=playController.play_last();
-                lrc_vm.Get_lrc(playingMusicBeens.getRid(),"9e7818b0-1a2e-11ea-88f6-3d2b7f71a652");
+                lrc_vm.Get_lrc(playingMusicBeens.getRid());
             }
         });
         lrcBinding.ibLrcNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 playingMusicBeens=playController.play_Next();
-                lrc_vm.Get_lrc(playingMusicBeens.getRid(),"9e7818b0-1a2e-11ea-88f6-3d2b7f71a652");
+                lrc_vm.Get_lrc(playingMusicBeens.getRid());
             }
         });
         lrcBinding.ibLrcPlay.setOnClickListener(new View.OnClickListener() {
@@ -84,7 +97,8 @@ public class TextLrc extends AppCompatActivity implements PlayController.PlayNex
         });
     }
 
-    public void initdata() {
+    @Override
+    protected void initData() {
         Intent intent =getIntent();
         int pos=intent.getIntExtra("pos",0);
         if(playController.get_state()==PlayServer.PLAYING){
@@ -97,14 +111,13 @@ public class TextLrc extends AppCompatActivity implements PlayController.PlayNex
         playingMusicBeens = new DaoUtils(this).queryAllMessage().get(pos);
         RequestOptions requestOptions = new RequestOptions().transform(new GildeCilcleImageUtils());
         Glide.with(this).load(playingMusicBeens.getAlbumpic()).apply(requestOptions).into(lrcBinding.ivBac);
-        lrc_vm.Get_lrc(playingMusicBeens.getRid(),"9e7818b0-1a2e-11ea-88f6-3d2b7f71a652");
+        lrc_vm.Get_lrc(playingMusicBeens.getRid());
     }
 
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        playController.onDestory();
     }
 
     @Override
@@ -112,6 +125,6 @@ public class TextLrc extends AppCompatActivity implements PlayController.PlayNex
         playingMusicBeens = new DaoUtils(this).queryAllMessage().get(pos);
         RequestOptions requestOptions = new RequestOptions().transform(new GildeCilcleImageUtils());
         Glide.with(this).load(playingMusicBeens.getAlbumpic()).apply(requestOptions).into(lrcBinding.ivBac);
-        lrc_vm.Get_lrc(playingMusicBeens.getRid(),"9e7818b0-1a2e-11ea-88f6-3d2b7f71a652");
+        lrc_vm.Get_lrc(playingMusicBeens.getRid());
     }
 }

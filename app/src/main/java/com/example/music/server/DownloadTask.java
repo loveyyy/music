@@ -17,6 +17,8 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 import okhttp3.ResponseBody;
 
 /**
@@ -97,15 +99,20 @@ public class DownloadTask implements Runnable {
 
         Api.getInstance().iRetrofit.download(downLoadInfo.getUrl(),"bytes=" + downloadLength + "-")
                 .compose(ApiSubscribe.<ResponseBody>io_io())
-                .subscribe(new ApiResponse<ResponseBody>() {
+                .subscribe(new Observer<ResponseBody>() {
                     @Override
-                    public void success(ResponseBody data) {
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(ResponseBody responseBody) {
                         try {
                             File file = new File(downLoadInfo.getFilepath(), downLoadInfo.getFilename());
                             InputStream is = null;
                             FileOutputStream fileOutputStream = null;
                             try {
-                                is = data.byteStream();
+                                is = responseBody.byteStream();
                                 fileOutputStream = new FileOutputStream(file, true);
                                 byte[] buffer = new byte[1024];//缓冲数组2kB
                                 int len;
@@ -150,6 +157,16 @@ public class DownloadTask implements Runnable {
                             downLoadInfo.setState(FAILED);
                             mySelf.state = FAILED;
                         }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
                     }
                 });
 

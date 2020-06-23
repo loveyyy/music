@@ -3,6 +3,7 @@ package com.example.music.http;
 import android.content.SharedPreferences;
 
 import com.example.music.ui.MyApplication;
+import com.example.music.utils.ACache;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ public class ReceivedCookiesInterceptor implements Interceptor {
         Response originalResponse = chain.proceed(chain.request());
         SharedPreferences.Editor config = MyApplication.getContext().getSharedPreferences("config", MyApplication.getContext().MODE_PRIVATE)
                 .edit();
+        ACache aCache=ACache.get(MyApplication.getContext());
         if (!originalResponse.headers("Set-Cookie").isEmpty()) {
             HashSet<String> cookies = new HashSet<>();
 
@@ -32,8 +34,9 @@ public class ReceivedCookiesInterceptor implements Interceptor {
             config.putString("token",  asd.get(0).split(";")[0].split("=")[1]);
             config.commit();
         }
+
         if(!originalResponse.headers("reqid").isEmpty()){
-            config.putString("reqid", originalResponse.header("reqid"));
+            aCache.put("reqid",originalResponse.header("reqid"));
         }
 
         return originalResponse;

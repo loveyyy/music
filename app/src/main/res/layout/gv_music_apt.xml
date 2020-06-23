@@ -20,14 +20,14 @@
             app:imageUrl="@{rec_list.img}"/>
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/dp_100"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:maxLines="1"
+            android:maxLines="2"
             android:text="@{rec_list.name}"/>
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/dp_100"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@{rec_list.info}"/>

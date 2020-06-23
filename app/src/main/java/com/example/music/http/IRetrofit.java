@@ -22,8 +22,6 @@ import com.example.music.model.Bang_list;
 import com.example.music.model.Bang_meau;
 import com.example.music.model.BaseRespon;
 import com.example.music.model.Music_list;
-import com.example.music.model.Radio_info;
-import com.example.music.model.Radio_list;
 import com.example.music.model.Rec_List;
 import com.example.music.model.Rec_List_Info;
 
@@ -76,14 +74,6 @@ public interface IRetrofit {
                                                           @Query("rn")String rn,
                                                           @Query("reqId")String reqId);
 
-    //推荐歌手 根据字母筛选
-    @GET("/api/www/artist/artistInfo")
-    Observable<BaseRespon<Artist_list>> Artist_list_prefix(@Query("category")String category,
-                                                           @Query("prefix")String prefix,
-                                                    @Query("pn")String pn,
-                                                    @Query("rn")String rn,
-                                                    @Query("reqId")String reqId);
-
     //歌手简介
     @GET("/api/www/artist/artist")
     Observable<BaseRespon<Arisit_Info>> Artist_info(@Query("artistid")String artistid,
@@ -112,10 +102,6 @@ public interface IRetrofit {
 
 
 
-    //活动
-    @GET("/api/www/activity/index/activityList")
-    Observable<BaseRespon<Activity_music>> Activity_music(@Query("reqId")String reqId);
-
     //排行
     @GET("/api/www/bang/index/bangList")
     Observable<BaseRespon<List<Bang_list>>> Bang_list(@Query("reqId")String reqId);
@@ -131,6 +117,14 @@ public interface IRetrofit {
                                                                   @Query("rn")String rn,
                                                                   @Query("reqId")String reqId);
 
+    //mv
+    @GET("/api/www/music/mvList")
+    Observable<BaseRespon<Artist_Mv>> MvList(@Query("pid")String pid,
+                                           @Query("pn")String pn,
+                                           @Query("rn")String rn,
+                                           @Query("httpsStatus")String httpsStatus,
+                                           @Query("reqId")String reqId);
+
 
     //播放音乐
     @GET("/url")
@@ -138,6 +132,7 @@ public interface IRetrofit {
                                       @Query("response")String response, @Query("type")String type,
                                       @Query("br")String br, @Query("from")String from,
                                       @Query("t")String t,@Query("reqId")String reqId);
+
 
 
     //获取歌词

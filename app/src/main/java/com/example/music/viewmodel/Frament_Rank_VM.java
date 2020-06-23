@@ -2,6 +2,7 @@ package com.example.music.viewmodel;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.SharedPreferences;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
@@ -12,6 +13,7 @@ import com.example.music.http.ApiResponse;
 import com.example.music.http.ApiSubscribe;
 import com.example.music.model.Bang_meau;
 import com.example.music.model.BaseRespon;
+import com.example.music.ui.MyApplication;
 import com.example.music.ui.base.BaseVM;
 
 import java.util.List;
@@ -27,8 +29,8 @@ public class Frament_Rank_VM extends BaseVM {
         super(application);
     }
 
-    public void Get_Bang_Menu(String reqId){
-        Api.getInstance().iRetrofit.Bang_Menu(reqId).compose(ApiSubscribe.<BaseRespon<List<Bang_meau>>>io_main())
+    public void Get_Bang_Menu(){
+        Api.getInstance().iRetrofit.Bang_Menu(getaCache().getAsString("reqid")).compose(ApiSubscribe.<BaseRespon<List<Bang_meau>>>io_main())
                 .subscribe(new ApiResponse<BaseRespon<List<Bang_meau>>>() {
                     @Override
                     public void success(BaseRespon<List<Bang_meau>> data) {

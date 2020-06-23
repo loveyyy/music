@@ -17,12 +17,11 @@
             android:layout_height="match_parent"
             android:layout_marginBottom="@dimen/dp_68">
 
-            <LinearLayout
+            <RelativeLayout
                 android:id="@+id/Rl1"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_50"
+                android:layout_height="@dimen/dp_100"
                 android:focusable="true"
-                android:layout_marginTop="@dimen/dp_10"
                 android:focusableInTouchMode="true"
                 android:orientation="horizontal">
 
@@ -30,24 +29,44 @@
                     android:id="@+id/iv_Maintou"
                     android:layout_width="@dimen/dp_30"
                     android:layout_height="@dimen/dp_30"
-                    android:layout_gravity="center"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
                     android:background="@drawable/ic_meau" />
+
+                <RelativeLayout
+                    android:id="@+id/rl_search"
+                    android:layout_width="@dimen/dp_280"
+                    android:layout_height="@dimen/dp_30"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/bord_corn">
+                    <TextView
+                        android:layout_width="@dimen/dp_260"
+                        android:layout_height="@dimen/dp_30"
+                        android:textSize="@dimen/dp_14"
+                        android:layout_centerInParent="true"
+                        android:text="点击搜索"
+                        android:gravity="center|start"/>
+                </RelativeLayout>
+
 
                 <com.google.android.material.tabs.TabLayout
                     android:id="@+id/tab_Main"
-                    android:layout_width="@dimen/dp_300"
-                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_30"
                     app:tabBackground="@android:color/transparent"
                     app:tabRippleColor="@android:color/transparent"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
                     app:tabIndicatorColor="@android:color/transparent" />
 
                 <ImageView
                     android:id="@+id/iv_Search"
                     android:layout_width="@dimen/dp_30"
                     android:layout_height="@dimen/dp_30"
-                    android:layout_gravity="center"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
                     android:background="@drawable/ic_search" />
-            </LinearLayout>
+            </RelativeLayout>
 
             <androidx.viewpager.widget.ViewPager
                 android:id="@+id/Vp_Main"

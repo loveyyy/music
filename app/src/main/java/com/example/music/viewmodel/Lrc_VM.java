@@ -24,8 +24,8 @@ public class Lrc_VM  extends BaseVM {
         super(application);
     }
 
-    public void Get_lrc(String music_id, String reqId){
-        Api.getInstance().iRetrofit.music_lrc(music_id,reqId).compose(ApiSubscribe.<BaseRespon<LrcBeen>>io_main())
+    public void Get_lrc(String music_id){
+        Api.getInstance().iRetrofit.music_lrc(music_id,getaCache().getAsString("reqid")).compose(ApiSubscribe.<BaseRespon<LrcBeen>>io_main())
                 .subscribe(new ApiResponse<BaseRespon<LrcBeen>>() {
                     @Override
                     public void success(BaseRespon<LrcBeen> data) {

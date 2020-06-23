@@ -19,6 +19,8 @@ import com.example.music.http.ApiResponse;
 import com.example.music.http.ApiSubscribe;
 import com.jaeger.library.StatusBarUtil;
 
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 import okhttp3.ResponseBody;
 
 /**
@@ -48,10 +50,25 @@ public class WelcomeActivity extends AppCompatActivity {
         welcomeBinding.IvWlcome.setBackgroundResource(R.drawable.welcome);
 
         Api.getInstance().iRetrofit.all().compose(ApiSubscribe.<ResponseBody>io_main())
-                .subscribe(new ApiResponse<ResponseBody>() {
+                .subscribe(new Observer<ResponseBody>() {
                     @Override
-                    public void success(ResponseBody data) {
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(ResponseBody responseBody) {
                         handler.sendEmptyMessageDelayed(10,2000);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
                     }
                 });
 

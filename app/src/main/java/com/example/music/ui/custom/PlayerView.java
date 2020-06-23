@@ -21,13 +21,14 @@ import com.example.music.server.PlayServer;
 import com.example.music.ui.activity.TextLrc;
 import com.example.music.ui.adapter.VP_Paly_Apt;
 import com.example.music.utils.ACache;
+import com.example.music.utils.NotificationUtils;
 import com.example.music.utils.PlayController;
 import com.example.music.utils.greendao.DaoUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlayerView extends RelativeLayout implements PlayController.BindSuccess, PlayController.PlayNextMusic {
+public class PlayerView extends RelativeLayout implements PlayController.BindSuccess, PlayController.PlayNextMusic, PlayController.StateChange {
     private PlayerBinding playerBinding;
     private ACache aCache;
     private MyBroadcastReceiver myBroadcastReceiver;
@@ -51,9 +52,10 @@ public class PlayerView extends RelativeLayout implements PlayController.BindSuc
         playerBinding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.player,
                 this,true);
         aCache=ACache.get(context);
-        playController=new PlayController(getContext());
+        playController=PlayController.getInstance(getContext());
         playController.SetOnBindSuccess(this);
         playController.SetOnPlayNextMusic(this);
+        playController.SetStateChange(this);
         this.context=context;
         daoUtils=new DaoUtils(context);
         myBroadcastReceiver=new MyBroadcastReceiver();
@@ -99,8 +101,8 @@ public class PlayerView extends RelativeLayout implements PlayController.BindSuc
                 pos=position;
                 aCache.put("pos",pos);
                 if(play){
-                    playController.play(playingMusicBeens.get(pos).getRid());
-                    playerBinding.ivPlay.setBackgroundResource(R.drawable.stop);
+                    playController.play(playingMusicBeens.get(pos));
+                    playerBinding.ivPlay.setBackgroundResource(R.drawable.play);
                 }
             }
 
@@ -114,17 +116,15 @@ public class PlayerView extends RelativeLayout implements PlayController.BindSuc
             @Override
             public void onClick(View v) {
                 int state =playController.get_state();
-                if(state== PlayServer.PLAYING){
-                    //正暂停
+                if(state== PlayServer.STOP){
                     playerBinding.ivPlay.setBackgroundResource(R.drawable.stop);
-                    playController.play_Paush();
-                }else if(state==PlayServer.PAUSE){
-                    //已播放
-                    playerBinding.ivPlay.setBackgroundResource(R.drawable.play);
-                    playController.play_Paush();
-                }else{
-                    playerBinding.ivPlay.setBackgroundResource(R.drawable.stop);
-                    playController.play(playingMusicBeens.get(pos).getRid());
+                    playController.play(playingMusicBeens.get(pos));
+                }else {
+                    if(playController.play_Paush()==PlayServer.PLAYING){
+                        playerBinding.ivPlay.setBackgroundResource(R.drawable.stop);
+                    }else{
+                        playerBinding.ivPlay.setBackgroundResource(R.drawable.play);
+                    }
                 }
 
             }
@@ -178,7 +178,7 @@ public class PlayerView extends RelativeLayout implements PlayController.BindSuc
         play=true;
         playerBinding.vpPlay.setCurrentItem(pos);
         if(pos==0){
-            playController.play(playingMusicBeens.get(pos).getRid());
+            playController.play(playingMusicBeens.get(pos));
             playerBinding.ivPlay.setBackgroundResource(R.drawable.stop);
         }
     }
@@ -199,6 +199,15 @@ public class PlayerView extends RelativeLayout implements PlayController.BindSuc
     @Override
     public void OnPlayNextMusic(int pos) {
         refresh();
+    }
+
+    @Override
+    public void OnStateChange(int state) {
+        if(state==PlayServer.PLAYING){
+            playerBinding.ivPlay.setBackgroundResource(R.drawable.stop);
+        }else{
+            playerBinding.ivPlay.setBackgroundResource(R.drawable.play);
+        }
     }
 
 

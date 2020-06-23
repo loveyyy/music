@@ -1,20 +1,18 @@
 package com.example.music.http;
 
-import android.content.Context;
-import android.util.Log;
-import android.widget.Toast;
+import android.content.SharedPreferences;
 
 import com.blankj.utilcode.util.LogUtils;
-import com.blankj.utilcode.util.NetworkUtils;
 import com.example.music.model.BaseRespon;
+import com.example.music.ui.MyApplication;
+import com.example.music.utils.ACache;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
-import okhttp3.ResponseBody;
 
-public abstract class ApiResponse<T> implements Observer<T> {
+public abstract class ApiResponse<T extends BaseRespon> implements Observer<T> {
     private Disposable d;
-
+    private ACache aCache = ACache.get(MyApplication.getContext());
     public ApiResponse() {
 
     }
@@ -31,6 +29,10 @@ public abstract class ApiResponse<T> implements Observer<T> {
     public void onNext(T t) {
         if (d.isDisposed()) {
             d.dispose();
+        }
+        try {
+            aCache.put("reqid", t.getReqId());
+        }catch (NullPointerException e){
         }
         success(t);
     }

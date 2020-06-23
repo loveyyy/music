@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.music.R;
+import com.example.music.model.Bananer;
 import com.example.music.ui.activity.Bang_Meau_Activity;
 import com.example.music.ui.activity.Rec_List_Info_Activity;
 import com.example.music.ui.activity.Singer_Activity;
@@ -25,13 +26,23 @@ import com.example.music.ui.adapter.Music_ListAdapter;
 import com.example.music.viewmodel.Frament_Rec_VM;
 import com.example.music.databinding.FramentRecBinding;
 import com.example.music.model.Artist_list;
-import com.example.music.model.Bananer;
 import com.example.music.model.Bang_list;
 import com.example.music.model.BaseRespon;
 import com.example.music.model.Music_list;
 import com.jaeger.library.StatusBarUtil;
 
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
+
+import java.io.IOException;
+import java.io.StringReader;
 import java.util.List;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParserFactory;
+
+import okhttp3.ResponseBody;
 
 /**
  * Create By morningsun  on 2019-12-05
@@ -52,7 +63,7 @@ public class Frament_Rec extends Fragment {
     }
 
     private void initdata() {
-        framentRecVM.Get_Bananer_list("ec08f70-159e-11ea-adf3-798fb627bfc6");
+        framentRecVM.Get_Bananer_list();
     }
 
     private void setVM(){
@@ -77,10 +88,10 @@ public class Frament_Rec extends Fragment {
         });
         framentRecVM.Bananer_list.observe(this, new Observer<BaseRespon<List<Bananer>>>() {
             @Override
-            public void onChanged(BaseRespon<List<Bananer>> bananerBaseRespon) {
-                framentRecBinding.customMain.initdata(bananerBaseRespon.getData());
+            public void onChanged(BaseRespon<List<Bananer>> responseBody) {
+                framentRecBinding.customMain.initdata(responseBody.getData());
                 framentRecBinding.customMain.start();
-                framentRecVM.Get_Bang_list("ec08f70-159e-11ea-adf3-798fb627bfc6");
+                framentRecVM.Get_Bang_list();
             }
         });
         framentRecVM.Bang_meau.observe(this, new Observer<BaseRespon<List<Bang_list>>>() {
@@ -102,7 +113,7 @@ public class Frament_Rec extends Fragment {
                         startActivity(intent);
                     }
                 });
-                framentRecVM.Get_Artist_list(getContext(),"11","1","6","ec08f70-159e-11ea-adf3-798fb627bfc6");
+                framentRecVM.Get_Artist_list("11","1","10");
             }
         });
         framentRecVM.Artist_list.observe(this, new Observer<BaseRespon<Artist_list>>() {
@@ -121,7 +132,7 @@ public class Frament_Rec extends Fragment {
                         startActivity(intent);
                     }
                 });
-                framentRecVM.Get_Music_list("ec08f70-159e-11ea-adf3-798fb627bfc6","0");
+                framentRecVM.Get_Music_list("1236933931");
             }
         });
     }

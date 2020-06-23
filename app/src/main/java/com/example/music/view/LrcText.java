@@ -104,7 +104,7 @@ public class LrcText extends TextView implements View.OnTouchListener{
 
     public LrcText(Context context, AttributeSet attrs)  {
         super(context, attrs);
-        playController=new PlayController(context);
+        playController=PlayController.getInstance(getContext());
 
         myBroadcastReceiver=new MyBroadcastReceiver();
         IntentFilter filter = new IntentFilter();
@@ -327,7 +327,6 @@ public class LrcText extends TextView implements View.OnTouchListener{
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        playController.onDestory();
         progree=0;
         currentLine=0;
         if(myBroadcastReceiver!=null){

@@ -95,6 +95,6 @@ public class Bang_Meau_Activity extends BaseActivity<BangMeauActivityBinding,Ban
         bangMeauActivityBinding.tvRankTitle.setText(intent.getStringExtra("title"));
         bangMeauActivityBinding.tvRankTime.setText(intent.getStringExtra("time"));
         Glide.with(this).load(intent.getStringExtra("img")).into(bangMeauActivityBinding.ivTop);
-        bang_meau_vm.Get_Bang_Music_list(intent.getStringExtra("bangid"), "1", "30", "ec08f70-159e-11ea-adf3-798fb627bfc6");
+        bang_meau_vm.Get_Bang_Music_list(intent.getStringExtra("bangid"), "1", "30");
     }
 }

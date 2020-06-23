@@ -28,8 +28,8 @@ public class Singer_VM extends BaseVM {
         super(application);
     }
 
-    public void Get_Artist_list(String category,String pn,String rn,String reqId){
-        Api.getInstance().iRetrofit.Artist_list(category,pn,rn,reqId).compose(ApiSubscribe.<BaseRespon<Artist_list>>io_main())
+    public void Get_Artist_list(String category,String pn,String rn){
+        Api.getInstance().iRetrofit.Artist_list(category,pn,rn,getaCache().getAsString("reqid")).compose(ApiSubscribe.<BaseRespon<Artist_list>>io_main())
                 .subscribe(new ApiResponse<BaseRespon<Artist_list>>() {
                     @Override
                     public void success(BaseRespon<com.example.music.model.Artist_list> data) {
@@ -41,8 +41,8 @@ public class Singer_VM extends BaseVM {
 
     public MutableLiveData<BaseRespon<Arisit_Info>> Artist_info=new MutableLiveData<>();
 
-    public void Get_Artist_info(String artistid,String reqId){
-        Api.getInstance().iRetrofit.Artist_info(artistid,reqId).compose(ApiSubscribe.<BaseRespon<Arisit_Info>>io_main())
+    public void Get_Artist_info(String artistid){
+        Api.getInstance().iRetrofit.Artist_info(artistid,getaCache().getAsString("reqid")).compose(ApiSubscribe.<BaseRespon<Arisit_Info>>io_main())
                 .subscribe(new ApiResponse<BaseRespon<Arisit_Info>>() {
                     @Override
                     public void success(BaseRespon<Arisit_Info> data) {
@@ -53,8 +53,8 @@ public class Singer_VM extends BaseVM {
 
     public MutableLiveData<BaseRespon<Artist_Music>> Artist_Music=new MutableLiveData<>();
 
-    public void Get_Artist_Music(String artistid,String pn,String rn,String reqId){
-        Api.getInstance().iRetrofit.Artist_Music(artistid,pn,rn,reqId).compose(ApiSubscribe.<BaseRespon<Artist_Music>>io_main())
+    public void Get_Artist_Music(String artistid,String pn,String rn){
+        Api.getInstance().iRetrofit.Artist_Music(artistid,pn,rn,getaCache().getAsString("reqid")).compose(ApiSubscribe.<BaseRespon<Artist_Music>>io_main())
                 .subscribe(new ApiResponse<BaseRespon<Artist_Music>>() {
                     @Override
                     public void success(BaseRespon<Artist_Music> data) {
@@ -65,8 +65,8 @@ public class Singer_VM extends BaseVM {
 
     public MutableLiveData<BaseRespon<Artist_Album>> Artist_Album=new MutableLiveData<>();
 
-    public void Get_Artist_Album(String artistid,String pn,String rn,String reqId){
-        Api.getInstance().iRetrofit.Artist_Album(artistid,pn,rn,reqId).compose(ApiSubscribe.<BaseRespon<Artist_Album>>io_main())
+    public void Get_Artist_Album(String artistid,String pn,String rn){
+        Api.getInstance().iRetrofit.Artist_Album(artistid,pn,rn,getaCache().getAsString("reqid")).compose(ApiSubscribe.<BaseRespon<Artist_Album>>io_main())
                 .subscribe(new ApiResponse<BaseRespon<Artist_Album>>() {
                     @Override
                     public void success(BaseRespon<Artist_Album> data) {
@@ -77,8 +77,8 @@ public class Singer_VM extends BaseVM {
 
     public MutableLiveData<BaseRespon<Artist_Mv>> Artist_Mv=new MutableLiveData<>();
 
-    public void Get_Artist_Mv(String artistid,String pn,String rn,String reqId){
-        Api.getInstance().iRetrofit.Artist_Mv(artistid,pn,rn,reqId).compose(ApiSubscribe.<BaseRespon<Artist_Mv>>io_main())
+    public void Get_Artist_Mv(String artistid,String pn,String rn){
+        Api.getInstance().iRetrofit.Artist_Mv(artistid,pn,rn,getaCache().getAsString("reqid")).compose(ApiSubscribe.<BaseRespon<Artist_Mv>>io_main())
                 .subscribe(new ApiResponse<BaseRespon<Artist_Mv>>() {
                     @Override
                     public void success(BaseRespon<Artist_Mv> data) {

@@ -1,21 +1,33 @@
 package com.example.music.server;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
 import android.media.MediaPlayer;
 import android.os.Binder;
+import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
+import android.widget.RemoteViews;
 
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
 
 import com.blankj.utilcode.util.LogUtils;
+import com.bumptech.glide.Glide;
 import com.example.music.Interface.MusicInterface;
+import com.example.music.R;
 import com.example.music.model.PlayingMusicBeens;
+import com.example.music.ui.activity.MainAcvity;
 import com.example.music.ui.custom.PlayerView;
+import com.example.music.utils.NotificationUtils;
+import com.example.music.utils.imageutils.GildeCilcleImageUtils;
 
 import java.io.IOException;
 import java.util.Timer;
@@ -40,6 +52,7 @@ public class PlayServer extends Service {
     private int state=2;
     //广播
     private MyBroadcastReceiver myBroadcastReceiver;
+
 
     @Override
     public void onCreate() {
@@ -66,7 +79,9 @@ public class PlayServer extends Service {
     @Override
     public boolean onUnbind(Intent intent) {
         mediaPlayer.pause();
-        timer.cancel();
+        if(timer!=null){
+            timer.cancel();
+        }
         return super.onUnbind(intent);
     }
 
@@ -76,47 +91,6 @@ public class PlayServer extends Service {
             mediaPlayer = new MediaPlayer();
             i = 0;
         }
-
-        mediaPlayer.setOnInfoListener(new MediaPlayer.OnInfoListener() {
-            @Override
-            public boolean onInfo(MediaPlayer mp, int what, int extra) {
-                LogUtils.e("onInfo"+what,extra);
-                return false;
-            }
-        });
-
-        mediaPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
-            @Override
-            public boolean onError(MediaPlayer mp, int what, int extra) {
-                LogUtils.e("onError"+what,extra);
-                return false;
-            }
-        });
-
-        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mp) {
-                LogUtils.e("onCompletion");
-            }
-        });
-
-        mediaPlayer.setOnBufferingUpdateListener(new MediaPlayer.OnBufferingUpdateListener() {
-            @Override
-            public void onBufferingUpdate(MediaPlayer mp, int percent) {
-                LogUtils.e("onBufferingUpdate"+percent);
-            }
-        });
-
-
-       mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-           @Override
-           public void onPrepared(MediaPlayer mp) {
-               LogUtils.e("onPrepared");
-           }
-       });
-
-
-
     }
 
 
@@ -159,7 +133,7 @@ public class PlayServer extends Service {
                     starttime();
                 }
             }else{
-                state=2;
+                state=STOP;
             }
             return  state;
         }
@@ -167,7 +141,7 @@ public class PlayServer extends Service {
         @Override
         public int get_play_state() {
             if(mediaPlayer==null){
-                state=2;
+                state=STOP;
             }
             return state;
         }
@@ -200,6 +174,7 @@ public class PlayServer extends Service {
                     intent.setAction("com.example.music.pro");
                     intent.putExtra("pro",i);
                     sendOrderedBroadcast(intent,null);
+
             }
         }, 0, 1000);
     }

@@ -1,24 +1,35 @@
 package com.example.music.ui.activity;
 
 import android.content.Intent;
+import android.os.Environment;
 import android.widget.Toast;
 
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.bumptech.glide.Glide;
 import com.example.music.BR;
 import com.example.music.R;
 import com.example.music.databinding.BangMeauActivityBinding;
+import com.example.music.http.Api;
+import com.example.music.http.ApiResponse;
+import com.example.music.http.ApiSubscribe;
 import com.example.music.model.Bang_Music_list;
 import com.example.music.model.BaseRespon;
+import com.example.music.model.DownLoadInfo;
+import com.example.music.model.DownlodMusciInfo;
 import com.example.music.model.PlayingMusicBeens;
+import com.example.music.server.TaskDispatcher;
 import com.example.music.ui.adapter.BaseAdapter;
 import com.example.music.ui.base.BaseActivity;
+import com.example.music.utils.greendao.DaoUtils;
 import com.example.music.viewmodel.Bang_Meau_Vm;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Create By morningsun  on 2019-12-05
@@ -55,6 +66,26 @@ public class Bang_Meau_Activity extends BaseActivity<BangMeauActivityBinding,Ban
                     BaseAdapter<Bang_Music_list.MusicListBean> beanBaseAdapter=new BaseAdapter<>(getBaseContext(),listBaseRespon.getData().getMusicList(),R.layout.music_item_apt, BR.bangMusicList);
 //                    final Music_ItemAdapter music_itemAdapter = new Music_ItemAdapter(getBaseContext(), listBaseRespon.getData().getMusicList());
                     bangMeauActivityBinding.setBangMeauAdapter(beanBaseAdapter);
+                    beanBaseAdapter.setOnDownLoad(new BaseAdapter.OnDownLoad() {
+                        @Override
+                        public void OnDownLoadListener(int pos) {
+                            Api.getInstance().iRetrofit.downloadMuisc(listBaseRespon.getData().getMusicList().get(pos).getMusicrid().split("_")[1],
+                                    "kuwo","id",1,"XMLHttpRequest")
+                                    .compose(ApiSubscribe.<BaseRespon<List<DownlodMusciInfo>>>io_main())
+                                    .subscribe(new ApiResponse<BaseRespon<List<DownlodMusciInfo>>>() {
+                                        @Override
+                                        public void success(BaseRespon<List<DownlodMusciInfo>> data) {
+                                            DownLoadInfo downLoadInfo=new DownLoadInfo();
+                                            downLoadInfo.setUrl(data.getData().get(0).getUrl());
+                                            downLoadInfo.setFilename(data.getData().get(0).getAuthor()+"-"+data.getData().get(0).getTitle()+".mp3");
+                                            downLoadInfo.setFilepath(Environment.getExternalStorageDirectory().getPath() + File.separator + "mv");
+
+                                            TaskDispatcher.getInstance().enqueue(new DaoUtils(getContext()).insertDownload(downLoadInfo));
+                                        }
+
+                                    });
+                        }
+                    });
                     beanBaseAdapter.setOnItemClick(new BaseAdapter.OnItemClick() {
                         @Override
                         public void OnItemClickListener(int pos) {

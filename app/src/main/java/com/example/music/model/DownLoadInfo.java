@@ -2,12 +2,14 @@ package com.example.music.model;
 
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.Id;
 
 /**
  * Create By morningsun  on 2020-06-17
  */
 @Entity
 public class DownLoadInfo {
+    @Id(autoincrement = true)
     private Long id;
     private String filename;
     private String filepath;

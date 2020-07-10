@@ -24,7 +24,6 @@ import java.lang.reflect.Type;
 import io.reactivex.disposables.Disposable;
 
 public abstract class BaseActivity<DB extends ViewDataBinding , VM extends BaseVM> extends AppCompatActivity {
-    private Disposable dis;
     private ACache aCache;
     private VM vm;
     @Override
@@ -80,17 +79,4 @@ public abstract class BaseActivity<DB extends ViewDataBinding , VM extends BaseV
        return aCache;
     }
 
-    public void setDid(Disposable dis){
-        this.dis=dis;
-    }
-
-
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if(dis!=null&&!dis.isDisposed()){
-            dis.dispose();
-        }
-    }
 }

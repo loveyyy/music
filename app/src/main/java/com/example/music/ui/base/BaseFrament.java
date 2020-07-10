@@ -16,7 +16,6 @@ import com.example.music.utils.ACache;
 import io.reactivex.disposables.Disposable;
 
 public abstract  class BaseFrament<DB extends ViewDataBinding> extends Fragment {
-    private Disposable dis;
     private boolean hasCreateView;
     private boolean isFragmentVisible;
     private Context mContext;
@@ -79,26 +78,10 @@ public abstract  class BaseFrament<DB extends ViewDataBinding> extends Fragment 
         isFragmentVisible = false;
     }
     protected void onFragmentVisibleChange(boolean isVisible) {
-        if(!isVisible){
-            if(dis!=null&&!dis.isDisposed()){
-                dis.dispose();
-            }
-        }
+
     }
     public ACache getaCache(){
         return aCache;
     }
-    public void  set_dis(Disposable dis){
-        this.dis=dis;
-    }
 
-
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if(dis!=null&&!dis.isDisposed()){
-            dis.dispose();
-        }
-    }
 }

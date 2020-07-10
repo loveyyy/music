@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FFFFFFFF">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/dp_20"
+            android:layout_height="@dimen/dp_40">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <AutoCompleteTextView
+                android:id="@+id/et_search"
+                android:layout_width="@dimen/dp_260"
+                android:layout_height="@dimen/dp_40"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/bord_corn"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:hint="请输入歌曲名称"/>
+
+            <ImageView
+                android:id="@+id/iv_search_music"
+                android:layout_width="@dimen/dp_40"
+                android:layout_height="@dimen/dp_40"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/dp_10"
+                android:layout_centerVertical="true"
+                android:background="@drawable/ic_search"/>
+
+        </RelativeLayout>
+
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcv_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_10"/>
+
+    </LinearLayout>
+</layout>

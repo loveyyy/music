@@ -6,6 +6,7 @@ import com.example.music.BuildConfig;
 import com.example.music.model.DaoMaster;
 import com.example.music.model.DaoSession;
 
+import org.greenrobot.greendao.database.Database;
 import org.greenrobot.greendao.query.QueryBuilder;
 
 /**
@@ -13,14 +14,16 @@ import org.greenrobot.greendao.query.QueryBuilder;
  */
 public class DaoManager {
     private static final String DB_NAME = "music_list";
+    private static final String DB_NAME1 = "DOWN_LOAD_INFO";
 
     private Context context;
 
-    //多线程中要被共享的使用volatile关键字修饰
     private volatile static DaoManager manager = new DaoManager();
     private static DaoMaster sDaoMaster;
+    private static DaoMaster sDaoMaster1;
     private static DaoMaster.DevOpenHelper sHelper;
     private static DaoSession sDaoSession;
+    private static DaoSession sDaoSession1;
 
     /**
      * 单例模式获得操作数据库对象
@@ -52,10 +55,26 @@ public class DaoManager {
         if (sDaoMaster == null)
         {
             DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(context, DB_NAME, null);
-            sDaoMaster = new DaoMaster(helper.getWritableDatabase());
+            sDaoMaster = new DaoMaster(helper.getWritableDb());
         }
         return sDaoMaster;
     }
+
+    /**
+     * 判断是否有存在数据库，如果没有则创建
+     *
+     * @return
+     */
+    public DaoMaster getDaoMaster1()
+    {
+        if (sDaoMaster1 == null)
+        {
+            DaoMaster.DevOpenHelper helper1 = new DaoMaster.DevOpenHelper(context, DB_NAME1, null);
+            sDaoMaster1 = new DaoMaster(helper1.getWritableDatabase());
+        }
+        return sDaoMaster1;
+    }
+
 
     /**
      * 完成对数据库的添加、删除、修改、查询操作，仅仅是一个接口
@@ -74,6 +93,25 @@ public class DaoManager {
         }
         return sDaoSession;
     }
+
+    /**
+     * 完成对数据库的添加、删除、修改、查询操作，仅仅是一个接口
+     *
+     * @return
+     */
+    public DaoSession getDaoSession1()
+    {
+        if (sDaoSession1 == null)
+        {
+            if (sDaoMaster1 == null)
+            {
+                sDaoMaster1 = getDaoMaster1();
+            }
+            sDaoSession1 = sDaoMaster1.newSession();
+        }
+        return sDaoSession1;
+    }
+
 
     /**
      * 打开输出日志，默认关闭

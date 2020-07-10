@@ -1,24 +1,23 @@
 package com.example.music.Interface;
 
-import com.example.music.server.DownloadTask;
+import com.example.music.model.DownLoadInfo;
 
 /**
  * Create By morningsun  on 2020-06-12
  */
 public interface OnDownLoadListener {
 
-    void OnIDEL(DownloadTask downloadTask);
+    void onPending(DownLoadInfo downLoadInfo);
 
-    void onPending(DownloadTask downloadTask);
+    void OnLOADING(DownLoadInfo downLoadInfo);
 
-    void OnLOADING(DownloadTask downloadTask);
+    void onProgree(DownLoadInfo downLoadInfo, int start, int size);
 
-    void onProgree(DownloadTask downloadTask, int start, int size);
+    void onStop(DownLoadInfo downLoadInfo, int start, int size);
 
-    void onStop(DownloadTask downloadTask, int start, int size);
+    void onComplet(DownLoadInfo downLoadInfo);
 
-    void onComplet(DownloadTask downloadTask);
+    void onFailed(DownLoadInfo downLoadInfo);
 
-    void onFailed(DownloadTask downloadTask, String message);
 
 }

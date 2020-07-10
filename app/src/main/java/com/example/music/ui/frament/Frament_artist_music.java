@@ -2,6 +2,7 @@ package com.example.music.ui.frament;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,21 +16,28 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.music.BR;
 import com.example.music.Interface.PlayMusic;
 import com.example.music.R;
 import com.example.music.databinding.FramentArtistMusicBinding;
+import com.example.music.http.Api;
+import com.example.music.http.ApiResponse;
+import com.example.music.http.ApiSubscribe;
 import com.example.music.model.Artist_Music;
-import com.example.music.model.Artist_list;
-import com.example.music.model.Bang_Music_list;
 import com.example.music.model.BaseRespon;
+import com.example.music.model.DownLoadInfo;
+import com.example.music.model.DownlodMusciInfo;
 import com.example.music.model.PlayingMusicBeens;
+import com.example.music.server.TaskDispatcher;
 import com.example.music.ui.activity.Singer_Activity;
-import com.example.music.ui.adapter.Frament_artist_music_Apt;
-import com.example.music.viewmodel.Frament_Rank_VM;
+import com.example.music.ui.adapter.BaseAdapter;
+import com.example.music.utils.greendao.DaoUtils;
 import com.example.music.viewmodel.Singer_VM;
 import com.jaeger.library.StatusBarUtil;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Create By morningsun  on 2019-12-07
@@ -55,9 +63,33 @@ public class Frament_artist_music extends Fragment {
             @Override
             public void onChanged(final BaseRespon<Artist_Music> artist_listBaseRespon) {
                 framentArtistMusicBinding.rcvArtistMusic.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL,false));
-                Frament_artist_music_Apt frament_artist_music_apt=new Frament_artist_music_Apt(getContext(),artist_listBaseRespon.getData().getList());
-                framentArtistMusicBinding.rcvArtistMusic.setAdapter(frament_artist_music_apt);
-                frament_artist_music_apt.setOnItemClick(new Frament_artist_music_Apt.OnItemClick() {
+                BaseAdapter baseAdapter =new BaseAdapter<>(getContext(),artist_listBaseRespon.getData().getList(), R.layout.frament_artist_music_apt,BR.artistmusic);
+//                Frament_artist_music_Apt frament_artist_music_apt=new Frament_artist_music_Apt(getContext(),artist_listBaseRespon.getData().getList());
+                framentArtistMusicBinding.rcvArtistMusic.setAdapter(baseAdapter);
+
+                baseAdapter.setOnDownLoad(new BaseAdapter.OnDownLoad() {
+                    @Override
+                    public void OnDownLoadListener(int pos) {
+                        //查询链接
+                        Api.getInstance().iRetrofit.downloadMuisc(artist_listBaseRespon.getData().getList().get(pos).getMusicrid().split("_")[1],
+                                "kuwo","id",1,"XMLHttpRequest")
+                                .compose(ApiSubscribe.<BaseRespon<List<DownlodMusciInfo>>>io_main())
+                                .subscribe(new ApiResponse<BaseRespon<List<DownlodMusciInfo>>>() {
+                                    @Override
+                                    public void success(BaseRespon<List<DownlodMusciInfo>> data) {
+                                        DownLoadInfo downLoadInfo=new DownLoadInfo();
+                                        downLoadInfo.setUrl(data.getData().get(0).getUrl());
+                                        downLoadInfo.setFilename(data.getData().get(0).getAuthor()+"-"+data.getData().get(0).getTitle()+".mp3");
+                                        downLoadInfo.setFilepath(Environment.getExternalStorageDirectory().getPath() + File.separator + "mv");
+
+                                        TaskDispatcher.getInstance().enqueue(new DaoUtils(getContext()).insertDownload(downLoadInfo));
+                                    }
+
+                                });
+                    }
+                });
+
+                baseAdapter.setOnItemClick(new BaseAdapter.OnItemClick() {
                     @Override
                     public void OnItemClickListener(int pos) {
                         ArrayList<PlayingMusicBeens> playingMusicBeens = new ArrayList<>();

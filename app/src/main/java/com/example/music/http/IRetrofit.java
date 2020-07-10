@@ -24,10 +24,12 @@ import com.example.music.model.BaseRespon;
 import com.example.music.model.Music_list;
 import com.example.music.model.Rec_List;
 import com.example.music.model.Rec_List_Info;
+import com.example.music.model.Search;
 
 import java.util.List;
 
 import io.reactivex.Observable;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.http.*;
 
@@ -133,11 +135,29 @@ public interface IRetrofit {
                                       @Query("br")String br, @Query("from")String from,
                                       @Query("t")String t,@Query("reqId")String reqId);
 
+    //播放mv
+    @GET("/url")
+    Observable<ResponseBody> mv_info(@Query("format")String format, @Query("rid")String rid,
+                                    @Query("response")String response, @Query("type")String type,
+                                    @Query("t")String t, @Query("reqId")String reqId);
+
 
 
     //获取歌词
     @GET("http://m.kuwo.cn/newh5/singles/songinfoandlrc")
     Observable<BaseRespon<LrcBeen>> music_lrc(@Query("musicId")String musicId, @Query("reqId")String reqId);
+
+    //搜索音乐
+    @GET("/api/www/search/searchMusicBykeyWord")
+    Observable<BaseRespon<Search>> searchMusic(@Query("key")String key, @Query("pn")String pn,
+                                          @Query("rn")String rn, @Query("reqId")String reqId,
+                                          @Header("Referer")String referer);
+
+    //搜索关键字
+    @GET("/api/www/search/searchKey")
+    Observable<BaseRespon<List<String>>> searchKey(@Query("key")String key,@Query("reqId")String reqId,
+                                               @Header("Referer")String referer);
+
 
 
     //获取歌曲下载地址

@@ -19,38 +19,53 @@
     <application
         android:name=".ui.MyApplication"
         android:allowBackup="true"
-        android:icon="@drawable/listen"
+        android:icon="@drawable/ic_icon"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/ic_icon"
+        android:usesCleartextTraffic="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".ui.activity.WelcomeActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name=".server.PlayServer"
+        <service android:name=".server.PlayMusicServer"
             android:exported="true"
             android:enabled="true"
             tools:ignore="InnerclassSeparator" />
+        <service android:name=".server.PlayMvServer"/>
         <activity android:name=".ui.activity.MainAcvity"
+            android:launchMode="singleTask"
             tools:ignore="InnerclassSeparator" />
         <activity android:name=".ui.activity.Bang_Meau_Activity"
+            android:launchMode="singleTask"
             tools:ignore="InnerclassSeparator" />
         <activity android:name=".ui.activity.TextLrc"
+            android:launchMode="singleTask"
             tools:ignore="InnerclassSeparator" />
-        <activity android:name=".ui.activity.Singer_Activity"/>
-        <activity android:name=".ui.activity.Rec_List_Info_Activity"/>
+        <activity android:name=".ui.activity.Singer_Activity"
+            android:launchMode="singleTask"/>
+        <activity android:name=".ui.activity.Rec_List_Info_Activity"
+            android:launchMode="singleTask"/>
+        <activity android:name=".ui.activity.DownloadCenterActivity"
+            android:launchMode="singleTask"/>
+        <activity android:name=".ui.activity.SearchActivity"
+            android:launchMode="singleTask"/>
+        <activity android:name=".ui.activity.MvPlayActivity"
+            android:launchMode="singleTask"
+            android:configChanges="keyboardHidden|screenSize|orientation"/>
         <receiver
             android:name="com.example.music.server.NotificationReceiver"
             android:exported="true" >
             <intent-filter>
-                <action android:name="play" /><!-- 定制play广播 -->
-                <action android:name="last" /><!-- 定制last广播 -->
-                <action android:name="next" /><!-- ...... -->
+                <action android:name="play" />
+                <action android:name="last" />
+                <action android:name="next" />
+                <action android:name="main" />
+                <action android:name="close" />
             </intent-filter>
         </receiver>
     </application>

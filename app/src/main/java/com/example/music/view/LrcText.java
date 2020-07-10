@@ -1,10 +1,7 @@
 package com.example.music.view;
 
 import android.annotation.SuppressLint;
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -13,17 +10,19 @@ import android.graphics.Typeface;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
-import com.example.music.model.LrcBeen;
 import com.example.music.R;
+import com.example.music.model.LrcBeen;
 import com.example.music.utils.PlayController;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -32,7 +31,7 @@ import java.util.List;
  */
 
 @SuppressLint("AppCompatCustomView")
-public class LrcText extends TextView implements View.OnTouchListener{
+public class LrcText extends TextView implements View.OnTouchListener,GestureDetector.OnGestureListener{
     private List<LrcBeen.LrclistBean> dataBean;
     // 标记当前行
     private int currentLine=0;
@@ -60,7 +59,6 @@ public class LrcText extends TextView implements View.OnTouchListener{
     private GestureDetector detector;
     private PlayController playController;
     private Context context;
-    private MyBroadcastReceiver myBroadcastReceiver;
 
     @SuppressLint("HandlerLeak")
     private Handler handler = new Handler() {
@@ -75,7 +73,6 @@ public class LrcText extends TextView implements View.OnTouchListener{
                             currentLine=0;
                             handler.removeCallbacksAndMessages(null);
                             playController.PlayModel();
-                            Toast.makeText(getContext(),"播放完成",Toast.LENGTH_SHORT).show();
                         }else{
                             currentLine++;
                             invalidate(); // 刷新,会再次调用onDraw方法
@@ -104,19 +101,15 @@ public class LrcText extends TextView implements View.OnTouchListener{
 
     public LrcText(Context context, AttributeSet attrs)  {
         super(context, attrs);
-        playController=PlayController.getInstance(getContext());
-
-        myBroadcastReceiver=new MyBroadcastReceiver();
-        IntentFilter filter = new IntentFilter();
-        filter.addAction("com.example.music.pro");
-        context.registerReceiver(myBroadcastReceiver, filter);
+        playController=PlayController.getInstance();
+        EventBus.getDefault().register(this);
 
         this.context =context;
         super.setOnTouchListener(this);
         super.setFocusable(true);
         super.setClickable(true);
         super.setLongClickable(true);
-        detector = new GestureDetector(getContext(), mSimpleOnGestureListener);
+        detector = new GestureDetector(getContext(), this);
         detector.setIsLongpressEnabled(false);
 
         currentPaint = new Paint();
@@ -210,13 +203,9 @@ public class LrcText extends TextView implements View.OnTouchListener{
         handler.removeCallbacksAndMessages(null);
         IsDrawLine=false;
         IsSrcoll=false;
-        currentLine=0;
-
-//        if(playController.get_pro()>=Double.valueOf(dataBean.get(currentLine+1).getTime())){
-//            handler.sendEmptyMessage(10);
-//        }else{
-//            handler.sendEmptyMessage(11);
-//        }
+        progree=playController.getPlayPro();
+        currentLine=findShowLine(progree);
+        handler.sendEmptyMessage(10);
     }
 
 
@@ -245,9 +234,39 @@ public class LrcText extends TextView implements View.OnTouchListener{
     public boolean onTouch(View v, MotionEvent event) {
         return detector.onTouchEvent(event);
     }
-    private GestureDetector.SimpleOnGestureListener mSimpleOnGestureListener = new GestureDetector.SimpleOnGestureListener() {
-        @Override
-        public boolean onDown(MotionEvent e) {
+
+
+    @Subscribe(threadMode = ThreadMode.BACKGROUND,sticky = true)
+    public void GetMusicPro(Integer a){
+        progree=a;
+        if(IsDrawLine){
+            handler.sendEmptyMessage(12);
+        }
+        currentLine=findShowLine(progree);
+        handler.sendEmptyMessage(10);
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        progree=0;
+        currentLine=0;
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    public boolean onDown(MotionEvent e) {
+        return false;
+    }
+
+    @Override
+    public void onShowPress(MotionEvent e) {
+
+    }
+
+    @Override
+    public boolean onSingleTapUp(MotionEvent e) {
+        if(IsDrawLine){
             float x = e.getX();
             float y = e.getY();
             if(x>0&&x<30&&y>getHeight()/2-20&&y<getHeight()/2+20){
@@ -258,79 +277,34 @@ public class LrcText extends TextView implements View.OnTouchListener{
                 }else if(offset<0){
                     currentLine= (int) (currentLine+(Math.floor(Math.abs(offset))/getResources().getDimensionPixelSize(R.dimen.dp_30)));
                 }
-                playController.set_pro((Double.valueOf(dataBean.get(currentLine).getTime()).intValue()));
+                playController.setPro((Double.valueOf(dataBean.get(currentLine).getTime()).intValue()));
                 invalidate();
                 return true;
-            }else{
-                return false;
             }
-
         }
-
-        @Override
-        public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-                offset += -distanceY;
-                if(dataBean!=null){
-                    IsDrawLine=true;
-                    if(offset<=getResources().getDimensionPixelSize(R.dimen.dp_30)*(dataBean.size()-2)){
-                        IsSrcoll=true;
-                    }
-                }
-                invalidate();
-                return true;
-        }
-
-        @Override
-        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-//            if(offset>0){
-//                currentLine= (int) (currentLine-(Math.ceil(Math.abs(offset))/getResources().getDimensionPixelSize(R.dimen.dp_30)));
-//            }else if(offset<0){
-//                currentLine= (int) (currentLine+(Math.floor(Math.abs(offset))/getResources().getDimensionPixelSize(R.dimen.dp_30)));
-//            }
-//            if(currentLine<dataBean.size()){
-//                invalidate();
-//                return true;
-//            }else{
-                return  false;
-//            }
-        }
-
-        @Override
-        public boolean onSingleTapConfirmed(MotionEvent e) {
-            return true;
-        }
-    };
-
-    public class MyBroadcastReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            //这里获取的是播放的进度
-            progree=intent.getIntExtra("pro",0);
-            if(IsDrawLine){
-               handler.sendEmptyMessage(12);
-            }
-            currentLine=findShowLine(progree);
-            handler.sendEmptyMessage(10);
-//            if(currentLine==dataBean.size()-1){
-//                handler.sendEmptyMessage(10);
-//            }else{
-//                if(progree>=Double.valueOf(dataBean.get(currentLine+1).getTime())){
-//
-//                }else{
-//                    handler.sendEmptyMessage(11);
-//                }
-//            }
-
-        }
+        return false;
     }
 
     @Override
-    protected void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-        progree=0;
-        currentLine=0;
-        if(myBroadcastReceiver!=null){
-            context.unregisterReceiver(myBroadcastReceiver);
+    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+        offset += -distanceY;
+        if(dataBean!=null){
+            IsDrawLine=true;
+            if(offset<=getResources().getDimensionPixelSize(R.dimen.dp_30)*(dataBean.size()-2)){
+                IsSrcoll=true;
+            }
         }
+        invalidate();
+        return true;
+    }
+
+    @Override
+    public void onLongPress(MotionEvent e) {
+
+    }
+
+    @Override
+    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+        return false;
     }
 }

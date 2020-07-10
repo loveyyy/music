@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 
+import com.example.music.model.DaoMaster;
 import com.example.music.model.DownLoadInfo;
 import com.example.music.model.PlayingMusicBeens;
 import com.example.music.model.PlayingMusicBeensDao;
@@ -31,11 +32,8 @@ public class DaoUtils {
         return flag;
     }
 
-    public boolean insertDownload(DownLoadInfo downLoadInfo){
-        boolean flag = false;
-        flag = mManager.getDaoSession().getDownLoadInfoDao().insert(downLoadInfo) == -1 ? false : true;
-        Log.i(TAG, "insert Meizi :" + flag + "-->" + downLoadInfo.toString());
-        return flag;
+    public long insertDownload(DownLoadInfo downLoadInfo){
+        return mManager.getDaoSession1().getDownLoadInfoDao().insert(downLoadInfo);
     }
 
     /**
@@ -79,10 +77,10 @@ public class DaoUtils {
      * 修改一条数据
      * @return
      */
-    public boolean updateDownload(DownLoadInfo downLoadInfo){
+    public synchronized boolean updateDownload(DownLoadInfo downLoadInfo){
         boolean flag = false;
         try {
-            mManager.getDaoSession().update(downLoadInfo);
+            mManager.getDaoSession1().update(downLoadInfo);
             flag = true;
         }catch (Exception e){
             e.printStackTrace();
@@ -142,6 +140,16 @@ public class DaoUtils {
     public PlayingMusicBeens queryMessageById(long key){
         return mManager.getDaoSession().load(PlayingMusicBeens.class, key);
     }
+
+    /**
+     * 根据主键id查询记录
+     * @param key
+     * @return
+     */
+    public synchronized DownLoadInfo queryDownlodInfo(long key){
+        return mManager.getDaoSession1().load(DownLoadInfo.class, key);
+    }
+
 
     /**
      * 使用native sql进行查询操作

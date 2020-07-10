@@ -23,14 +23,14 @@
             app:imageCilcleUrl="@{rec_list_info.pic}" />
 
         <TextView
-            android:layout_width="@dimen/dp_114"
+            android:layout_width="@dimen/dp_80"
             android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/dp_10"
             android:gravity="center|start"
             android:text="@{rec_list_info.name}" />
 
         <TextView
-            android:layout_width="@dimen/dp_114"
+            android:layout_width="@dimen/dp_80"
             android:layout_height="match_parent"
             android:gravity="center|start"
             android:text="@{rec_list_info.artist}" />
@@ -40,6 +40,15 @@
             android:layout_height="match_parent"
             android:gravity="center|start"
             android:text="@{String.valueOf(rec_list_info.duration)}" />
+
+        <ImageButton
+            android:id="@+id/btn_download"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_down"
+            android:layout_marginLeft="@dimen/dp_20"
+            android:layout_marginRight="@dimen/dp_20"
+            android:layout_gravity="center"/>
 
     </LinearLayout>
 </layout>

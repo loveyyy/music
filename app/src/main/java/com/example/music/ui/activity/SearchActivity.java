@@ -1,0 +1,156 @@
+package com.example.music.ui.activity;
+
+import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+
+import androidx.annotation.RequiresApi;
+import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.blankj.utilcode.util.LogUtils;
+import com.example.music.BR;
+import com.example.music.R;
+import com.example.music.databinding.SearchactivityBinding;
+import com.example.music.model.BaseRespon;
+import com.example.music.model.Search;
+import com.example.music.ui.adapter.BaseAdapter;
+import com.example.music.ui.base.BaseActivity;
+import com.example.music.viewmodel.Search_VM;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Create By morningsun  on 2020-06-24
+ */
+public class SearchActivity extends BaseActivity<SearchactivityBinding, Search_VM> {
+    private SearchactivityBinding searchactivityBinding;
+    private Search_VM search_vm;
+    private PopupWindow popupWindow;
+
+    @Override
+    public int getLayout() {
+        return R.layout.searchactivity;
+    }
+
+    @Override
+    public boolean isLight() {
+        return false;
+    }
+
+    @Override
+    protected void initView(SearchactivityBinding bindView) {
+        searchactivityBinding=bindView;
+    }
+
+    @Override
+    protected void setVM(Search_VM vm) {
+        search_vm=vm;
+
+        search_vm.baseResponMutableLiveData1.observe(this, new Observer<BaseRespon<List<String>>>() {
+            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+            @Override
+            public void onChanged(BaseRespon<List<String>> listBaseRespon) {
+                final List<String> strings=new ArrayList<>();
+                for(String a:listBaseRespon.getData()){
+                    if(a.contains("\r\n")){
+                        strings.add(a.split("\r\n")[0].split("=")[1]);
+                    }else{
+                        strings.add(a);
+                    }
+
+                }
+                searchactivityBinding.etSearch.setAdapter(new ArrayAdapter<String>(getContext(),R.layout.support_simple_spinner_dropdown_item,strings));
+                searchactivityBinding.etSearch.setThreshold(0);
+                searchactivityBinding.etSearch.showDropDown();
+
+                searchactivityBinding.etSearch.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        searchactivityBinding.etSearch.setText(strings.get(position));
+                        search_vm.searchMusic(strings.get(position));
+                    }
+                });
+
+                searchactivityBinding.etSearch.setOnDismissListener(new AutoCompleteTextView.OnDismissListener() {
+                    @Override
+                    public void onDismiss() {
+                        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                        View v = getWindow().peekDecorView();
+                        if (null != v) {
+                            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                        }
+                    }
+                });
+
+            }
+        });
+
+        search_vm.baseResponMutableLiveData.observe(this, new Observer<BaseRespon<Search>>() {
+            @Override
+            public void onChanged(final BaseRespon<Search> listBaseRespon) {
+                searchactivityBinding.rcvSearch.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL,false));
+                BaseAdapter<Search.ListBean> baseAdapter=new BaseAdapter<>(getContext(),listBaseRespon.getData().getList(),R.layout.searchapt, BR.searchapt);
+                searchactivityBinding.rcvSearch.setAdapter(baseAdapter);
+                baseAdapter.setOnItemClick(new BaseAdapter.OnItemClick() {
+                    @Override
+                    public void OnItemClickListener(int pos) {
+
+                    }
+                });
+            }
+        });
+    }
+
+    @Override
+    protected void setListener() {
+
+        searchactivityBinding.ivSearchMusic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                 search_vm.searchMusic(searchactivityBinding.etSearch.getText().toString());
+            }
+        });
+
+
+        searchactivityBinding.etSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                    search_vm.searchKey(s.toString());
+            }
+        });
+    }
+
+    @Override
+    protected void initData() {
+        searchactivityBinding.etSearch.setFocusable(true);
+        searchactivityBinding.etSearch.setFocusableInTouchMode(true);
+        searchactivityBinding.etSearch.requestFocus();
+        search_vm.searchKey("");
+    }
+
+
+}

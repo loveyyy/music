@@ -1,21 +1,16 @@
 package com.example.music.server;
 
-import androidx.core.app.NotificationCompat;
-
 import com.blankj.utilcode.util.LogUtils;
-import com.example.music.Interface.OnDownLoadListener;
 import com.example.music.http.Api;
-import com.example.music.http.ApiResponse;
 import com.example.music.http.ApiSubscribe;
 import com.example.music.model.DownLoadInfo;
+import com.example.music.ui.MyApplication;
+import com.example.music.utils.greendao.DaoUtils;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
@@ -24,18 +19,24 @@ import okhttp3.ResponseBody;
 /**
  * Create By morningsun  on 2020-06-11
  */
-public class DownloadTask implements Runnable {
-    //下载任务状态
-    private int state;
+public class DownloadTask extends Thread {
+    //任务标记
     private Long Tag;
+    //任务信息
     private DownLoadInfo downLoadInfo;
+    //是否停止
     private boolean Stop=false;
-    private int downloadLength;
-    //下载任务进度监听器
-    private OnDownLoadListener onDownLoadListener;
-    private DownloadTask mySelf;
+    //当前任务下载起点
+    private int start;
+    //当前任务下载终点
+    private int end;
+    //获取任务index
+    private int index;
+    //读线程下 下载文件目录
+    private  String filDir ;
+    //数据库操作类
+    private DaoUtils daoUtils;
 
-    public static final int IDLE=0;
     public static final int PENDING=1;
     public static final int LOADING = 2;
     public static final int PROGREE = 3;
@@ -49,55 +50,34 @@ public class DownloadTask implements Runnable {
     }
 
 
-    public DownloadTask() {
-        state = IDLE;
-        mySelf = this;
-        if(onDownLoadListener!=null){
-            onDownLoadListener.OnIDEL(this);
-        }
+    public DownloadTask(int start,int end,int index,long downLoadId) {
+        filDir= MyApplication.getContext().getExternalFilesDir(null).getAbsolutePath();
+        daoUtils=new DaoUtils(MyApplication.getContext());
+        downLoadInfo=daoUtils.queryDownlodInfo(downLoadId);
+        this.end=end;
+        this.start=start;
+        this.index=index;
     }
 
     public void start() {
-        if (state == LOADING) {
-            return;
-        }
-        state = LOADING;
-        downLoadInfo.setDownloadsize(downloadLength);
         downLoadInfo.setState(LOADING);
-        if(onDownLoadListener!=null){
-            onDownLoadListener.OnLOADING(this);
-        }
-
-        File fileDir=new File(downLoadInfo.getFilepath());
-        if(!fileDir.exists()){
-            fileDir.mkdirs();
-        }
-
-        File file = new File(downLoadInfo.getFilepath(), downLoadInfo.getFilename());
-        if(file.exists()){
-            if(file.length()==downLoadInfo.getSize()){
-                file.delete();
-            }else{
-                downloadLength = (int) file.length();
-            }
-        }else{
+        daoUtils.updateDownload(downLoadInfo);
+        //文件存在  断点下载
+        File file = new File(filDir,downLoadInfo.getFilename().split("\\.")[0]+"."+index+"."+downLoadInfo.getFilename().split("\\.")[1]);
+        if(!file.exists()){
             try {
-                URL url = new URL(downLoadInfo.getUrl());
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                conn.setConnectTimeout(5000);
-                conn.setRequestMethod("GET");
-                downLoadInfo.setSize(conn.getContentLength());
-                downloadLength=0;
-            } catch (Exception e) {
+                file.createNewFile();
+            } catch (IOException e) {
                 e.printStackTrace();
             }
+        }else{
+            start = (int) file.length();
         }
         download();
     }
 
     private void download() {
-
-        Api.getInstance().iRetrofit.download(downLoadInfo.getUrl(),"bytes=" + downloadLength + "-")
+        Api.getInstance().iRetrofit.download(downLoadInfo.getUrl(),"bytes=" + start + "-" + end)
                 .compose(ApiSubscribe.<ResponseBody>io_io())
                 .subscribe(new Observer<ResponseBody>() {
                     @Override
@@ -108,7 +88,7 @@ public class DownloadTask implements Runnable {
                     @Override
                     public void onNext(ResponseBody responseBody) {
                         try {
-                            File file = new File(downLoadInfo.getFilepath(), downLoadInfo.getFilename());
+                            File file = new File(filDir, downLoadInfo.getFilename().split("\\.")[0]+"."+index+"."+downLoadInfo.getFilename().split("\\.")[1]);
                             InputStream is = null;
                             FileOutputStream fileOutputStream = null;
                             try {
@@ -119,43 +99,37 @@ public class DownloadTask implements Runnable {
                                 while ((len = is.read(buffer)) != -1) {
                                     if (!Stop) {
                                         fileOutputStream.write(buffer, 0, len);
-                                        downloadLength += len;
-                                        downLoadInfo.setDownloadsize(downloadLength);
+                                        //查询数据库
                                         downLoadInfo.setState(PROGREE);
-                                        if (onDownLoadListener != null) {
-                                            onDownLoadListener.onProgree(DownloadTask.this, downloadLength, downLoadInfo.getSize());
-                                        }
+                                        downLoadInfo.setDownloadsize(downLoadInfo.getDownloadsize()+len);
+                                        daoUtils.updateDownload(downLoadInfo);
                                     } else {
                                         is.close();
                                         fileOutputStream.close();
-                                        downLoadInfo.setDownloadsize(downloadLength);
-                                        downLoadInfo.setState(STOP);
-                                        if (onDownLoadListener != null) {
-                                            onDownLoadListener.onStop(DownloadTask.this, downloadLength, downLoadInfo.getSize());
-                                        }
+                                        //更新数据库
+                                        downLoadInfo.setState(PROGREE);
+                                        downLoadInfo.setDownloadsize(downLoadInfo.getDownloadsize()+len);
+                                        daoUtils.updateDownload(downLoadInfo);
                                         return;
                                     }
                                 }
-                                if (onDownLoadListener != null) {
-                                    onDownLoadListener.onComplet(DownloadTask.this);
-                                }
-                                downLoadInfo.setDownloadsize(downloadLength);
+                                DownLoadInfo downLoadInfo1=daoUtils.queryDownlodInfo(downLoadInfo.getId());
                                 downLoadInfo.setState(FINISHED);
-                                mySelf.state = FINISHED;
-                                TaskDispatcher.getInstance().finished(DownloadTask.this);
+                                downLoadInfo.setDownloadsize(downLoadInfo1.getSize());
+                                daoUtils.updateDownload(downLoadInfo);
                                 fileOutputStream.flush();
                             } finally {
                                 //关闭IO流
                                 is.close();
+
                             }
                         } catch (IOException e) {
                             e.printStackTrace();
                             LogUtils.e("下载出错" + e);
-                            if (onDownLoadListener != null) {
-                                onDownLoadListener.onFailed(DownloadTask.this, e.getMessage());
-                            }
-                            downLoadInfo.setState(FAILED);
-                            mySelf.state = FAILED;
+                            DownLoadInfo downLoadInfo1=daoUtils.queryDownlodInfo(downLoadInfo.getId());
+                            downLoadInfo1.setState(FAILED);
+                            downLoadInfo1.setDownloadsize(0);
+                            daoUtils.updateDownload(downLoadInfo1);
                         }
                     }
 
@@ -170,15 +144,6 @@ public class DownloadTask implements Runnable {
                     }
                 });
 
-    }
-
-
-    public  void setState(final int state) {
-        this.state = state;
-    }
-
-    public int getState() {
-        return state;
     }
 
 
@@ -199,16 +164,8 @@ public class DownloadTask implements Runnable {
         Stop = stop;
     }
 
+
     public DownLoadInfo getDownLoadInfo() {
         return downLoadInfo;
-    }
-
-    public void setDownLoadInfo(DownLoadInfo downLoadInfo) {
-        this.downLoadInfo = downLoadInfo;
-    }
-
-
-    public void setOnDownLoadListener(OnDownLoadListener onDownLoadListener){
-        this.onDownLoadListener =onDownLoadListener;
     }
 }

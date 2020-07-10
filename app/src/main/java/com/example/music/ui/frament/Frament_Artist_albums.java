@@ -12,17 +12,12 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.music.R;
 import com.example.music.databinding.FramentArtistAlbumsBinding;
-import com.example.music.databinding.FramentArtistMusicBinding;
 import com.example.music.model.Artist_Album;
-import com.example.music.model.Artist_Music;
 import com.example.music.model.BaseRespon;
 import com.example.music.ui.activity.Singer_Activity;
-import com.example.music.ui.adapter.Frament_artist_music_Apt;
 import com.example.music.ui.adapter.Gv_artist_albums_apt;
 import com.example.music.viewmodel.Singer_VM;
 import com.jaeger.library.StatusBarUtil;

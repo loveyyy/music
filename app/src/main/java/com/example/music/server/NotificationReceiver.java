@@ -4,6 +4,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+import com.example.music.ui.activity.MainAcvity;
+import com.example.music.utils.NotificationUtils;
 import com.example.music.utils.PlayController;
 
 /**
@@ -16,13 +18,22 @@ public class NotificationReceiver extends BroadcastReceiver {
 
             switch (intent.getAction()){
                 case "last":
-                    PlayController.getInstance(context).play_last();
+                    PlayController.getInstance().play_last();
                     break;
                 case "play":
-                    PlayController.getInstance(context).play_Paush();
+                    PlayController.getInstance().playOrPause();
                     break;
                 case "next":
-                    PlayController.getInstance(context).play_Next();
+                    PlayController.getInstance().play_Next();
+                    break;
+                case "main":
+                    if (!NotificationUtils.getInstance().isAppForeground(context)) {
+                       Intent intent1=new Intent(context,MainAcvity.class);
+                       context.startActivity(intent1);
+                    }
+                    break;
+                case "close":
+                    PlayController.getInstance().playOrPause();
                     break;
             }
     }

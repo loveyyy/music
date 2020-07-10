@@ -1,9 +1,9 @@
 package com.example.music.ui.activity;
 
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
 
@@ -17,12 +17,11 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.music.BR;
 import com.example.music.R;
-import com.example.music.databinding.DrawleftaptBinding;
 import com.example.music.model.PlayingMusicBeens;
 import com.example.music.ui.adapter.BaseAdapter;
 import com.example.music.ui.adapter.VpMainAdapter;
 import com.example.music.ui.custom.CustomDialogFragment;
-import com.example.music.ui.custom.PlayerView;
+import com.example.music.ui.custom.PlayerMusicView;
 import com.example.music.ui.frament.Framen_Rank;
 import com.example.music.ui.frament.Frament_Music;
 import com.example.music.ui.frament.Frament_Rec;
@@ -38,7 +37,7 @@ import java.util.List;
 /**
  * Create By morningsun  on 2019-11-29
  */
-public class MainAcvity extends FragmentActivity implements PlayerView.showList {
+public class MainAcvity extends FragmentActivity implements PlayerMusicView.showList {
     private MainactivityBinding mainactivityBinding;
     private List<Fragment> fragments = new ArrayList();
     @Override
@@ -116,13 +115,20 @@ public class MainAcvity extends FragmentActivity implements PlayerView.showList 
         });
         StatusBarUtil.setLightMode(MainAcvity.this);
 
+        mainactivityBinding.left.ivTou.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent();
+                intent.setClass(MainAcvity.this,DownloadCenterActivity.class);
+                startActivity(intent);
+            }
+        });
+
         mainactivityBinding.main.ivMaintou.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 List<String> strings=new ArrayList<>();
-                strings.add("本地音乐");
-                strings.add("我的下载");
-                strings.add("我的收藏");
+                strings.add("音乐中心");
                 mainactivityBinding.left.rcvAccount.setLayoutManager(new LinearLayoutManager(getBaseContext(), RecyclerView.VERTICAL,false));
                 BaseAdapter<String> bindingBaseAdapter=new BaseAdapter<>(getApplication(),strings,R.layout.drawleftapt, BR.title);
                 mainactivityBinding.left.rcvAccount.setAdapter(bindingBaseAdapter);
@@ -130,7 +136,17 @@ public class MainAcvity extends FragmentActivity implements PlayerView.showList 
                 bindingBaseAdapter.setOnItemClick(new BaseAdapter.OnItemClick() {
                     @Override
                     public void OnItemClickListener(int pos) {
-
+                        switch (pos){
+                            case 0:
+                                Intent intent=new Intent();
+                                intent.setClass(MainAcvity.this,DownloadCenterActivity.class);
+                                startActivity(intent);
+                                break;
+                            case 1:
+                                break;
+                            case 2:
+                                break;
+                        }
                     }
                 });
                 mainactivityBinding.dlMain.openDrawer(Gravity.LEFT);
@@ -141,6 +157,19 @@ public class MainAcvity extends FragmentActivity implements PlayerView.showList 
             @Override
             public void onClick(View v) {
                 //搜索
+                Intent intent=new Intent();
+                intent.setClass(MainAcvity.this,SearchActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        mainactivityBinding.main.ivSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //搜索
+                Intent intent=new Intent();
+                intent.setClass(MainAcvity.this,SearchActivity.class);
+                startActivity(intent);
             }
         });
     }

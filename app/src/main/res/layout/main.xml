@@ -75,7 +75,7 @@
 
         </LinearLayout>
 
-        <com.example.music.ui.custom.PlayerView
+        <com.example.music.ui.custom.PlayerMusicView
             android:id="@+id/playview"
             android:layout_width="match_parent"
             android:layout_alignParentBottom="true"

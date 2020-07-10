@@ -1,7 +1,5 @@
 package com.example.music.http;
 
-import android.content.SharedPreferences;
-
 import com.blankj.utilcode.util.LogUtils;
 import com.example.music.model.BaseRespon;
 import com.example.music.ui.MyApplication;

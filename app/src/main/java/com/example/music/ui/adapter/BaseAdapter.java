@@ -1,7 +1,9 @@
 package com.example.music.ui.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -10,6 +12,9 @@ import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.blankj.utilcode.util.LogUtils;
+import com.example.music.Interface.OnDownLoadListener;
+import com.example.music.R;
 import com.example.music.ui.bindadapter.BindingViewHolder;
 
 import java.util.List;
@@ -23,6 +28,7 @@ public class BaseAdapter<T> extends RecyclerView.Adapter<BindingViewHolder> {
     private int layoutId;//单布局
     private int variableId;
     private OnItemClick onItemClick;
+    private OnDownLoad onDownLoad;
     public BaseAdapter(Context context, List<T> list, int layoutId, int variableId) {
         this.context = context;
         this.list = list;
@@ -40,6 +46,17 @@ public class BaseAdapter<T> extends RecyclerView.Adapter<BindingViewHolder> {
     public void onBindViewHolder(@NonNull BindingViewHolder holder, final int position) {
         ViewDataBinding binding = holder.getBinding();
         binding.setVariable(variableId,list.get(position));
+        binding.executePendingBindings();
+
+        holder.itemView.findViewById(R.id.btn_download).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(onDownLoad!=null){
+                    onDownLoad.OnDownLoadListener(position);
+                }
+            }
+        });
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -60,11 +77,22 @@ public class BaseAdapter<T> extends RecyclerView.Adapter<BindingViewHolder> {
          return list.size();
     }
 
+
+
     //ItemView 的点击接口
     public interface OnItemClick{
         void OnItemClickListener(int pos);
     }
-    public void setOnItemClick(OnItemClick click){
+    public void setOnItemClick(BaseAdapter.OnItemClick click){
         this.onItemClick=click;
+    }
+
+
+    //ItemView 的点击接口
+    public interface OnDownLoad{
+        void OnDownLoadListener(int pos);
+    }
+    public void setOnDownLoad(OnDownLoad onDownLoad){
+        this.onDownLoad=onDownLoad;
     }
 }

@@ -6,11 +6,14 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Environment;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.example.music.model.LocalMusic;
 
+import java.io.File;
 import java.io.FileDescriptor;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -43,28 +46,32 @@ public class LocalMusicUtils {
         if (cursor != null) {
             while (cursor.moveToNext()) {
                 localMusic = new LocalMusic();
+                String url = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA));
                 name = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DISPLAY_NAME));
-                id = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID));
-                singer = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST));
-                path = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA));
-                duration = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION));
-                size = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.SIZE));
-                localMusic.setPath(path);
-                localMusic.setDuration(duration);
-                localMusic.setSize(size);
-                localMusic.setId(id);
-                if (size > 1000 * 800) {
-                    if (name.contains("-")) {
-                        String[] str = name.split("-");
-                        singer = str[0];
-                        localMusic.setSinger(singer);
-                        name = str[1];
-                        localMusic.setName(name);
-                    } else {
-                        localMusic.setName(name);
+                if(url.equals(Environment.getExternalStorageDirectory().getPath() + File.separator + "mv/"+name)){
+                    id = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID));
+                    singer = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST));
+                    path = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA));
+                    duration = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION));
+                    size = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.SIZE));
+                    localMusic.setPath(path);
+                    localMusic.setDuration(duration);
+                    localMusic.setSize(size);
+                    localMusic.setId(id);
+                    if (size > 1000 * 800) {
+                        if (name.contains("-")) {
+                            String[] str = name.split("-");
+                            singer = str[0];
+                            localMusic.setSinger(singer);
+                            name = str[1];
+                            localMusic.setName(name);
+                        } else {
+                            localMusic.setName(name);
+                        }
+                        list.add(localMusic);
                     }
-                    list.add(localMusic);
                 }
+
             }
         }
         cursor.close();

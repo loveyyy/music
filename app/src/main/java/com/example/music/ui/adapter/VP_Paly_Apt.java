@@ -23,6 +23,7 @@ import java.util.List;
 public class VP_Paly_Apt extends PagerAdapter {
     private List<PlayingMusicBeens> playingMusicBeens;
     private Context context;
+    private onItemClick onItemClick;
 
     public VP_Paly_Apt(Context context, List<PlayingMusicBeens> playingMusicBeens ) {
         this.playingMusicBeens = playingMusicBeens;
@@ -42,14 +43,31 @@ public class VP_Paly_Apt extends PagerAdapter {
 
     @NonNull
     @Override
-    public Object instantiateItem(@NonNull ViewGroup container, int position) {
+    public Object instantiateItem(@NonNull ViewGroup container, final int position) {
         PlayViewAptBinding playViewAptBinding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.play_view_apt, container, true);
         playViewAptBinding.setVariable(BR.playitem,playingMusicBeens.get(position));
+        playViewAptBinding.getRoot().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(onItemClick!=null){
+                    onItemClick.onItemClick(position);
+                }
+            }
+        });
+
         return playViewAptBinding.getRoot();
     }
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
         container.removeView((View) object);
+    }
+
+    public interface  onItemClick{
+        void onItemClick(int pos);
+    }
+
+    public void  setOnItemClick(onItemClick onItemClick){
+        this.onItemClick =onItemClick;
     }
 }

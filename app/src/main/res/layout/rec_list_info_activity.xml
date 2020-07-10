@@ -72,7 +72,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="@dimen/dp_114"
+                        android:layout_width="@dimen/dp_80"
                         android:layout_height="match_parent"
                         android:layout_marginLeft="@dimen/dp_65"
                         android:gravity="center|start"
@@ -80,7 +80,7 @@
                         android:text="歌曲" />
 
                     <TextView
-                        android:layout_width="@dimen/dp_114"
+                        android:layout_width="@dimen/dp_80"
                         android:layout_height="match_parent"
                         android:gravity="center|start"
                         android:textColor="#000000"
@@ -102,7 +102,7 @@
             </LinearLayout>
         </LinearLayout>
 
-        <com.example.music.ui.custom.PlayerView
+        <com.example.music.ui.custom.PlayerMusicView
             android:id="@+id/playview"
             android:layout_width="match_parent"
             android:layout_alignParentBottom="true"

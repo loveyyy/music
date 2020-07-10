@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.blankj.utilcode.util.LogUtils;
+import com.example.music.Interface.OnDownLoadListener;
 import com.example.music.R;
 import com.example.music.http.Api;
 import com.example.music.http.ApiResponse;
@@ -33,6 +34,7 @@ import com.example.music.server.DownloadTask;
 import com.example.music.server.TaskDispatcher;
 import com.example.music.ui.adapter.Pop_PlayAdapter;
 import com.example.music.utils.ACache;
+import com.example.music.utils.greendao.DaoUtils;
 
 import java.io.File;
 import java.util.List;
@@ -111,9 +113,7 @@ public class CustomDialogFragment extends DialogFragment {
                                 downLoadInfo.setFilename(data.getData().get(0).getAuthor()+"-"+data.getData().get(0).getTitle()+".mp3");
                                 downLoadInfo.setFilepath(Environment.getExternalStorageDirectory().getPath() + File.separator + "mv");
 
-                                DownloadTask downloadTask=new DownloadTask();
-                                downloadTask.setDownLoadInfo(downLoadInfo);
-                                TaskDispatcher.getInstance().enqueue(downloadTask);
+                                TaskDispatcher.getInstance().enqueue(new DaoUtils(getContext()).insertDownload(downLoadInfo));
                             }
 
                         });
@@ -169,8 +169,4 @@ public class CustomDialogFragment extends DialogFragment {
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         }
     }
-
-
-
-
 }

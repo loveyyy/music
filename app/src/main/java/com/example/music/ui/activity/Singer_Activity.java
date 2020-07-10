@@ -2,17 +2,12 @@ package com.example.music.ui.activity;
 
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
-import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
@@ -26,7 +21,7 @@ import com.example.music.model.PlayingMusicBeens;
 import com.example.music.ui.adapter.Vp_Artist_apt;
 import com.example.music.ui.base.BaseActivity;
 import com.example.music.ui.custom.CustomDialogFragment;
-import com.example.music.ui.custom.PlayerView;
+import com.example.music.ui.custom.PlayerMusicView;
 import com.example.music.ui.frament.Frament_Artist_Mv;
 import com.example.music.ui.frament.Frament_Artist_albums;
 import com.example.music.ui.frament.Frament_artist_music;
@@ -41,7 +36,7 @@ import java.util.List;
 /**
  * Create By morningsun  on 2019-12-07
  */
-public class Singer_Activity extends BaseActivity<SingerActivityBinding,Singer_VM> implements PlayMusic, PlayerView.showList {
+public class Singer_Activity extends BaseActivity<SingerActivityBinding,Singer_VM> implements PlayMusic, PlayerMusicView.showList {
     private SingerActivityBinding singerActivityBinding;
     private List<Fragment> fragments = new ArrayList();
     private Singer_VM singer_vm;

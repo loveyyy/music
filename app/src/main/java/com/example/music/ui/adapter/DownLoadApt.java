@@ -105,19 +105,14 @@ public class DownLoadApt extends RecyclerView.Adapter<BindingViewHolder>  {
 
 
     public void notifyData(){
-        this.downLoadInfos.clear();
-        this.downLoadInfos.addAll(TaskDispatcher.getInstance().getQueueTaskList());
-        notifyDataSetChanged();
-    }
-
-    public void notifyData1(){
-        if(!this.downLoadInfos.containsAll(TaskDispatcher.getInstance().getDownloadedList())){
-            this.downLoadInfos.clear();
-            this.downLoadInfos.addAll(TaskDispatcher.getInstance().getDownloadedList());
-            notifyDataSetChanged();
-        }
+//        if(!downLoadInfos.isEmpty()){
+//            this.downLoadInfos.clear();
+//            this.downLoadInfos.addAll(TaskDispatcher.getInstance().getQueueTaskList());
+//            notifyDataSetChanged();
+//        }
 
     }
+
 
 
 

@@ -3,8 +3,8 @@
 
     <data>
         <variable
-            name="title"
-            type="java.lang.String" />
+            name="key"
+            type="String" />
     </data>
 
     <LinearLayout
@@ -14,10 +14,9 @@
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_45"
-            android:background="@drawable/bord_corn"
-            android:textColor="@color/cardview_dark_background"
-            android:textSize="@dimen/sp_14"
-            android:text="@{title}"/>
+            android:layout_height="@dimen/dp_30"
+            android:textSize="@dimen/sp_13"
+            android:textColor="#000000"
+            android:text="@{key}"/>
     </LinearLayout>
 </layout>

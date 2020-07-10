@@ -42,14 +42,14 @@ public class NotificationUtils {
     private NotificationManager manager;
     public static final String id = "channel_1";
     public static final String name = "channel_name_1";
-    private  Notification.Builder builder;
+    private Notification.Builder builder;
     private NotificationCompat.Builder builder1;
 
     //单例对象
     private static NotificationUtils instance;
 
 
-    public NotificationUtils(){
+    public NotificationUtils() {
 
     }
 
@@ -66,21 +66,23 @@ public class NotificationUtils {
 
 
     @SuppressLint("NewApi")
-    public void createNotificationChannel(Context context){
+    public void createNotificationChannel(Context context) {
         NotificationChannel channel = new NotificationChannel(id, name, NotificationManager.IMPORTANCE_HIGH);
         getManager(context).createNotificationChannel(channel);
     }
-    private NotificationManager getManager(Context context){
-        if (manager == null){
+
+    private NotificationManager getManager(Context context) {
+        if (manager == null) {
             manager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
         }
         return manager;
     }
+
     @SuppressLint("NewApi")
-    public Notification.Builder getChannelNotification(Context context,RemoteViews mRemoteViews){
-        Notification.Builder builder=new Notification.Builder(context,id);
+    public Notification.Builder getChannelNotification(Context context, RemoteViews mRemoteViews) {
+        Notification.Builder builder = new Notification.Builder(context, id);
         Resources res = context.getResources();
-        Bitmap bmp= BitmapFactory.decodeResource(res, R.drawable.ic_icon);
+        Bitmap bmp = BitmapFactory.decodeResource(res, R.drawable.ic_icon);
         builder.setLargeIcon(bmp);
         builder.setSmallIcon(R.drawable.ic_icon);
         builder.setCustomContentView(mRemoteViews);
@@ -88,11 +90,12 @@ public class NotificationUtils {
         builder.setAutoCancel(false);
         return builder;
     }
-    public NotificationCompat.Builder getNotification_25(Context context,RemoteViews mRemoteViews){
-        final NotificationCompat.Builder builder=new NotificationCompat.Builder(context);
+
+    public NotificationCompat.Builder getNotification_25(Context context, RemoteViews mRemoteViews) {
+        final NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
         builder.setSmallIcon(R.drawable.ic_icon);
         Resources res = context.getResources();
-        Bitmap bmp= BitmapFactory.decodeResource(res, R.drawable.ic_icon);
+        Bitmap bmp = BitmapFactory.decodeResource(res, R.drawable.ic_icon);
         builder.setLargeIcon(bmp);
         builder.setCustomContentView(mRemoteViews);
         builder.setCustomBigContentView(mRemoteViews);
@@ -100,7 +103,7 @@ public class NotificationUtils {
         return builder;
     }
 
-    public void sendNotification(final PlayingMusicBeens playingMusicBeens, final int num, final Context context){
+    public void sendNotification(final PlayingMusicBeens playingMusicBeens, final int num, final Context context) {
         Glide.with(context)
                 .asBitmap()
                 .load(playingMusicBeens.getPic())
@@ -108,70 +111,60 @@ public class NotificationUtils {
                     @Override
                     public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
 
-                        Intent intent = new Intent(context, MainAcvity.class);//将要跳转的界面
-                        PendingIntent intentPend = PendingIntent.getActivity(context, num, intent, PendingIntent.FLAG_CANCEL_CURRENT);
-
                         final RemoteViews mRemoteViews = new RemoteViews(context.getPackageName(), R.layout.notification_play);
                         mRemoteViews.setTextViewText(R.id.tv_name, playingMusicBeens.getMusicname());
-                        mRemoteViews.setTextViewText(R.id.tv_name, playingMusicBeens.getMusicname()+"-"+playingMusicBeens.getMusic_singer());
-                        mRemoteViews.setImageViewResource(R.id.ib_last,R.drawable.ic_lrc_last);
-                        if(PlayController.getInstance(context).get_state()==0){
-                            mRemoteViews.setImageViewResource(R.id.ib_play,R.drawable.ic_lrc_stop);
-                        }else {
-                            mRemoteViews.setImageViewResource(R.id.ib_play,R.drawable.ic_lrc_play);
+                        mRemoteViews.setTextViewText(R.id.tv_name, playingMusicBeens.getMusicname() + "-" + playingMusicBeens.getMusic_singer());
+                        mRemoteViews.setImageViewResource(R.id.ib_last, R.drawable.ic_lrc_last);
+                        if (PlayController.getInstance().get_state() == 0) {
+                            mRemoteViews.setImageViewResource(R.id.ib_play, R.drawable.ic_lrc_stop);
+                        } else {
+                            mRemoteViews.setImageViewResource(R.id.ib_play, R.drawable.ic_lrc_play);
                         }
 
-                        mRemoteViews.setImageViewResource(R.id.ib_next,R.drawable.ic_lrc_next);
-                        mRemoteViews.setImageViewBitmap(R.id.iv_img,resource);
+                        mRemoteViews.setImageViewResource(R.id.ib_next, R.drawable.ic_lrc_next);
+                        mRemoteViews.setImageViewBitmap(R.id.iv_img, resource);
 
                         Intent intentLast = new Intent("last");
-                        PendingIntent pIntentLast = PendingIntent.getBroadcast(context.getApplicationContext(), 0,
+                        PendingIntent pIntentLast = PendingIntent.getBroadcast(context, 0,
                                 intentLast, 0);
-                        mRemoteViews.setOnClickPendingIntent(R.id.ib_last,pIntentLast);
+                        mRemoteViews.setOnClickPendingIntent(R.id.ib_last, pIntentLast);
 
                         Intent intentPause = new Intent("play");
-                        PendingIntent pIntentPause = PendingIntent.getBroadcast(context.getApplicationContext(), 0,
+                        PendingIntent pIntentPause = PendingIntent.getBroadcast(context, 0,
                                 intentPause, 0);
-                        mRemoteViews.setOnClickPendingIntent(R.id.ib_play,pIntentPause);
+                        mRemoteViews.setOnClickPendingIntent(R.id.ib_play, pIntentPause);
 
                         Intent intentNext = new Intent("next");
-                        PendingIntent pIntentNext = PendingIntent.getBroadcast(context.getApplicationContext(), 0,
+                        PendingIntent pIntentNext = PendingIntent.getBroadcast(context, 0,
                                 intentNext, 0);
-                        mRemoteViews.setOnClickPendingIntent(R.id.ib_next,pIntentNext);
+                        mRemoteViews.setOnClickPendingIntent(R.id.ib_next, pIntentNext);
 
+                        Intent intentMain = new Intent("main");//将要跳转的界面
+                        PendingIntent pendingIntentMain = PendingIntent.getBroadcast(context, 0, intentMain,0);
+                        mRemoteViews.setOnClickPendingIntent(R.id.rl_notic, pendingIntentMain);
+
+                        Intent intentClose = new Intent("close");//将要跳转的界面
+                        PendingIntent pendingIntentClose = PendingIntent.getBroadcast(context, 0, intentClose,0);
+                        mRemoteViews.setOnClickPendingIntent(R.id.ib_close, pendingIntentClose);
 
                         if (Build.VERSION.SDK_INT >= 26) {
-                            if(builder!=null){
-                                builder.setCustomContentView(mRemoteViews);
-                            }else{
-                                createNotificationChannel(context);
-                                builder = getChannelNotification(context,mRemoteViews);
-                                if(!isAppForeground(context)){
-                                    builder.setContentIntent(intentPend);
-                                }
-                            }
-                            getManager(context).notify("notification",111, builder.build());
+                            createNotificationChannel(context);
+                            builder = getChannelNotification(context, mRemoteViews);
+                            builder.build().flags = Notification.FLAG_NO_CLEAR;
+                            getManager(context).notify(111, builder.build());
                         } else {
-                            if(builder1!=null){
-                                builder1.setCustomContentView(mRemoteViews);
-                            }else{
-                                builder1 = getNotification_25(context,mRemoteViews);
-                                if(!isAppForeground(context)){
-                                    builder1.setContentIntent(intentPend);
-                                }
-
-                            }
-                            getManager(context).notify("notification",111, builder1.build());
+                            builder1 = getNotification_25(context, mRemoteViews);
+                            builder1.build().flags = Notification.FLAG_NO_CLEAR;
+                            getManager(context).notify(111, builder1.build());
                         }
                     }
                 });
     }
 
 
-
     //判断通知权限是否开启
     @SuppressLint("NewApi")
-    public  boolean isNotificationEnabled(Context context) {
+    public boolean isNotificationEnabled(Context context) {
         AppOpsManager mAppOps =
                 (AppOpsManager) context.getSystemService(Context.APP_OPS_SERVICE);
 
@@ -198,19 +191,19 @@ public class NotificationUtils {
     }
 
 
-    private static boolean isAppForeground(Context context) {
+    public  boolean isAppForeground(Context context) {
         ActivityManager activityManager =
-                (ActivityManager)context.getSystemService(Service.ACTIVITY_SERVICE);
+                (ActivityManager) context.getSystemService(Service.ACTIVITY_SERVICE);
         List<ActivityManager.RunningAppProcessInfo> runningAppProcessInfoList =
                 activityManager.getRunningAppProcesses();
         if (runningAppProcessInfoList == null) {
-            Log.d("isAppForeground","runningAppProcessInfoList is null!");
+            Log.d("isAppForeground", "runningAppProcessInfoList is null!");
             return false;
         }
 
-        for(ActivityManager.RunningAppProcessInfo processInfo : runningAppProcessInfoList) {
+        for (ActivityManager.RunningAppProcessInfo processInfo : runningAppProcessInfoList) {
             if (processInfo.processName.equals(context.getPackageName())
-                    &&(processInfo.importance ==
+                    && (processInfo.importance ==
                     ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND)) {
                 return true;
             }

@@ -208,12 +208,10 @@ public class PlayerMusicView extends RelativeLayout implements PlayController.Bi
     @Subscribe(threadMode = ThreadMode.MAIN,sticky = true)
     public void GetMusicPro(Integer a){
         if(a!=0){
-            if(a!=playingMusicBeens.get(pos).getDuration()){
-                playerBinding.cirPro.setProgress(a*100/(playingMusicBeens.get(pos).getDuration()));
-            }else{
-                playController.PlayModel();
-                playerBinding.cirPro.setProgress(0);
-            }
+            playerBinding.cirPro.setProgress(a*100/(playingMusicBeens.get(pos).getDuration()));
+        }else {
+            playController.PlayModel();
+            playerBinding.cirPro.setProgress(0);
         }
     }
 

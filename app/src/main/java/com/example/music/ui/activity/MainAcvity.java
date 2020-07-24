@@ -3,23 +3,22 @@ package com.example.music.ui.activity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
 
-import com.example.music.BR;
 import com.example.music.R;
+import com.example.music.databinding.VpTableListBinding;
 import com.example.music.model.PlayingMusicBeens;
-import com.example.music.ui.adapter.BaseAdapter;
-import com.example.music.ui.adapter.VpMainAdapter;
+import com.example.music.ui.base.BaseActivity;
+import com.example.music.ui.base.BaseVM;
 import com.example.music.ui.custom.CustomDialogFragment;
 import com.example.music.ui.custom.PlayerMusicView;
 import com.example.music.ui.frament.Framen_Rank;
@@ -29,6 +28,7 @@ import com.example.music.ui.frament.Frament_Singer;
 import com.example.music.ui.frament.Framnet_MV;
 import com.example.music.databinding.MainactivityBinding;
 import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 import com.jaeger.library.StatusBarUtil;
 
 import java.util.ArrayList;
@@ -37,122 +37,32 @@ import java.util.List;
 /**
  * Create By morningsun  on 2019-11-29
  */
-public class MainAcvity extends FragmentActivity implements PlayerMusicView.showList {
+public class MainAcvity extends BaseActivity<MainactivityBinding, BaseVM> implements PlayerMusicView.showList {
     private MainactivityBinding mainactivityBinding;
-    private List<Fragment> fragments = new ArrayList();
+
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mainactivityBinding= DataBindingUtil.setContentView(this,R.layout.mainactivity);
-        StatusBarUtil.setTranslucentForImageViewInFragment(this,0, null);
-        initdata();
+    public int getLayout() {
+        return R.layout.mainactivity;
     }
 
-    private void initdata() {
+    @Override
+    public boolean isLight() {
+        return true;
+    }
+
+    @Override
+    protected void initView(MainactivityBinding bindView) {
+        mainactivityBinding=bindView;
         mainactivityBinding.main.playview.SetShowList(this);
-        fragments.add(new Frament_Rec());
-        fragments.add(new Framen_Rank());
-        fragments.add(new Frament_Singer());
-        fragments.add(new Frament_Music());
-        fragments.add(new Framnet_MV());
-        VpMainAdapter vpMainAdapter = new VpMainAdapter(getSupportFragmentManager(), fragments, getApplicationContext());
-        mainactivityBinding.main.VpMain.setAdapter(vpMainAdapter);
-        mainactivityBinding.main.VpMain.setOffscreenPageLimit(4);
-        mainactivityBinding.main.tabMain.setupWithViewPager(mainactivityBinding.main.VpMain);
+    }
 
-        mainactivityBinding.main.VpMain.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+    @Override
+    protected void setVM(BaseVM vm) {
 
-            }
-            @Override
-            public void onPageSelected(int position) {
-                switch (position){
-                    case 0:
-                        StatusBarUtil.setLightMode(MainAcvity.this);
-                        break;
-                    default:
-                        StatusBarUtil.setDarkMode(MainAcvity.this);
-                        break;
-                }
-            }
+    }
 
-            @Override
-            public void onPageScrollStateChanged(int state) {
-            }
-        });
-
-
-        for (int j = 0; j < fragments.size(); j++) {
-            TabLayout.Tab tab = mainactivityBinding.main.tabMain.getTabAt(j);
-            if (tab != null) {
-                tab.setCustomView(vpMainAdapter.getCustomView(j));
-            }
-        }
-        mainactivityBinding.main.VpMain.setCurrentItem(0);
-
-        mainactivityBinding.main.tabMain.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                View view = tab.getCustomView();
-                if (null != view && view instanceof TextView) {
-                    ((TextView) view).setTypeface(Typeface.DEFAULT_BOLD);
-                }
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-                View view = tab.getCustomView();
-                if (null != view && view instanceof TextView) {
-                    ((TextView) view).setTypeface(Typeface.DEFAULT);
-                }
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
-        StatusBarUtil.setLightMode(MainAcvity.this);
-
-        mainactivityBinding.left.ivTou.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent=new Intent();
-                intent.setClass(MainAcvity.this,DownloadCenterActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        mainactivityBinding.main.ivMaintou.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                List<String> strings=new ArrayList<>();
-                strings.add("音乐中心");
-                mainactivityBinding.left.rcvAccount.setLayoutManager(new LinearLayoutManager(getBaseContext(), RecyclerView.VERTICAL,false));
-                BaseAdapter<String> bindingBaseAdapter=new BaseAdapter<>(getApplication(),strings,R.layout.drawleftapt, BR.title);
-                mainactivityBinding.left.rcvAccount.setAdapter(bindingBaseAdapter);
-
-                bindingBaseAdapter.setOnItemClick(new BaseAdapter.OnItemClick() {
-                    @Override
-                    public void OnItemClickListener(int pos) {
-                        switch (pos){
-                            case 0:
-                                Intent intent=new Intent();
-                                intent.setClass(MainAcvity.this,DownloadCenterActivity.class);
-                                startActivity(intent);
-                                break;
-                            case 1:
-                                break;
-                            case 2:
-                                break;
-                        }
-                    }
-                });
-                mainactivityBinding.dlMain.openDrawer(Gravity.LEFT);
-            }
-        });
-
+    @Override
+    protected void setListener() {
         mainactivityBinding.main.rlSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -172,7 +82,73 @@ public class MainAcvity extends FragmentActivity implements PlayerMusicView.show
                 startActivity(intent);
             }
         });
+
+        mainactivityBinding.main.ivMaintou.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent();
+                intent.setClass(MainAcvity.this,DownloadCenterActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
+        mainactivityBinding.main.tabMain.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                TextView view = tab.getCustomView().findViewById(R.id.tv_table);
+                view.setTypeface(Typeface.DEFAULT_BOLD);
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                TextView view = tab.getCustomView().findViewById(R.id.tv_table);
+                view.setTypeface(Typeface.DEFAULT);
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
     }
+
+    @Override
+    protected void initData() {
+        final List<Fragment> fragments = new ArrayList<>();
+        fragments.add(new Frament_Rec());
+        fragments.add(new Framen_Rank());
+        fragments.add(new Frament_Singer());
+        fragments.add(new Frament_Music());
+        fragments.add(new Framnet_MV());
+
+        mainactivityBinding.main.VpMain.setAdapter(new FragmentStateAdapter(this) {
+            @Override
+            public int getItemCount() {
+                return fragments.size();
+            }
+
+            @NonNull
+            @Override
+            public Fragment createFragment(int position) {
+                return fragments.get(position);
+            }
+        });
+        mainactivityBinding.main.VpMain.setOffscreenPageLimit(fragments.size());
+
+        final String[] name = {"推荐","排行榜","歌手","歌单","MV"};
+        TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(mainactivityBinding.main.tabMain, mainactivityBinding.main.VpMain, new TabLayoutMediator.TabConfigurationStrategy() {
+            @Override
+            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
+                VpTableListBinding vpTableListBinding = DataBindingUtil.inflate(LayoutInflater.from(getBaseContext()), R.layout.vp_table_list, null, false);
+                vpTableListBinding.tvTable.setText(name[position]);
+                vpTableListBinding.executePendingBindings();
+                tab.setCustomView(vpTableListBinding.getRoot());
+            }
+        });
+        tabLayoutMediator.attach();
+    }
+
 
     @Override
     protected void onRestart() {

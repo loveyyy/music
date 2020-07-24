@@ -10,8 +10,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
-import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.music.R;
@@ -20,8 +18,6 @@ import com.jaeger.library.StatusBarUtil;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-
-import io.reactivex.disposables.Disposable;
 
 public abstract class BaseActivity<DB extends ViewDataBinding , VM extends BaseVM> extends AppCompatActivity {
     private ACache aCache;

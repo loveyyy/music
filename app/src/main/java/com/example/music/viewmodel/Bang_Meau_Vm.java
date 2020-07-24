@@ -1,28 +1,16 @@
 package com.example.music.viewmodel;
 
 import android.app.Application;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.LifecycleObserver;
-import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
 import com.example.music.http.Api;
 import com.example.music.http.ApiResponse;
 import com.example.music.http.ApiSubscribe;
 import com.example.music.model.Bang_Music_list;
 import com.example.music.model.BaseRespon;
-import com.example.music.ui.MyApplication;
 import com.example.music.ui.base.BaseVM;
-import com.example.music.ui.base.IModelView;
-
-import io.reactivex.disposables.CompositeDisposable;
 
 /**
  * Create By morningsun  on 2019-12-05
@@ -43,5 +31,10 @@ public class Bang_Meau_Vm  extends BaseVM {
                         Bang_Music_list.setValue(data);
                     }
                 });
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 }

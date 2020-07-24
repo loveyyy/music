@@ -35,7 +35,7 @@ public class Bang_Meau_ItemApt extends RecyclerView.Adapter<BindingViewHolder> {
     @Override
     public BindingViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
          bangMeauItemaptBinding= DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.bang_meau_itemapt,parent,false);
-        return new BindingViewHolder(bangMeauItemaptBinding);
+         return new BindingViewHolder(bangMeauItemaptBinding);
     }
 
     @Override

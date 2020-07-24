@@ -2,6 +2,7 @@ package com.example.music.ui.activity;
 
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
+import android.os.Environment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -24,12 +25,20 @@ import com.blankj.utilcode.util.LogUtils;
 import com.example.music.BR;
 import com.example.music.R;
 import com.example.music.databinding.SearchactivityBinding;
+import com.example.music.http.Api;
+import com.example.music.http.ApiResponse;
+import com.example.music.http.ApiSubscribe;
 import com.example.music.model.BaseRespon;
+import com.example.music.model.DownLoadInfo;
+import com.example.music.model.DownlodMusciInfo;
 import com.example.music.model.Search;
+import com.example.music.server.TaskDispatcher;
 import com.example.music.ui.adapter.BaseAdapter;
 import com.example.music.ui.base.BaseActivity;
+import com.example.music.utils.greendao.DaoUtils;
 import com.example.music.viewmodel.Search_VM;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,7 +48,6 @@ import java.util.List;
 public class SearchActivity extends BaseActivity<SearchactivityBinding, Search_VM> {
     private SearchactivityBinding searchactivityBinding;
     private Search_VM search_vm;
-    private PopupWindow popupWindow;
 
     @Override
     public int getLayout() {
@@ -59,7 +67,6 @@ public class SearchActivity extends BaseActivity<SearchactivityBinding, Search_V
     @Override
     protected void setVM(Search_VM vm) {
         search_vm=vm;
-
         search_vm.baseResponMutableLiveData1.observe(this, new Observer<BaseRespon<List<String>>>() {
             @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
             @Override
@@ -105,10 +112,25 @@ public class SearchActivity extends BaseActivity<SearchactivityBinding, Search_V
                 searchactivityBinding.rcvSearch.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL,false));
                 BaseAdapter<Search.ListBean> baseAdapter=new BaseAdapter<>(getContext(),listBaseRespon.getData().getList(),R.layout.searchapt, BR.searchapt);
                 searchactivityBinding.rcvSearch.setAdapter(baseAdapter);
-                baseAdapter.setOnItemClick(new BaseAdapter.OnItemClick() {
-                    @Override
-                    public void OnItemClickListener(int pos) {
 
+                baseAdapter.setOnDownLoad(new BaseAdapter.OnDownLoad() {
+                    @Override
+                    public void OnDownLoadListener(int pos) {
+                        Api.getInstance().iRetrofit.downloadMuisc(listBaseRespon.getData().getList().get(pos).getMusicrid().split("_")[1],
+                                "kuwo","id",1,"XMLHttpRequest")
+                                .compose(ApiSubscribe.<BaseRespon<List<DownlodMusciInfo>>>io_main())
+                                .subscribe(new ApiResponse<BaseRespon<List<DownlodMusciInfo>>>() {
+                                    @Override
+                                    public void success(BaseRespon<List<DownlodMusciInfo>> data) {
+                                        DownLoadInfo downLoadInfo=new DownLoadInfo();
+                                        downLoadInfo.setUrl(data.getData().get(0).getUrl());
+                                        downLoadInfo.setFilename(data.getData().get(0).getAuthor()+"-"+data.getData().get(0).getTitle()+".mp3");
+                                        downLoadInfo.setFilepath(Environment.getExternalStorageDirectory().getPath() + File.separator + "mv");
+
+                                        TaskDispatcher.getInstance().enqueue(new DaoUtils(getContext()).insertDownload(downLoadInfo));
+                                    }
+
+                                });
                     }
                 });
             }

@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.example.music.model.DaoMaster;
 import com.example.music.model.DownLoadInfo;
+import com.example.music.model.DownLoadInfoDao;
 import com.example.music.model.PlayingMusicBeens;
 import com.example.music.model.PlayingMusicBeensDao;
 
@@ -150,6 +151,23 @@ public class DaoUtils {
         return mManager.getDaoSession1().load(DownLoadInfo.class, key);
     }
 
+    /**
+     * 使用queryBuilder进行查询
+     * @return
+     */
+    public synchronized List<DownLoadInfo> queryDownloadInfoAll(){
+        return mManager.getDaoSession1().loadAll(DownLoadInfo.class);
+    }
+
+    /**
+     * 使用queryBuilder进行查询
+     * @return
+     */
+    public synchronized List<DownLoadInfo> queryDownloadInfoBuilder(int  state){
+        QueryBuilder<DownLoadInfo> queryBuilder = mManager.getDaoSession1().queryBuilder(DownLoadInfo.class);
+        return queryBuilder.where(DownLoadInfoDao.Properties.State.eq(state)).list();
+    }
+
 
     /**
      * 使用native sql进行查询操作
@@ -166,6 +184,9 @@ public class DaoUtils {
         QueryBuilder<PlayingMusicBeens> queryBuilder = mManager.getDaoSession().queryBuilder(PlayingMusicBeens.class);
         return queryBuilder.where(PlayingMusicBeensDao.Properties.Id.eq(id)).list();
     }
+
+
+
 
 //    /**
 //     * 使用queryBuilder进行查询

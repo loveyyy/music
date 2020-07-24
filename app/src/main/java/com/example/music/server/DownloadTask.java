@@ -28,10 +28,8 @@ public class DownloadTask extends Thread {
     private boolean Stop=false;
     //当前任务下载起点
     private int start;
-    //当前任务下载终点
-    private int end;
-    //获取任务index
-    private int index;
+    //获取任务id
+    private long downLoadId;
     //读线程下 下载文件目录
     private  String filDir ;
     //数据库操作类
@@ -50,20 +48,18 @@ public class DownloadTask extends Thread {
     }
 
 
-    public DownloadTask(int start,int end,int index,long downLoadId) {
-        filDir= MyApplication.getContext().getExternalFilesDir(null).getAbsolutePath();
+    public DownloadTask(long downLoadId) {
         daoUtils=new DaoUtils(MyApplication.getContext());
+        this.downLoadId=downLoadId;
         downLoadInfo=daoUtils.queryDownlodInfo(downLoadId);
-        this.end=end;
-        this.start=start;
-        this.index=index;
+        filDir= downLoadInfo.getFilepath();
     }
 
     public void start() {
         downLoadInfo.setState(LOADING);
         daoUtils.updateDownload(downLoadInfo);
         //文件存在  断点下载
-        File file = new File(filDir,downLoadInfo.getFilename().split("\\.")[0]+"."+index+"."+downLoadInfo.getFilename().split("\\.")[1]);
+        File file = new File(filDir,downLoadInfo.getFilename());
         if(!file.exists()){
             try {
                 file.createNewFile();
@@ -77,7 +73,7 @@ public class DownloadTask extends Thread {
     }
 
     private void download() {
-        Api.getInstance().iRetrofit.download(downLoadInfo.getUrl(),"bytes=" + start + "-" + end)
+        Api.getInstance().iRetrofit.download(downLoadInfo.getUrl(),"bytes=" + start + "-")
                 .compose(ApiSubscribe.<ResponseBody>io_io())
                 .subscribe(new Observer<ResponseBody>() {
                     @Override
@@ -88,13 +84,13 @@ public class DownloadTask extends Thread {
                     @Override
                     public void onNext(ResponseBody responseBody) {
                         try {
-                            File file = new File(filDir, downLoadInfo.getFilename().split("\\.")[0]+"."+index+"."+downLoadInfo.getFilename().split("\\.")[1]);
+                            File file = new File(filDir, downLoadInfo.getFilename());
                             InputStream is = null;
                             FileOutputStream fileOutputStream = null;
                             try {
                                 is = responseBody.byteStream();
                                 fileOutputStream = new FileOutputStream(file, true);
-                                byte[] buffer = new byte[1024];//缓冲数组2kB
+                                byte[] buffer = new byte[2048];//缓冲数组2kB
                                 int len;
                                 while ((len = is.read(buffer)) != -1) {
                                     if (!Stop) {

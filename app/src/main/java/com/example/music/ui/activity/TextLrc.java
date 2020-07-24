@@ -112,7 +112,7 @@ public class TextLrc extends BaseActivity<LrcBinding, Lrc_VM> implements PlayCon
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Glide.with(getContext()).pauseRequests();
+//        Glide.with(getContext()).pauseRequests();
     }
 
     @Override

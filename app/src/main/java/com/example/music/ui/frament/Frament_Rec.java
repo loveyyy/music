@@ -64,6 +64,9 @@ public class Frament_Rec extends Fragment {
 
     private void initdata() {
         framentRecVM.Get_Bananer_list();
+        framentRecVM.Get_Bang_list();
+        framentRecVM.Get_Artist_list("11","1","10");
+        framentRecVM.Get_Music_list("1236933931");
     }
 
     private void setVM(){
@@ -91,7 +94,7 @@ public class Frament_Rec extends Fragment {
             public void onChanged(BaseRespon<List<Bananer>> responseBody) {
                 framentRecBinding.customMain.initdata(responseBody.getData());
                 framentRecBinding.customMain.start();
-                framentRecVM.Get_Bang_list();
+
             }
         });
         framentRecVM.Bang_meau.observe(this, new Observer<BaseRespon<List<Bang_list>>>() {
@@ -113,7 +116,7 @@ public class Frament_Rec extends Fragment {
                         startActivity(intent);
                     }
                 });
-                framentRecVM.Get_Artist_list("11","1","10");
+
             }
         });
         framentRecVM.Artist_list.observe(this, new Observer<BaseRespon<Artist_list>>() {
@@ -132,7 +135,7 @@ public class Frament_Rec extends Fragment {
                         startActivity(intent);
                     }
                 });
-                framentRecVM.Get_Music_list("1236933931");
+
             }
         });
     }

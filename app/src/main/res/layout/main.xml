@@ -31,7 +31,7 @@
                     android:layout_height="@dimen/dp_30"
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
-                    android:background="@drawable/ic_meau" />
+                    android:background="@drawable/ic_user" />
 
                 <RelativeLayout
                     android:id="@+id/rl_search"
@@ -57,7 +57,9 @@
                     app:tabRippleColor="@android:color/transparent"
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
-                    app:tabIndicatorColor="@android:color/transparent" />
+                    app:tabIndicatorColor="@android:color/transparent"
+                    app:tabSelectedTextColor="#2CA2F4"
+                    app:tabTextColor="#FFFFFF"/>
 
                 <ImageView
                     android:id="@+id/iv_Search"
@@ -68,7 +70,7 @@
                     android:background="@drawable/ic_search" />
             </RelativeLayout>
 
-            <androidx.viewpager.widget.ViewPager
+            <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/Vp_Main"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />

@@ -8,7 +8,6 @@ import android.os.IBinder;
 
 import androidx.annotation.Nullable;
 
-import com.blankj.utilcode.util.LogUtils;
 import com.example.music.Interface.MusicInterface;
 
 import org.greenrobot.eventbus.EventBus;
@@ -22,7 +21,7 @@ import java.util.TimerTask;
  * Created by Administrator on 2018/5/17.
  */
 
-public class PlayMusicServer extends Service {
+public class PlayMusicServer extends Service implements MediaPlayer.OnCompletionListener {
     private MediaPlayer mediaPlayer;
     //计时器
     private Timer timer;
@@ -76,6 +75,12 @@ public class PlayMusicServer extends Service {
         i = 0;
     }
 
+    @Override
+    public void onCompletion(MediaPlayer mp) {
+        EventBus.getDefault().postSticky(0);
+        timer.cancel();
+    }
+
     //必须继承binder，才能作为中间人对象返回
     public class MusicController extends Binder implements MusicInterface {
         @Override
@@ -84,13 +89,14 @@ public class PlayMusicServer extends Service {
             try {
                 mediaPlayer.reset();
                 mediaPlayer.setDataSource(MusicUri);
-                mediaPlayer.prepare();
+                mediaPlayer.prepareAsync();
                 mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                     @Override
                     public void onPrepared(MediaPlayer mp) {
                         mediaPlayer=mp;
                         mediaPlayer.setLooping(false);
                         mediaPlayer.start();
+                        mediaPlayer.setOnCompletionListener(PlayMusicServer.this);
                         state = PLAYING;
                         startTask();
                     }

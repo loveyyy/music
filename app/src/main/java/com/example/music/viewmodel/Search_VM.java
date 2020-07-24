@@ -26,7 +26,8 @@ public class Search_VM extends BaseVM {
     }
     public void searchMusic(String key){
         Api.getInstance().iRetrofit.searchMusic(key,
-                "1","30",getaCache().getAsString("reqid"),"http://www.kuwo.cn/search/list?key=%E8%B5%A4%E4%BC%B6")
+                "1","30",getaCache().getAsString("reqid"),
+                "http://www.kuwo.cn/search/list?key=%E8%B5%A4%E4%BC%B6")
                 .compose(ApiSubscribe .<BaseRespon<Search>>io_main())
                 .subscribe(new ApiResponse<BaseRespon<Search>>() {
                     @Override

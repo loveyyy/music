@@ -18,7 +18,7 @@
             android:layout_width="@dimen/dp_45"
             android:layout_height="@dimen/dp_45"
             android:layout_marginTop="@dimen/dp_20"
-            android:background="@drawable/ic_meau" />
+            android:background="@drawable/ic_user" />
         <EditText
             android:id="@+id/et_search"
             android:layout_width="@dimen/dp_270"

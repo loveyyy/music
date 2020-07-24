@@ -47,15 +47,17 @@ public class BaseAdapter<T> extends RecyclerView.Adapter<BindingViewHolder> {
         ViewDataBinding binding = holder.getBinding();
         binding.setVariable(variableId,list.get(position));
         binding.executePendingBindings();
-
-        holder.itemView.findViewById(R.id.btn_download).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(onDownLoad!=null){
-                    onDownLoad.OnDownLoadListener(position);
+        if(holder.itemView.findViewById(R.id.btn_download)!=null){
+            holder.itemView.findViewById(R.id.btn_download).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(onDownLoad!=null){
+                        onDownLoad.OnDownLoadListener(position);
+                    }
                 }
-            }
-        });
+            });
+        }
+
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

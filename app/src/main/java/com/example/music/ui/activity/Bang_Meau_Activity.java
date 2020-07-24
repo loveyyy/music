@@ -79,7 +79,6 @@ public class Bang_Meau_Activity extends BaseActivity<BangMeauActivityBinding,Ban
                                             downLoadInfo.setUrl(data.getData().get(0).getUrl());
                                             downLoadInfo.setFilename(data.getData().get(0).getAuthor()+"-"+data.getData().get(0).getTitle()+".mp3");
                                             downLoadInfo.setFilepath(Environment.getExternalStorageDirectory().getPath() + File.separator + "mv");
-
                                             TaskDispatcher.getInstance().enqueue(new DaoUtils(getContext()).insertDownload(downLoadInfo));
                                         }
 

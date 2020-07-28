@@ -127,7 +127,7 @@ public class SearchActivity extends BaseActivity<SearchactivityBinding, Search_V
                                         downLoadInfo.setFilename(data.getData().get(0).getAuthor()+"-"+data.getData().get(0).getTitle()+".mp3");
                                         downLoadInfo.setFilepath(Environment.getExternalStorageDirectory().getPath() + File.separator + "mv");
 
-                                        TaskDispatcher.getInstance().enqueue(new DaoUtils(getContext()).insertDownload(downLoadInfo));
+                                        TaskDispatcher.getInstance().enqueue(downLoadInfo);
                                     }
 
                                 });

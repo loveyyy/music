@@ -59,7 +59,7 @@ public class Frament_artist_music extends Fragment {
     }
 
     private void SetVM() {
-        singer_vm.Artist_Music.observe(this, new Observer<BaseRespon<Artist_Music>>() {
+        singer_vm.Artist_Music.observe(getViewLifecycleOwner(), new Observer<BaseRespon<Artist_Music>>() {
             @Override
             public void onChanged(final BaseRespon<Artist_Music> artist_listBaseRespon) {
                 framentArtistMusicBinding.rcvArtistMusic.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL,false));
@@ -82,7 +82,7 @@ public class Frament_artist_music extends Fragment {
                                         downLoadInfo.setFilename(data.getData().get(0).getAuthor()+"-"+data.getData().get(0).getTitle()+".mp3");
                                         downLoadInfo.setFilepath(Environment.getExternalStorageDirectory().getPath() + File.separator + "mv");
 
-                                        TaskDispatcher.getInstance().enqueue(new DaoUtils(getContext()).insertDownload(downLoadInfo));
+                                        TaskDispatcher.getInstance().enqueue(downLoadInfo);
                                     }
 
                                 });

@@ -86,7 +86,7 @@ public class Rec_List_Info_Activity extends BaseActivity<RecListInfoActivityBind
                                             downLoadInfo.setFilename(data.getData().get(0).getAuthor()+"-"+data.getData().get(0).getTitle()+".mp3");
                                             downLoadInfo.setFilepath(Environment.getExternalStorageDirectory().getPath() + File.separator + "mv");
 
-                                            TaskDispatcher.getInstance().enqueue(new DaoUtils(getContext()).insertDownload(downLoadInfo));
+                                            TaskDispatcher.getInstance().enqueue(downLoadInfo);
                                         }
 
                                     });

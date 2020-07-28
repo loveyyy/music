@@ -2,7 +2,6 @@ package com.example.music.server;
 
 import android.content.Intent;
 
-import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.NotificationUtils;
 import com.example.music.Interface.OnDownLoadListener;
 import com.example.music.R;
@@ -57,7 +56,6 @@ public class TaskDispatcher {
     private DaoUtils daoUtils;
     //下载监听
     private OnDownLoadListener onDownLoadListener;
-
 
 
     private TaskDispatcher() {
@@ -167,67 +165,85 @@ public class TaskDispatcher {
     }
 
 
-
     /**
      * 任务入列下载
      */
-    public synchronized boolean enqueue(final Long id) {
-        if (queueTaskMap.keySet().contains(id)) {
-            return false;
-        }
-        final DownLoadInfo downLoadInfo = daoUtils.queryDownlodInfo(id);
-        Api.getInstance().iRetrofit.download(downLoadInfo.getUrl(), "bytes=" + 0 + "-")
-                .compose(ApiSubscribe.<ResponseBody>io_io())
-                .subscribe(new Observer<ResponseBody>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-
+    public synchronized boolean enqueue(final DownLoadInfo downLoadInfo) {
+        final long id;
+        final List<DownloadTask> downloadTasks = new ArrayList<>();
+        final DownLoadInfo downLoadInfo1 = daoUtils.queryDownloadInfoBuilder(downLoadInfo.getUrl());
+        if(downLoadInfo1!=null){
+            id=downLoadInfo1.getId();
+            //判断下载任务是否存在且状态为暂停
+            if (downLoadInfo.getState() != 0 && downLoadInfo.getState() == DownloadTask.STOP) {
+                for (DownLoadProgree downLoadProgree : downLoadInfo.getDownLoadProgree()) {
+                    DownloadTask downloadTask = new DownloadTask(downLoadProgree.getId());
+                    if (queueTaskMap.entrySet().size() < DOWNLOAD_MAX) {
+                        getExecutorService().execute(downloadTask);
+                        downloadTasks.add(downloadTask);
+                    } else {
+                        waitloaded.add(id);
+                        break;
                     }
+                }
+            }
+        }else{
+             id =daoUtils.insertDownload(downLoadInfo);
+            if (queueTaskMap.keySet().contains(id)) {
+                return false;
+            }
+            Api.getInstance().iRetrofit.download(downLoadInfo.getUrl(), "bytes=" + 0 + "-")
+                    .compose(ApiSubscribe.<ResponseBody>io_io())
+                    .subscribe(new Observer<ResponseBody>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
 
-                    @Override
-                    public void onNext(ResponseBody responseBody) {
-                        int totalSize = (int) responseBody.contentLength();
-                        int rateSzie = totalSize / 3;
-                        downLoadInfo.setTotalSize(totalSize);
-                        downLoadInfo.setState(DownloadTask.PENDING);
-                        daoUtils.updateDownload(downLoadInfo);
-
-                        List<DownloadTask> downloadTasks = new ArrayList<>();
-                        for (int i = 0; i < 3; i++) {
-                            DownloadTask downloadTask;
-                            DownLoadProgree downLoadProgree = new DownLoadProgree();
-                            downLoadProgree.setTaskId(downLoadInfo.getId());
-                            downLoadProgree.setDownLoadInfo(downLoadInfo);
-                            if (i == 2) {
-                                downLoadProgree.setStart(i * rateSzie);
-                                downLoadProgree.setEnd(totalSize);
-                                downloadTask = new DownloadTask(daoUtils.insertDownloadTask(downLoadProgree));
-                            } else {
-                                downLoadProgree.setStart(i * rateSzie);
-                                downLoadProgree.setEnd((i + 1) * rateSzie-1);
-                                downloadTask = new DownloadTask( daoUtils.insertDownloadTask(downLoadProgree));
-                            }
-                            if (queueTaskMap.entrySet().size() < DOWNLOAD_MAX) {
-                                getExecutorService().execute(downloadTask);
-                                downloadTasks.add(downloadTask);
-                            }else{
-                                waitloaded.add(id);
-                                break;
-                            }
                         }
-                        queueTaskMap.put(downLoadInfo.getId(),downloadTasks);
-                    }
 
-                    @Override
-                    public void onError(Throwable e) {
+                        @Override
+                        public void onNext(ResponseBody responseBody) {
+                            int totalSize = (int) responseBody.contentLength();
+                            int rateSzie = totalSize / 3;
+                            downLoadInfo.setTotalSize(totalSize);
+                            downLoadInfo.setState(DownloadTask.PENDING);
+                            daoUtils.updateDownload(downLoadInfo);
+                            for (int i = 0; i < 3; i++) {
+                                DownloadTask downloadTask;
+                                DownLoadProgree downLoadProgree = new DownLoadProgree();
+                                downLoadProgree.setTaskId(downLoadInfo.getId());
+                                downLoadProgree.setDownLoadInfo(downLoadInfo);
+                                if (i == 2) {
+                                    downLoadProgree.setStart(i * rateSzie);
+                                    downLoadProgree.setEnd(totalSize);
+                                    downloadTask = new DownloadTask(daoUtils.insertDownloadTask(downLoadProgree));
+                                } else {
+                                    downLoadProgree.setStart(i * rateSzie);
+                                    downLoadProgree.setEnd((i + 1) * rateSzie - 1);
+                                    downloadTask = new DownloadTask(daoUtils.insertDownloadTask(downLoadProgree));
+                                }
+                                if (queueTaskMap.entrySet().size() < DOWNLOAD_MAX) {
+                                    getExecutorService().execute(downloadTask);
+                                    downloadTasks.add(downloadTask);
+                                } else {
+                                    waitloaded.add(id);
+                                    break;
+                                }
+                            }
+                            queueTaskMap.put(downLoadInfo.getId(), downloadTasks);
+                        }
 
-                    }
+                        @Override
+                        public void onError(Throwable e) {
 
-                    @Override
-                    public void onComplete() {
+                        }
 
-                    }
-                });
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
+
+        }
         return true;
     }
 
@@ -236,11 +252,10 @@ public class TaskDispatcher {
      */
     public synchronized boolean enqueueAll(List<Long> idList) {
         for (Long id : idList) {
-            enqueue(id);
+            enqueue(daoUtils.queryDownlodInfo(id));
         }
         return true;
     }
-
 
 
     /**
@@ -248,7 +263,7 @@ public class TaskDispatcher {
      */
     public synchronized void stop(long id) {
         List<DownloadTask> downloadTasks = queueTaskMap.get(id);
-        for (DownloadTask downloadTask:downloadTasks){
+        for (DownloadTask downloadTask : downloadTasks) {
             downloadTask.setStop(true);
         }
         promoteSyncTask();
@@ -257,7 +272,7 @@ public class TaskDispatcher {
     /**
      * 任务下载完成
      */
-    synchronized void finished(long id ) {
+    synchronized void finished(long id) {
         queueTaskMap.remove(id);
         downloaded.add(id);
         promoteSyncTask();
@@ -283,7 +298,7 @@ public class TaskDispatcher {
                     File file = new File(downLoadInfo.getFilepath(), downLoadInfo.getFilename());
                     file.delete();
                 }
-//                promoteSyncTask();
+                promoteSyncTask();
             }
         }
     }
@@ -292,9 +307,9 @@ public class TaskDispatcher {
      * 调度pending状态的任务，开始下载
      */
     private synchronized void promoteSyncTask() {
-       if(waitloaded.isEmpty()){
-           enqueueAll(waitloaded);
-       }
+        if (waitloaded.isEmpty()) {
+            enqueueAll(waitloaded);
+        }
     }
 
 

@@ -217,6 +217,15 @@ public class DaoUtils {
         return queryBuilder.where(DownLoadInfoDao.Properties.State.eq(state)).list();
     }
 
+    /**
+     * 使用queryBuilder进行查询
+     * @return
+     */
+    public DownLoadInfo queryDownloadInfoBuilder(String url){
+        QueryBuilder<DownLoadInfo> queryBuilder = mManager.getDaoSession().queryBuilder(DownLoadInfo.class);
+        return queryBuilder.where(DownLoadInfoDao.Properties.Url.eq(url)).unique();
+    }
+
 
 
 

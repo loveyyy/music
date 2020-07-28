@@ -49,42 +49,42 @@ public class DownLoadApt extends RecyclerView.Adapter<BindingViewHolder>  {
         ViewDataBinding binding = holder.getBinding();
         binding.setVariable(BR.downloadApt,downLoadInfos.get(position));
         CircularProgressView circularProgressView=holder.itemView.findViewById(R.id.pro_down);
-        switch (downLoadInfos.get(position).getState()){
-            case 0:
-                downLoadApt.rlDownload.setVisibility(View.VISIBLE);
-                downLoadApt.ivDown.setVisibility(View.VISIBLE);
-                downLoadApt.ivDown.setBackgroundResource(R.drawable.stop);
-                break;
-            case 1:
-                downLoadApt.rlDownload.setVisibility(View.VISIBLE);
-                downLoadApt.ivDown.setVisibility(View.VISIBLE);
-                downLoadApt.ivDown.setBackgroundResource(R.drawable.stop);
-                break;
-            case 2:
-                downLoadApt.rlDownload.setVisibility(View.VISIBLE);
-                downLoadApt.ivDown.setVisibility(View.VISIBLE);
-                downLoadApt.ivDown.setBackgroundResource(R.drawable.stop);
-                break;
-            case 3:
-                downLoadApt.rlDownload.setVisibility(View.VISIBLE);
-                downLoadApt.ivDown.setVisibility(View.VISIBLE);
-                downLoadApt.ivDown.setBackgroundResource(R.drawable.stop);
-                circularProgressView.setProgress(downLoadInfos.get(position).getDownloadsize() * 100 / downLoadInfos.get(position).getSize());
-                break;
-            case 4:
-                downLoadApt.rlDownload.setVisibility(View.VISIBLE);
-                downLoadApt.ivDown.setVisibility(View.VISIBLE);
-                downLoadApt.ivDown.setBackgroundResource(R.drawable.stop);
-                circularProgressView.setProgress(downLoadInfos.get(position).getDownloadsize() * 100 / downLoadInfos.get(position).getSize());
-                break;
-            case 5:
-                downLoadApt.rlDownload.setVisibility(View.GONE);
-                downLoadApt.ivDown.setVisibility(View.GONE);
-                break;
-            case 6:
-                downLoadInfos.remove(position);
-                break;
-        }
+//        switch (downLoadInfos.get(position).getState()){
+//            case 0:
+//                downLoadApt.rlDownload.setVisibility(View.VISIBLE);
+//                downLoadApt.ivDown.setVisibility(View.VISIBLE);
+//                downLoadApt.ivDown.setBackgroundResource(R.drawable.stop);
+//                break;
+//            case 1:
+//                downLoadApt.rlDownload.setVisibility(View.VISIBLE);
+//                downLoadApt.ivDown.setVisibility(View.VISIBLE);
+//                downLoadApt.ivDown.setBackgroundResource(R.drawable.stop);
+//                break;
+//            case 2:
+//                downLoadApt.rlDownload.setVisibility(View.VISIBLE);
+//                downLoadApt.ivDown.setVisibility(View.VISIBLE);
+//                downLoadApt.ivDown.setBackgroundResource(R.drawable.stop);
+//                break;
+//            case 3:
+//                downLoadApt.rlDownload.setVisibility(View.VISIBLE);
+//                downLoadApt.ivDown.setVisibility(View.VISIBLE);
+//                downLoadApt.ivDown.setBackgroundResource(R.drawable.stop);
+//                circularProgressView.setProgress(downLoadInfos.get(position).getDownloadSize() * 100 / downLoadInfos.get(position).getTotalSize());
+//                break;
+//            case 4:
+//                downLoadApt.rlDownload.setVisibility(View.VISIBLE);
+//                downLoadApt.ivDown.setVisibility(View.VISIBLE);
+//                downLoadApt.ivDown.setBackgroundResource(R.drawable.stop);
+//                circularProgressView.setProgress(downLoadInfos.get(position).getDownloadSize() * 100 / downLoadInfos.get(position).getTotalSize());
+//                break;
+//            case 5:
+//                downLoadApt.rlDownload.setVisibility(View.GONE);
+//                downLoadApt.ivDown.setVisibility(View.GONE);
+//                break;
+//            case 6:
+//                downLoadInfos.remove(position);
+//                break;
+//        }
         holder.itemView.findViewById(R.id.rl_download).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

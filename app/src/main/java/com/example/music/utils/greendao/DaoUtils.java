@@ -7,6 +7,7 @@ import android.util.Log;
 import com.example.music.model.DaoMaster;
 import com.example.music.model.DownLoadInfo;
 import com.example.music.model.DownLoadInfoDao;
+import com.example.music.model.DownLoadProgree;
 import com.example.music.model.PlayingMusicBeens;
 import com.example.music.model.PlayingMusicBeensDao;
 
@@ -34,8 +35,14 @@ public class DaoUtils {
     }
 
     public long insertDownload(DownLoadInfo downLoadInfo){
-        return mManager.getDaoSession1().getDownLoadInfoDao().insert(downLoadInfo);
+        return mManager.getDaoSession().getDownLoadInfoDao().insert(downLoadInfo);
     }
+
+    public long insertDownloadTask(DownLoadProgree progree){
+        return mManager.getDaoSession().getDownLoadProgreeDao().insert(progree);
+    }
+
+
 
     /**
      * 插入多条数据，在子线程操作
@@ -81,7 +88,22 @@ public class DaoUtils {
     public synchronized boolean updateDownload(DownLoadInfo downLoadInfo){
         boolean flag = false;
         try {
-            mManager.getDaoSession1().update(downLoadInfo);
+            mManager.getDaoSession().update(downLoadInfo);
+            flag = true;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return flag;
+    }
+
+    /**
+     * 修改一条数据
+     * @return
+     */
+    public synchronized boolean updateDownloadTask(DownLoadProgree downLoadProgree){
+        boolean flag = false;
+        try {
+            mManager.getDaoSession().update(downLoadProgree);
             flag = true;
         }catch (Exception e){
             e.printStackTrace();
@@ -148,7 +170,7 @@ public class DaoUtils {
      * @return
      */
     public synchronized DownLoadInfo queryDownlodInfo(long key){
-        return mManager.getDaoSession1().load(DownLoadInfo.class, key);
+        return mManager.getDaoSession().load(DownLoadInfo.class, key);
     }
 
     /**
@@ -156,17 +178,18 @@ public class DaoUtils {
      * @return
      */
     public synchronized List<DownLoadInfo> queryDownloadInfoAll(){
-        return mManager.getDaoSession1().loadAll(DownLoadInfo.class);
+        return mManager.getDaoSession().loadAll(DownLoadInfo.class);
     }
 
     /**
-     * 使用queryBuilder进行查询
+     * 根据主键id查询记录
+     * @param key
      * @return
      */
-    public synchronized List<DownLoadInfo> queryDownloadInfoBuilder(int  state){
-        QueryBuilder<DownLoadInfo> queryBuilder = mManager.getDaoSession1().queryBuilder(DownLoadInfo.class);
-        return queryBuilder.where(DownLoadInfoDao.Properties.State.eq(state)).list();
+    public synchronized DownLoadProgree queryDownlodTask(long key){
+        return mManager.getDaoSession().load(DownLoadProgree.class, key);
     }
+
 
 
     /**
@@ -183,6 +206,15 @@ public class DaoUtils {
     public List<PlayingMusicBeens> queryMessageByQueryBuilder(long id){
         QueryBuilder<PlayingMusicBeens> queryBuilder = mManager.getDaoSession().queryBuilder(PlayingMusicBeens.class);
         return queryBuilder.where(PlayingMusicBeensDao.Properties.Id.eq(id)).list();
+    }
+
+    /**
+     * 使用queryBuilder进行查询
+     * @return
+     */
+    public List<DownLoadInfo> queryDownloadInfoBuilder(int  state){
+        QueryBuilder<DownLoadInfo> queryBuilder = mManager.getDaoSession().queryBuilder(DownLoadInfo.class);
+        return queryBuilder.where(DownLoadInfoDao.Properties.State.eq(state)).list();
     }
 
 

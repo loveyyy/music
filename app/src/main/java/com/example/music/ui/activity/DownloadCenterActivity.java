@@ -16,15 +16,12 @@ import com.example.music.model.DownLoadInfo;
 import com.example.music.server.DownloadTask;
 import com.example.music.server.TaskDispatcher;
 import com.example.music.ui.adapter.DownLoadApt;
-import com.example.music.ui.adapter.LocalMusicApt;
 import com.example.music.ui.base.BaseActivity;
 import com.example.music.ui.base.BaseVM;
-import com.example.music.utils.LocalMusicUtils;
 import com.example.music.utils.greendao.DaoUtils;
 import com.google.android.material.tabs.TabLayout;
 
 import java.io.File;
-import java.util.Map;
 
 /**
  * Create By morningsun  on 2020-06-24
@@ -105,7 +102,7 @@ public class DownloadCenterActivity extends BaseActivity<DownloadcenteractivityB
                     downloadcenteractivityBinding.rcvCollect.setVisibility(View.GONE);
                     downloadcenteractivityBinding.rcvLocal.setVisibility(View.VISIBLE);
 
-                    downLoadApt=new DownLoadApt(getContext(),new  DaoUtils(getContext()).queryDownloadInfoBuilder(DownloadTask.PROGREE));
+                    downLoadApt=new DownLoadApt(getContext(),new DaoUtils(getContext()).queryDownloadInfoBuilder(DownloadTask.PROGREE));
                     downloadcenteractivityBinding.rcvLocal.setLayoutManager(new LinearLayoutManager(getBaseContext(), RecyclerView.VERTICAL,false));
                     downloadcenteractivityBinding.rcvLocal.setAdapter(downLoadApt);
 
@@ -113,9 +110,13 @@ public class DownloadCenterActivity extends BaseActivity<DownloadcenteractivityB
                     downloadcenteractivityBinding.rcvCollect.setVisibility(View.VISIBLE);
                     downloadcenteractivityBinding.rcvLocal.setVisibility(View.GONE);
 
-                    LocalMusicApt localMusicApt=new LocalMusicApt(getBaseContext(), LocalMusicUtils.getmusic(getBaseContext()));
+                    downLoadApt=new DownLoadApt(getContext(),new DaoUtils(getContext()).queryDownloadInfoBuilder(DownloadTask.FINISHED));
                     downloadcenteractivityBinding.rcvCollect.setLayoutManager(new LinearLayoutManager(getBaseContext(), RecyclerView.VERTICAL,false));
-                    downloadcenteractivityBinding.rcvCollect.setAdapter(localMusicApt);
+                    downloadcenteractivityBinding.rcvCollect.setAdapter(downLoadApt);
+
+//                    LocalMusicApt localMusicApt=new LocalMusicApt(getBaseContext(), LocalMusicUtils.getmusic(getBaseContext()));
+//                    downloadcenteractivityBinding.rcvCollect.setLayoutManager(new LinearLayoutManager(getBaseContext(), RecyclerView.VERTICAL,false));
+//                    downloadcenteractivityBinding.rcvCollect.setAdapter(localMusicApt);
                 }
             }
 

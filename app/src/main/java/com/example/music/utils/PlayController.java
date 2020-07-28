@@ -94,7 +94,7 @@ public class PlayController {
     public  int playOrPause(){
         if(mi!=null){
             int a=mi.playOrPause();
-            NotificationUtils.getInstance().sendNotification(playingMusicBeens.get(pos),1,MyApplication.getContext());
+                NotificationUtils.getInstance().sendNotification(playingMusicBeens.get(pos),1,MyApplication.getContext());
             if(stateChange!=null){
                 stateChange.OnStateChange(a);
             }

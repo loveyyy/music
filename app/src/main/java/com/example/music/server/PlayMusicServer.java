@@ -8,7 +8,9 @@ import android.os.IBinder;
 
 import androidx.annotation.Nullable;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.example.music.Interface.MusicInterface;
+import com.example.music.model.PlayingMusicBeens;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -93,12 +95,33 @@ public class PlayMusicServer extends Service implements MediaPlayer.OnCompletion
                 mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                     @Override
                     public void onPrepared(MediaPlayer mp) {
-                        mediaPlayer=mp;
                         mediaPlayer.setLooping(false);
                         mediaPlayer.start();
                         mediaPlayer.setOnCompletionListener(PlayMusicServer.this);
-                        state = PLAYING;
-                        startTask();
+                        mediaPlayer.setOnBufferingUpdateListener(new MediaPlayer.OnBufferingUpdateListener() {
+                            @Override
+                            public void onBufferingUpdate(MediaPlayer mp, int percent) {
+                                if(percent==100){
+                                    LogUtils.e("缓冲完成");
+                                    state = PLAYING;
+                                    startTask();
+                                }
+
+                            }
+                        });
+                       mediaPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+                           @Override
+                           public boolean onError(MediaPlayer mp, int what, int extra) {
+                               LogUtils.e("错误"+what);
+                               return false;
+                           }
+                       });
+                       mediaPlayer.setOnSeekCompleteListener(new MediaPlayer.OnSeekCompleteListener() {
+                           @Override
+                           public void onSeekComplete(MediaPlayer mp) {
+                               startTask();
+                           }
+                       });
                     }
                 });
             } catch (IOException e) {
@@ -128,9 +151,6 @@ public class PlayMusicServer extends Service implements MediaPlayer.OnCompletion
 
         @Override
         public int getPlayState() {
-            if(mediaPlayer==null){
-                state=STOP;
-            }
             return state;
         }
 
@@ -141,6 +161,9 @@ public class PlayMusicServer extends Service implements MediaPlayer.OnCompletion
 
         @Override
         public void setPro(int pos) {
+            if(timer!=null){
+                timer.cancel();
+            }
             mediaPlayer.seekTo(pos*1000);
             i=pos;
         }

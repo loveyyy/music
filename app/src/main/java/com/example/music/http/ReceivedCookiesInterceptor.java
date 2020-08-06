@@ -31,7 +31,7 @@ public class ReceivedCookiesInterceptor implements Interceptor {
             }
             config.putStringSet("cookie", cookies);
             List<String> asd=new ArrayList<>(cookies);
-            config.putString("token",  asd.get(0).split(";")[0].split("=")[1]);
+            config.putString("token", asd.get(0).split(";")[0].split("=")[1]);
             config.commit();
         }
 

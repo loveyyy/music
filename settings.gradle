@@ -1,1 +1,1 @@
-include ':app', ':msplay'
+include ':app'

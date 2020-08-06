@@ -3,20 +3,16 @@ package com.example.music.server;
 import com.blankj.utilcode.util.LogUtils;
 import com.example.music.http.Api;
 import com.example.music.http.ApiSubscribe;
-import com.example.music.model.DownLoadInfo;
 import com.example.music.model.DownLoadProgree;
 import com.example.music.ui.MyApplication;
 import com.example.music.utils.greendao.DaoUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.ByteBuffer;
-import java.nio.channels.FileChannel;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;

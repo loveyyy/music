@@ -34,6 +34,8 @@ public class DaoUtils {
         return flag;
     }
 
+
+
     public long insertDownload(DownLoadInfo downLoadInfo){
         return mManager.getDaoSession().getDownLoadInfoDao().insert(downLoadInfo);
     }

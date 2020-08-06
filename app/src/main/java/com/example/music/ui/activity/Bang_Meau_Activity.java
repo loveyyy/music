@@ -101,7 +101,7 @@ public class Bang_Meau_Activity extends BaseActivity<BangMeauActivityBinding,Ban
                                 playingMusicBeens1.setRid(musicListBean.getRid());
                                 playingMusicBeens.add(playingMusicBeens1);
                             }
-                            bangMeauActivityBinding.playview.play(playingMusicBeens, pos);
+                            bangMeauActivityBinding.playview.play(playingMusicBeens,pos);
                         }
                     });
 

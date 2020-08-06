@@ -153,7 +153,6 @@ public class MainAcvity extends BaseActivity<MainactivityBinding, BaseVM> implem
     @Override
     protected void onRestart() {
         super.onRestart();
-        mainactivityBinding.main.playview.refresh();
     }
 
     @Override

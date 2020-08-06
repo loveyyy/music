@@ -24,7 +24,7 @@ import com.example.music.viewmodel.Lrc_VM;
  * Created by Administrator on 2018/7/3.
  */
 
-public class TextLrc extends BaseActivity<LrcBinding, Lrc_VM> implements PlayController.PlayNextMusic {
+public class TextLrc extends BaseActivity<LrcBinding, Lrc_VM> implements PlayController.PlayChange {
     private LrcBinding lrcBinding;
     private Lrc_VM lrc_vm;
     private PlayController playController;
@@ -44,7 +44,7 @@ public class TextLrc extends BaseActivity<LrcBinding, Lrc_VM> implements PlayCon
     protected void initView(LrcBinding bindView) {
         lrcBinding = bindView;
         playController = PlayController.getInstance();
-        playController.SetOnPlayNextMusic(this);
+        playController.SetOnPlayChange(this);
     }
 
     @Override
@@ -115,9 +115,9 @@ public class TextLrc extends BaseActivity<LrcBinding, Lrc_VM> implements PlayCon
 //        Glide.with(getContext()).pauseRequests();
     }
 
+
     @Override
-    public void OnPlayNextMusic(int pos) {
-        playingMusicBeens = new DaoUtils(this).queryAllMessage().get(pos);
+    public void PlayChange(PlayingMusicBeens playingMusicBeens) {
         RequestOptions requestOptions = new RequestOptions().transform(new GildeCilcleImageUtils());
         Glide.with(getContext()).load(playingMusicBeens.getAlbumpic()).apply(requestOptions).into(lrcBinding.ivBac);
         lrc_vm.Get_lrc(playingMusicBeens.getRid());

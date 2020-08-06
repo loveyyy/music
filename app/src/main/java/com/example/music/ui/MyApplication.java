@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 
 import com.example.music.model.DownLoadInfo;
+import com.example.music.utils.PlayController;
 import com.example.music.utils.greendao.DaoManager;
 
 /**
@@ -17,6 +18,11 @@ public class MyApplication  extends Application {
         super.onCreate();
         context=getApplicationContext();
         initGreenDao();
+        initPlayManger();
+    }
+
+    private void initPlayManger() {
+        PlayController.getInstance();
     }
 
     public static Context getContext() {
@@ -28,4 +34,7 @@ public class MyApplication  extends Application {
         DaoManager mManager = DaoManager.getInstance();
         mManager.init(this);
     }
+
+
+
 }

@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -55,7 +56,7 @@ public class Frament_Rec extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         framentRecBinding= DataBindingUtil.inflate(inflater,R.layout.frament_rec,container,false);
-        framentRecVM = ViewModelProviders.of(this).get(Frament_Rec_VM.class);
+        framentRecVM = new ViewModelProvider(this).get(Frament_Rec_VM.class);
         StatusBarUtil.setTranslucentForImageViewInFragment(getActivity(),0, null);
         setVM();
         initdata();
@@ -70,7 +71,7 @@ public class Frament_Rec extends Fragment {
     }
 
     private void setVM(){
-        framentRecVM.Music_list.observe(this, new Observer<BaseRespon<Music_list>>() {
+        framentRecVM.Music_list.observe(getViewLifecycleOwner(), new Observer<BaseRespon<Music_list>>() {
             @Override
             public void onChanged(final BaseRespon<Music_list> listBaseRespon) {
                 RecyclerView.LayoutManager layoutManager=new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL,false);
@@ -89,7 +90,7 @@ public class Frament_Rec extends Fragment {
                 framentRecBinding.rcvMusicListMain.setAdapter(music_listAdapter);
             }
         });
-        framentRecVM.Bananer_list.observe(this, new Observer<BaseRespon<List<Bananer>>>() {
+        framentRecVM.Bananer_list.observe(getViewLifecycleOwner(), new Observer<BaseRespon<List<Bananer>>>() {
             @Override
             public void onChanged(BaseRespon<List<Bananer>> responseBody) {
                 framentRecBinding.customMain.initdata(responseBody.getData());
@@ -97,7 +98,7 @@ public class Frament_Rec extends Fragment {
 
             }
         });
-        framentRecVM.Bang_meau.observe(this, new Observer<BaseRespon<List<Bang_list>>>() {
+        framentRecVM.Bang_meau.observe(getViewLifecycleOwner(), new Observer<BaseRespon<List<Bang_list>>>() {
             @Override
             public void onChanged(final BaseRespon<List<Bang_list>> listBaseRespon) {
                 framentRecBinding.rcvRankMain.setLayoutManager(new LinearLayoutManager(getContext(),RecyclerView.HORIZONTAL,false));
@@ -119,7 +120,7 @@ public class Frament_Rec extends Fragment {
 
             }
         });
-        framentRecVM.Artist_list.observe(this, new Observer<BaseRespon<Artist_list>>() {
+        framentRecVM.Artist_list.observe(getViewLifecycleOwner(), new Observer<BaseRespon<Artist_list>>() {
             @Override
             public void onChanged(final BaseRespon<Artist_list> artist_listBaseRespon) {
                 framentRecBinding.rcvSingerMain.setLayoutManager(new LinearLayoutManager(getContext(),RecyclerView.HORIZONTAL,false));

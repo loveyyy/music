@@ -10,10 +10,8 @@ import androidx.databinding.DataBindingUtil;
 import androidx.databinding.library.baseAdapters.BR;
 
 import com.example.music.R;
-import com.example.music.databinding.GvArtistAlbumsAptBinding;
 import com.example.music.databinding.GvArtistMvAptBinding;
-import com.example.music.model.Artist_Album;
-import com.example.music.model.Artist_Mv;
+import com.example.music.model.ArtistMv;
 
 import java.util.List;
 
@@ -22,8 +20,8 @@ import java.util.List;
  */
 public class Gv_artist_Mv_apt extends BaseAdapter {
     private Context context;
-    private List<Artist_Mv.MvlistBean> mvlistBeans;
-    public Gv_artist_Mv_apt(Context context, List<Artist_Mv.MvlistBean> mvlistBeans){
+    private List<ArtistMv.MvlistBean> mvlistBeans;
+    public Gv_artist_Mv_apt(Context context, List<ArtistMv.MvlistBean> mvlistBeans){
         this.mvlistBeans=mvlistBeans;
         this.context=context;
     }

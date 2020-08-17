@@ -5,7 +5,7 @@
     <data>
         <variable
             name="bang_meau"
-            type="com.example.music.model.Bang_list" />
+            type="com.example.music.model.BangList" />
     </data>
 
     <LinearLayout

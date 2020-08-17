@@ -12,11 +12,8 @@ import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.music.BR;
 import com.example.music.R;
-import com.example.music.databinding.MusicItemAptBinding;
 import com.example.music.databinding.PopPlayAptBinding;
-import com.example.music.model.Bang_Music_list;
 import com.example.music.model.PlayingMusicBeens;
 import com.example.music.ui.bindadapter.BindingViewHolder;
 

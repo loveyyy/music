@@ -5,14 +5,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.TextView;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.library.baseAdapters.BR;
 
 import com.example.music.R;
 import com.example.music.databinding.GrideviewItemBinding;
-import com.example.music.model.Artist_list;
+import com.example.music.model.ArtistList;
 
 import java.util.List;
 
@@ -21,8 +20,8 @@ import java.util.List;
  */
 public class Gv_Singer_apt extends BaseAdapter {
     private Context context;
-    private  List<Artist_list.ArtistListBean> artist_lists;
-    public Gv_Singer_apt(Context context, List<Artist_list.ArtistListBean> artist_lists){
+    private  List<ArtistList.ArtistListBean> artist_lists;
+    public Gv_Singer_apt(Context context, List<ArtistList.ArtistListBean> artist_lists){
         this.context=context;
         this.artist_lists=artist_lists;
     }

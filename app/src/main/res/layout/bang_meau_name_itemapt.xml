@@ -5,7 +5,7 @@
     <data>
         <variable
             name="bangmeaunameitem"
-            type="com.example.music.model.Bang_meau.ListBean" />
+            type="com.example.music.model.BangMenu.ListBean" />
     </data>
 
     <LinearLayout

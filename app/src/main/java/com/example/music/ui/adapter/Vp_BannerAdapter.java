@@ -1,55 +1,52 @@
 package com.example.music.ui.adapter;
 
 import android.content.Context;
-import android.view.View;
+import android.view.LayoutInflater;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
-import androidx.viewpager.widget.PagerAdapter;
+import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.music.R;
-import com.example.music.model.Bananer;
+import com.example.music.databinding.BananerBinding;
+import com.example.music.model.Banner;
+import com.example.music.ui.bindadapter.BindingViewHolder;
 
 import java.util.List;
 
-public class Vp_BannerAdapter extends PagerAdapter {
-    private List<Bananer> list;
+public class Vp_BannerAdapter extends RecyclerView.Adapter<BindingViewHolder> {
+    private List<Banner> list;
     private Context context;
+    private BananerBinding bananerBinding;
 
-    public Vp_BannerAdapter(Context context, List<Bananer> list) {
+    public Vp_BannerAdapter(Context context, List<Banner> list1) {
         this.context = context;
-        this.list = list;
+        this.list = list1;
+    }
+
+    @NonNull
+    @Override
+    public BindingViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        bananerBinding= DataBindingUtil.inflate(LayoutInflater.from(context),R.layout.bananer,parent,false);
+        return new BindingViewHolder(bananerBinding);
     }
 
     @Override
-    public int getCount() {
-        return Integer.MAX_VALUE;
-    }
-
-    @Override
-    public boolean isViewFromObject(View view, Object object) {
-        return view == object;
-    }
-
-
-    @Override
-    public Object instantiateItem(ViewGroup container, int position) {
+    public void onBindViewHolder(@NonNull BindingViewHolder holder, final int position) {
         final int newPosition = position % list.size();
-        ImageView iv = new ImageView(context);
-        iv.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        RoundedCorners roundedCorners= new RoundedCorners(context.getResources().getDimensionPixelOffset(R.dimen.dp_10));
+        RoundedCorners roundedCorners= new RoundedCorners(20);
         RequestOptions requestOptions = RequestOptions.bitmapTransform(roundedCorners);
-        Glide.with(context).load(list.get(newPosition).getPic()).apply(requestOptions).into(iv);
-        container.addView(iv);
-        return iv;
+        Glide.with(context).load(list.get(newPosition).getPic()).apply(requestOptions).into(bananerBinding.ivBananer);
+        holder.getBinding().executePendingBindings();
     }
 
     @Override
-    public void destroyItem(ViewGroup container, int position, Object object) {
-        container.removeView((View) object);
+    public int getItemCount() {
+        return Integer.MAX_VALUE;
     }
 
 }

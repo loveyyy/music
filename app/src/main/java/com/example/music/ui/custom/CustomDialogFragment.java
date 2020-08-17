@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Environment;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,21 +19,17 @@ import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.blankj.utilcode.util.LogUtils;
-import com.example.music.Interface.OnDownLoadListener;
 import com.example.music.R;
 import com.example.music.http.Api;
 import com.example.music.http.ApiResponse;
-import com.example.music.http.ApiSubscribe;
+import com.example.music.http.RxHelper;
 import com.example.music.model.BaseRespon;
 import com.example.music.model.DownLoadInfo;
 import com.example.music.model.DownlodMusciInfo;
 import com.example.music.model.PlayingMusicBeens;
-import com.example.music.server.DownloadTask;
 import com.example.music.server.TaskDispatcher;
 import com.example.music.ui.adapter.Pop_PlayAdapter;
 import com.example.music.utils.ACache;
-import com.example.music.utils.greendao.DaoUtils;
 
 import java.io.File;
 import java.util.List;
@@ -102,9 +97,9 @@ public class CustomDialogFragment extends DialogFragment {
             @Override
             public void OnDownLoad(int pos) {
                 //查询链接
-                Api.getInstance().iRetrofit.downloadMuisc(playingMusicBeens.get(pos).getMusicid().split("_")[1],
+                Api.getInstance().iRetrofit.downloadMusic(playingMusicBeens.get(pos).getMusicid().split("_")[1],
                         "kuwo","id",1,"XMLHttpRequest")
-                        .compose(ApiSubscribe.<BaseRespon<List<DownlodMusciInfo>>>io_main())
+                        .compose(RxHelper.observableIO2Main(getContext()))
                         .subscribe(new ApiResponse<BaseRespon<List<DownlodMusciInfo>>>() {
                             @Override
                             public void success(BaseRespon<List<DownlodMusciInfo>> data) {

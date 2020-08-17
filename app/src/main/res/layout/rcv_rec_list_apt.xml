@@ -5,7 +5,7 @@
     <data>
         <variable
             name="rec_list_info"
-            type="com.example.music.model.Rec_List_Info.MusicListBean" />
+            type="com.example.music.model.RecListInfo.MusicListBean" />
     </data>
     <LinearLayout
         android:orientation="horizontal"

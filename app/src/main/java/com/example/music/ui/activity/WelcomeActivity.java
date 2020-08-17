@@ -2,24 +2,15 @@ package com.example.music.ui.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.databinding.DataBindingUtil;
-
-import com.blankj.utilcode.util.LogUtils;
 import com.example.music.R;
 import com.example.music.databinding.WelcomeBinding;
 import com.example.music.http.Api;
-import com.example.music.http.ApiResponse;
-import com.example.music.http.ApiSubscribe;
+import com.example.music.http.RxHelper;
 import com.example.music.ui.base.BaseActivity;
 import com.example.music.ui.base.BaseVM;
-import com.jaeger.library.StatusBarUtil;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
@@ -36,7 +27,7 @@ public class WelcomeActivity extends BaseActivity<WelcomeBinding, BaseVM> {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             Intent intent=new Intent();
-            intent.setClass(WelcomeActivity.this,MainAcvity.class);
+            intent.setClass(WelcomeActivity.this, MainActivity.class);
             startActivity(intent);
             finish();
         }
@@ -54,8 +45,6 @@ public class WelcomeActivity extends BaseActivity<WelcomeBinding, BaseVM> {
 
     @Override
     protected void initView(WelcomeBinding bindView) {
-        WelcomeBinding welcomeBinding = bindView;
-        welcomeBinding.IvWlcome.setBackgroundResource(R.drawable.welcome);
     }
 
     @Override
@@ -70,7 +59,7 @@ public class WelcomeActivity extends BaseActivity<WelcomeBinding, BaseVM> {
 
     @Override
     protected void initData() {
-        Api.getInstance().iRetrofit.all().compose(ApiSubscribe.<ResponseBody>io_main())
+        Api.getInstance().iRetrofit.all().compose(RxHelper.observableIO2Main(getContext()))
                 .subscribe(new Observer<ResponseBody>() {
                     @Override
                     public void onSubscribe(Disposable d) {

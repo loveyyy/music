@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.music.R;
@@ -19,7 +20,7 @@ import com.jaeger.library.StatusBarUtil;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
-public abstract class BaseActivity<DB extends ViewDataBinding , VM extends BaseVM> extends AppCompatActivity {
+public abstract class BaseActivity<DB extends ViewDataBinding, VM extends BaseVM> extends AppCompatActivity {
     private ACache aCache;
     private VM vm;
     @Override
@@ -35,9 +36,10 @@ public abstract class BaseActivity<DB extends ViewDataBinding , VM extends BaseV
         }else{
             StatusBarUtil.setTranslucentForImageViewInFragment(this,0, null);
         }
-
+        //初始化db
         DB db = DataBindingUtil.setContentView(this, getLayout());
-        aCache=ACache.get(this);
+        aCache= ACache.get(this);
+        //初始化vm
         if (vm == null) {
             Class modelClass;
             Type type = getClass().getGenericSuperclass();
@@ -47,32 +49,47 @@ public abstract class BaseActivity<DB extends ViewDataBinding , VM extends BaseV
                 //如果没有指定泛型参数，则默认使用BaseViewModel
                 modelClass = BaseVM.class;
             }
-            vm = (VM) ViewModelProviders.of(this).get(modelClass);
+            vm = (VM) new ViewModelProvider(this).get(modelClass);
         }
-        getLifecycle().addObserver(vm);
         initView(db);
         setVM(vm);
         setListener();
         initData();
+        getLifecycle().addObserver(vm);
+        db.setLifecycleOwner(this);
     }
+    /*
+     * 获取layout文件
+     */
     public abstract int getLayout();
+    /*
+     * 设置是否沉浸栏显示
+     */
     public abstract boolean isLight();
+    /*
+     * 初始化dataBinding
+     */
     protected abstract void initView(DB bindView);
+    /*
+     * 初始化ViewModel
+     */
     protected abstract void setVM(VM vm);
+    /*
+     * 设置监听事件
+     */
     protected abstract void setListener();
+    /*
+     * 数据初始化
+     */
     protected abstract void initData();
 
 
     public Context getContext(){
         return BaseActivity.this;
     }
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-    }
 
-    public ACache getaCache(){
-       return aCache;
+    public ACache getACache(){
+        return aCache;
     }
 
 }

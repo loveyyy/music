@@ -4,7 +4,7 @@
     <data>
         <variable
             name="bangmeauitem"
-            type="com.example.music.model.Bang_list.MusicListBean" />
+            type="com.example.music.model.BangList.MusicListBean" />
     </data>
 
     <LinearLayout

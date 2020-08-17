@@ -36,10 +36,10 @@
             android:enabled="true"
             tools:ignore="InnerclassSeparator" />
         <service android:name=".server.PlayMvServer"/>
-        <activity android:name=".ui.activity.MainAcvity"
+        <activity android:name=".ui.activity.MainActivity"
             android:launchMode="singleTask"
             tools:ignore="InnerclassSeparator" />
-        <activity android:name=".ui.activity.Bang_Meau_Activity"
+        <activity android:name=".ui.activity.BangMenuActivity"
             android:launchMode="singleTask"
             tools:ignore="InnerclassSeparator" />
         <activity android:name=".ui.activity.TextLrc"
@@ -47,7 +47,7 @@
             tools:ignore="InnerclassSeparator" />
         <activity android:name=".ui.activity.Singer_Activity"
             android:launchMode="singleTask"/>
-        <activity android:name=".ui.activity.Rec_List_Info_Activity"
+        <activity android:name=".ui.activity.RecListInfoActivity"
             android:launchMode="singleTask"/>
         <activity android:name=".ui.activity.DownloadCenterActivity"
             android:launchMode="singleTask"/>

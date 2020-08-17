@@ -5,7 +5,7 @@
     <data>
         <variable
             name="singer"
-            type="com.example.music.model.Artist_list.ArtistListBean" />
+            type="com.example.music.model.ArtistList.ArtistListBean" />
     </data>
 
     <LinearLayout

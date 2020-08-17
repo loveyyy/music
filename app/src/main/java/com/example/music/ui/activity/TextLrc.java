@@ -17,16 +17,16 @@ import com.example.music.ui.base.BaseActivity;
 import com.example.music.utils.PlayController;
 import com.example.music.utils.greendao.DaoUtils;
 import com.example.music.utils.imageutils.GildeCilcleImageUtils;
-import com.example.music.viewmodel.Lrc_VM;
+import com.example.music.viewmodel.LrcVM;
 
 
 /**
  * Created by Administrator on 2018/7/3.
  */
 
-public class TextLrc extends BaseActivity<LrcBinding, Lrc_VM> implements PlayController.PlayChange {
+public class TextLrc extends BaseActivity<LrcBinding, LrcVM> implements PlayController.PlayChange {
     private LrcBinding lrcBinding;
-    private Lrc_VM lrc_vm;
+    private LrcVM lrcVM;
     private PlayController playController;
     private PlayingMusicBeens playingMusicBeens;
 
@@ -48,13 +48,10 @@ public class TextLrc extends BaseActivity<LrcBinding, Lrc_VM> implements PlayCon
     }
 
     @Override
-    protected void setVM(Lrc_VM vm) {
-        lrc_vm = vm;
-    }
+    protected void setVM(LrcVM vm) {
+        lrcVM = vm;
 
-    @Override
-    protected void setListener() {
-        lrc_vm.lrc.observe(this, new Observer<BaseRespon<LrcBeen>>() {
+        lrcVM.lrc.observe(this, new Observer<BaseRespon<LrcBeen>>() {
             @Override
             public void onChanged(BaseRespon<LrcBeen> baseRespon) {
                 lrcBinding.lrctext.init(baseRespon.getData().getLrclist());
@@ -62,18 +59,23 @@ public class TextLrc extends BaseActivity<LrcBinding, Lrc_VM> implements PlayCon
                 Glide.with(getApplicationContext()).load(playingMusicBeens.getAlbumpic()).apply(requestOptions).into(lrcBinding.ivBac);
             }
         });
+    }
+
+    @Override
+    protected void setListener() {
+
         lrcBinding.ibLrcLast.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 playingMusicBeens = playController.play_last();
-                lrc_vm.Get_lrc(playingMusicBeens.getRid());
+                lrcVM.getLrc(playingMusicBeens.getRid());
             }
         });
         lrcBinding.ibLrcNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 playingMusicBeens = playController.play_Next();
-                lrc_vm.Get_lrc(playingMusicBeens.getRid());
+                lrcVM.getLrc(playingMusicBeens.getRid());
             }
         });
         lrcBinding.ibLrcPlay.setOnClickListener(new View.OnClickListener() {
@@ -105,7 +107,7 @@ public class TextLrc extends BaseActivity<LrcBinding, Lrc_VM> implements PlayCon
         playingMusicBeens = new DaoUtils(this).queryAllMessage().get(pos);
         RequestOptions requestOptions = new RequestOptions().transform(new GildeCilcleImageUtils());
         Glide.with(this).load(playingMusicBeens.getAlbumpic()).apply(requestOptions).into(lrcBinding.ivBac);
-        lrc_vm.Get_lrc(playingMusicBeens.getRid());
+        lrcVM.getLrc(playingMusicBeens.getRid());
     }
 
 
@@ -120,6 +122,6 @@ public class TextLrc extends BaseActivity<LrcBinding, Lrc_VM> implements PlayCon
     public void PlayChange(PlayingMusicBeens playingMusicBeens) {
         RequestOptions requestOptions = new RequestOptions().transform(new GildeCilcleImageUtils());
         Glide.with(getContext()).load(playingMusicBeens.getAlbumpic()).apply(requestOptions).into(lrcBinding.ivBac);
-        lrc_vm.Get_lrc(playingMusicBeens.getRid());
+        lrcVM.getLrc(playingMusicBeens.getRid());
     }
 }

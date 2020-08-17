@@ -2,7 +2,7 @@ package com.example.music.server;
 
 import com.blankj.utilcode.util.LogUtils;
 import com.example.music.http.Api;
-import com.example.music.http.ApiSubscribe;
+import com.example.music.http.RxHelper;
 import com.example.music.model.DownLoadProgree;
 import com.example.music.ui.MyApplication;
 import com.example.music.utils.greendao.DaoUtils;
@@ -62,7 +62,7 @@ public class DownloadTask extends Thread {
 
     private void download() {
         Api.getInstance().iRetrofit.download(downLoadProgree.getDownLoadInfo().getUrl(),"bytes=" + downLoadProgree.getStart() + "-" + downLoadProgree.getEnd())
-                .compose(ApiSubscribe.<ResponseBody>io_io())
+                .compose(RxHelper.observableIO2Io2(MyApplication.getContext()))
                 .subscribe(new Observer<ResponseBody>() {
                     @Override
                     public void onSubscribe(Disposable d) {
@@ -138,7 +138,7 @@ public class DownloadTask extends Thread {
 
     private void download1() {
         Api.getInstance().iRetrofit.download(downLoadProgree.getDownLoadInfo().getUrl(),"bytes=" + downLoadProgree.getStart() + "-" + downLoadProgree.getEnd())
-                .compose(ApiSubscribe.<ResponseBody>io_io())
+                .compose(RxHelper.observableIO2Io2(MyApplication.getContext()))
                 .subscribe(new Observer<ResponseBody>() {
                     @Override
                     public void onSubscribe(Disposable d) {

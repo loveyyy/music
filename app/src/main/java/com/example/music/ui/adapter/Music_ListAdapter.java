@@ -13,16 +13,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.music.BR;
 import com.example.music.R;
 import com.example.music.ui.bindadapter.BindingViewHolder;
-import com.example.music.model.Music_list;
+import com.example.music.model.MusicList;
 
 /**
  * Create By morningsun  on 2019-11-29
  */
 public class Music_ListAdapter extends  RecyclerView.Adapter<BindingViewHolder> {
     private Context context;
-    private Music_list listBean;
+    private MusicList listBean;
     private Music_ListAdapter.OnItemClick onItemClick;
-    public Music_ListAdapter(Context context, Music_list listBean){
+    public Music_ListAdapter(Context context, MusicList listBean){
         this.context=context;
         this.listBean=listBean;
     }

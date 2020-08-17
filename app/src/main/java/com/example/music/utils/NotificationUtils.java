@@ -27,7 +27,6 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.example.music.R;
 import com.example.music.model.PlayingMusicBeens;
-import com.example.music.ui.activity.MainAcvity;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;

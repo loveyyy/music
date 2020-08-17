@@ -15,18 +15,18 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.music.Interface.PlayMusic;
 import com.example.music.R;
 import com.example.music.databinding.SingerActivityBinding;
-import com.example.music.model.Arisit_Info;
+import com.example.music.model.ArtistInfo;
 import com.example.music.model.BaseRespon;
 import com.example.music.model.PlayingMusicBeens;
 import com.example.music.ui.adapter.Vp_Artist_apt;
 import com.example.music.ui.base.BaseActivity;
 import com.example.music.ui.custom.CustomDialogFragment;
 import com.example.music.ui.custom.PlayerMusicView;
-import com.example.music.ui.frament.Frament_Artist_Mv;
-import com.example.music.ui.frament.Frament_Artist_albums;
-import com.example.music.ui.frament.Frament_artist_music;
+import com.example.music.ui.frament.FragmentArtistMv;
+import com.example.music.ui.frament.FragmentArtistAlbums;
+import com.example.music.ui.frament.FragmentArtistMusic;
 import com.example.music.utils.imageutils.GildeCilcleImageUtils;
-import com.example.music.viewmodel.Singer_VM;
+import com.example.music.viewmodel.SingerVM;
 import com.google.android.material.tabs.TabLayout;
 import com.jaeger.library.StatusBarUtil;
 
@@ -36,10 +36,10 @@ import java.util.List;
 /**
  * Create By morningsun  on 2019-12-07
  */
-public class Singer_Activity extends BaseActivity<SingerActivityBinding,Singer_VM> implements PlayMusic, PlayerMusicView.showList {
+public class Singer_Activity extends BaseActivity<SingerActivityBinding, SingerVM> implements PlayMusic, PlayerMusicView.showList {
     private SingerActivityBinding singerActivityBinding;
     private List<Fragment> fragments = new ArrayList();
-    private Singer_VM singer_vm;
+    private SingerVM singer_vm;
     private int artistid;
 
 
@@ -60,11 +60,11 @@ public class Singer_Activity extends BaseActivity<SingerActivityBinding,Singer_V
     }
 
     @Override
-    protected void setVM(Singer_VM vm) {
+    protected void setVM(SingerVM vm) {
         singer_vm=vm;
-        singer_vm.Artist_info.observe(this, new Observer<BaseRespon<Arisit_Info>>() {
+        singer_vm.artistInfo.observe(this, new Observer<BaseRespon<ArtistInfo>>() {
             @Override
-            public void onChanged(BaseRespon<Arisit_Info> arisit_infoBaseRespon) {
+            public void onChanged(BaseRespon<ArtistInfo> arisit_infoBaseRespon) {
                 try {
                     RequestOptions requestOptions = new RequestOptions().transform(new GildeCilcleImageUtils());
                     Glide.with(getBaseContext()).load(arisit_infoBaseRespon.getData().getPic())
@@ -118,11 +118,11 @@ public class Singer_Activity extends BaseActivity<SingerActivityBinding,Singer_V
     protected void initData() {
         Intent intent=getIntent();
         artistid=intent.getIntExtra("artistid",0);
-        singer_vm.Get_Artist_info(String.valueOf(artistid));
+        singer_vm.getArtistInfo(String.valueOf(artistid));
 
-        fragments.add(new Frament_artist_music());
-        fragments.add(new Frament_Artist_albums());
-        fragments.add(new Frament_Artist_Mv());
+        fragments.add(new FragmentArtistMusic());
+        fragments.add(new FragmentArtistAlbums());
+        fragments.add(new FragmentArtistMv());
         Vp_Artist_apt vp_artist_apt = new Vp_Artist_apt(getSupportFragmentManager(), fragments, getApplicationContext());
         singerActivityBinding.vpArtist.setAdapter(vp_artist_apt);
         singerActivityBinding.vpArtist.setOffscreenPageLimit(4);

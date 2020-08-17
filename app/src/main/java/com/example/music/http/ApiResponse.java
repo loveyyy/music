@@ -25,9 +25,6 @@ public abstract class ApiResponse<T extends BaseRespon> implements Observer<T> {
 
     @Override
     public void onNext(T t) {
-        if (d.isDisposed()) {
-            d.dispose();
-        }
         try {
             aCache.put("reqid", t.getReqId());
         }catch (NullPointerException e){
@@ -40,14 +37,13 @@ public abstract class ApiResponse<T extends BaseRespon> implements Observer<T> {
         if (d.isDisposed()) {
             d.dispose();
         }
+        ApiException.exceptionHandler(e);
         LogUtils.e(e.getMessage());
     }
 
     @Override
     public void onComplete() {
-        if (d.isDisposed()) {
-            d.dispose();
-        }
+
     }
 
 }

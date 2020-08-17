@@ -9,14 +9,13 @@ import android.os.IBinder;
 import com.example.music.Interface.MusicInterface;
 import com.example.music.http.Api;
 import com.example.music.http.ApiResponse;
-import com.example.music.http.ApiSubscribe;
+import com.example.music.http.RxHelper;
 import com.example.music.model.BaseRespon;
 import com.example.music.model.PlayingMusicBeens;
 import com.example.music.server.PlayMusicServer;
 import com.example.music.ui.MyApplication;
 import com.example.music.utils.greendao.DaoUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -162,7 +161,7 @@ public class PlayController {
                 "mp3", getMusicInfo().getRid(), "url",
                 "convert_url3",
                 "128kmp3", "web", String.valueOf(System.currentTimeMillis()), " 4d09d450-174a-11ea-91a9-0b8d42e7dcee").
-                compose(ApiSubscribe.<BaseRespon>io_main()).subscribe(new ApiResponse<BaseRespon>() {
+                compose(RxHelper.observableIO2Main(MyApplication.getContext())).subscribe(new ApiResponse<BaseRespon>() {
 
             @Override
             public void success(BaseRespon data1) {

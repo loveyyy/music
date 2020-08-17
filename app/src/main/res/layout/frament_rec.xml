@@ -19,10 +19,19 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <com.example.music.ui.custom.CustomBanner
-                    android:id="@+id/custom_main"
+
+                <com.example.music.ui.custom.NestedScrollableHost
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dp_100" />
+                    android:layout_height="@dimen/dp_100"
+                    android:clipChildren="false">
+
+                    <androidx.viewpager2.widget.ViewPager2
+                        android:id="@+id/banner"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_100"
+                        android:clipChildren="false"/>
+
+                </com.example.music.ui.custom.NestedScrollableHost>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -34,12 +43,19 @@
                     android:textStyle="bold"
                     android:layout_marginLeft="@dimen/dp_17"/>
 
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rcv_rank_main"
+                <com.example.music.ui.custom.NestedScrollableHost
                     android:layout_width="match_parent"
-                    android:layout_marginTop="@dimen/dp_10"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:clipChildren="false">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rcv_rank_main"
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="@dimen/dp_10"
+                        android:layout_height="wrap_content" />
+
+                </com.example.music.ui.custom.NestedScrollableHost>
+
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -52,11 +68,20 @@
                     android:textStyle="bold" />
 
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rcv_singer_main"
+                <com.example.music.ui.custom.NestedScrollableHost
                     android:layout_width="match_parent"
-                    android:layout_marginTop="@dimen/dp_10"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:clipChildren="false">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rcv_singer_main"
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="@dimen/dp_10"
+                        android:layout_height="wrap_content" />
+
+                </com.example.music.ui.custom.NestedScrollableHost>
+
+
 
 
                 <TextView
@@ -70,13 +95,21 @@
                     android:layout_marginLeft="@dimen/dp_17"/>
 
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rcv_music_list_main"
+                <com.example.music.ui.custom.NestedScrollableHost
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_10"
-                    android:layout_marginLeft="@dimen/dp_10"
-                    android:layout_marginRight="@dimen/dp_10" />
+                    android:clipChildren="false">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rcv_music_list_main"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_10"
+                        android:layout_marginLeft="@dimen/dp_10"
+                        android:layout_marginRight="@dimen/dp_10" />
+
+                </com.example.music.ui.custom.NestedScrollableHost>
+
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -89,13 +122,21 @@
                     android:layout_marginLeft="@dimen/dp_17"/>
 
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rcv_radio_main"
+                <com.example.music.ui.custom.NestedScrollableHost
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="@dimen/dp_10"
-                    android:layout_marginTop="@dimen/dp_10"
-                    android:layout_marginRight="@dimen/dp_10" />
+                    android:layout_height="wrap_content"
+                    android:clipChildren="false">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rcv_radio_main"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/dp_10"
+                        android:layout_marginTop="@dimen/dp_10"
+                        android:layout_marginRight="@dimen/dp_10" />
+
+                </com.example.music.ui.custom.NestedScrollableHost>
+
 
             </LinearLayout>
 

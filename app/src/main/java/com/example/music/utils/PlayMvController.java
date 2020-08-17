@@ -11,7 +11,7 @@ import android.view.SurfaceView;
 
 import com.example.music.Interface.MvInterface;
 import com.example.music.http.Api;
-import com.example.music.http.ApiSubscribe;
+import com.example.music.http.RxHelper;
 import com.example.music.server.PlayMvServer;
 import com.example.music.ui.MyApplication;
 
@@ -104,7 +104,7 @@ public class PlayMvController {
                 Api.getInstance().iRetrofit.mv_info(
                         "mp4|mkv",rid,"url",
                         "convert_url",String.valueOf(System.currentTimeMillis()),aCache.getAsString("reqid")).
-                        compose(ApiSubscribe.<ResponseBody>io_main()).subscribe(new Observer<ResponseBody>() {
+                        compose(RxHelper.observableIO2Main(MyApplication.getContext())).subscribe(new Observer<ResponseBody>() {
                     @Override
                     public void onSubscribe(Disposable d) {
 

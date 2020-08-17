@@ -15,7 +15,7 @@ import com.example.music.BR;
 import com.example.music.R;
 import com.example.music.ui.bindadapter.BindingViewHolder;
 import com.example.music.databinding.BangMeauaptBinding;
-import com.example.music.model.Bang_list;
+import com.example.music.model.BangList;
 
 import java.util.List;
 
@@ -23,11 +23,11 @@ import java.util.List;
  * Create By morningsun  on 2019-12-03
  */
 public class Bang_MeauAdapter extends RecyclerView.Adapter<BindingViewHolder> {
-    private List<Bang_list> bang_meaus;
+    private List<BangList> bang_meaus;
     private Context context;
     private BangMeauaptBinding bangMeauaptBinding;
     private Bang_MeauAdapter.OnItemClick onItemClick;
-    public Bang_MeauAdapter(Context context, List<Bang_list> bang_meaus){
+    public Bang_MeauAdapter(Context context, List<BangList> bang_meaus){
         this.bang_meaus=bang_meaus;
         this.context=context;
     }

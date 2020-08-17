@@ -7,29 +7,27 @@ package com.example.music.http;
  */
 
 
+import com.example.music.model.ArtistMv;
+import com.example.music.model.BangList;
+import com.example.music.model.BangMenu;
 import com.example.music.model.DownlodMusciInfo;
 import com.example.music.model.LrcBeen;
-import com.example.music.model.Activity_music;
-import com.example.music.model.Arisit_Info;
-import com.example.music.model.Artist_Album;
-import com.example.music.model.Artist_Music;
-import com.example.music.model.Artist_Mv;
-import com.example.music.model.Artist_list;
-import com.example.music.model.Artist_list_index;
-import com.example.music.model.Bananer;
-import com.example.music.model.Bang_Music_list;
-import com.example.music.model.Bang_list;
-import com.example.music.model.Bang_meau;
+import com.example.music.model.ArtistInfo;
+import com.example.music.model.ArtistAlbum;
+import com.example.music.model.ArtistMusic;
+import com.example.music.model.ArtistList;
+import com.example.music.model.ArtistListIndex;
+import com.example.music.model.Banner;
+import com.example.music.model.BangMusicList;
 import com.example.music.model.BaseRespon;
-import com.example.music.model.Music_list;
-import com.example.music.model.Rec_List;
-import com.example.music.model.Rec_List_Info;
+import com.example.music.model.MusicList;
+import com.example.music.model.RecList;
+import com.example.music.model.RecListInfo;
 import com.example.music.model.Search;
 
 import java.util.List;
 
 import io.reactivex.Observable;
-import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.http.*;
 
@@ -39,93 +37,93 @@ public interface IRetrofit {
 
     //banaber
     @GET("/api/www/banner/index/bannerList")
-    Observable<BaseRespon<List<Bananer>>> Bananer_list(@Query("reqId")String reqId);
+    Observable<BaseRespon<List<Banner>>> bannerList(@Query("reqId")String reqId);
 
 
     //推荐歌单
     @GET("/api/www/rcm/index/playlist")
-    Observable<BaseRespon<Music_list>> Music_list(@Query("loginUid")String mid, @Query("reqId")String reqId);
+    Observable<BaseRespon<MusicList>> musicList(@Query("loginUid")String mid, @Query("reqId")String reqId);
 
 
 
     //推荐歌单 更多 //order ==new  hot
     @GET("/api/pc/classify/playlist/getRcmPlayList")
-    Observable<BaseRespon<Rec_List>> Music_list_more(@Query("loginUid") String loginUid,@Query("loginSid") String loginSid,
-                                                     @Query("pn")String pn,
-                                                     @Query("rn")String rn,
-                                                     @Query("order")String order,
-                                                     @Query("reqId")String reqId);
+    Observable<BaseRespon<RecList>> musicListMore(@Query("loginUid") String loginUid, @Query("loginSid") String loginSid,
+                                                  @Query("pn")String pn,
+                                                  @Query("rn")String rn,
+                                                  @Query("order")String order,
+                                                  @Query("reqId")String reqId);
 
 
     //推荐歌单 进入 title
     @GET("/api/www/playlist/playListInfo")
-    Observable<BaseRespon<Rec_List_Info>> Music_list_info(@Query("pid") String pid, @Query("pn")String pn,
-                                                          @Query("rn")String rn,
-                                                          @Query("reqId")String reqId);
+    Observable<BaseRespon<RecListInfo>> musicListInfo(@Query("pid") String pid, @Query("pn")String pn,
+                                                      @Query("rn")String rn,
+                                                      @Query("reqId")String reqId);
 
 
 
     //推荐歌手 title
     @GET("/api/www/artist/index/tags")
-    Observable<BaseRespon<Artist_list_index>> Artist_list_index(@Query("reqId")String reqId);
+    Observable<BaseRespon<ArtistListIndex>> Artist_list_index(@Query("reqId")String reqId);
 
     //推荐歌手 more rn =100
     @GET("/api/www/artist/artistInfo")
-    Observable<BaseRespon<Artist_list>> Artist_list(@Query("category")String category,
-                                                          @Query("pn")String pn,
-                                                          @Query("rn")String rn,
-                                                          @Query("reqId")String reqId);
+    Observable<BaseRespon<ArtistList>> artistList(@Query("category")String category,
+                                                   @Query("pn")String pn,
+                                                   @Query("rn")String rn,
+                                                   @Query("reqId")String reqId);
 
     //歌手简介
     @GET("/api/www/artist/artist")
-    Observable<BaseRespon<Arisit_Info>> Artist_info(@Query("artistid")String artistid,
-                                                           @Query("reqId")String reqId);
+    Observable<BaseRespon<ArtistInfo>> artistInfo(@Query("artistid")String artistid,
+                                                  @Query("reqId")String reqId);
 
     //歌手音乐列表
     @GET("/api/www/artist/artistMusic")
-    Observable<BaseRespon<Artist_Music>> Artist_Music(@Query("artistid")String artistid,
-                                                      @Query("pn")String pn,
-                                                      @Query("rn")String rn,
-                                                      @Query("reqId")String reqId);
+    Observable<BaseRespon<ArtistMusic>> artistMusic(@Query("artistid")String artistid,
+                                                    @Query("pn")String pn,
+                                                    @Query("rn")String rn,
+                                                    @Query("reqId")String reqId);
 
     //歌手专辑
     @GET("/api/www/artist/artistAlbum")
-    Observable<BaseRespon<Artist_Album>> Artist_Album(@Query("artistid")String artistid,
-                                                     @Query("pn")String pn,
-                                                     @Query("rn")String rn,
-                                                     @Query("reqId")String reqId);
+    Observable<BaseRespon<ArtistAlbum>> artistAlbum(@Query("artistid")String artistid,
+                                                    @Query("pn")String pn,
+                                                    @Query("rn")String rn,
+                                                    @Query("reqId")String reqId);
 
     //歌手专辑
     @GET("/api/www/artist/artistMv")
-    Observable<BaseRespon<Artist_Mv>> Artist_Mv(@Query("artistid")String artistid,
-                                                @Query("pn")String pn,
-                                                @Query("rn")String rn,
-                                                @Query("reqId")String reqId);
+    Observable<BaseRespon<ArtistMv>> artistMv(@Query("artistid")String artistid,
+                                              @Query("pn")String pn,
+                                              @Query("rn")String rn,
+                                              @Query("reqId")String reqId);
 
 
 
     //排行
     @GET("/api/www/bang/index/bangList")
-    Observable<BaseRespon<List<Bang_list>>> Bang_list(@Query("reqId")String reqId);
+    Observable<BaseRespon<List<BangList>>> bangList(@Query("reqId")String reqId);
 
     //总排行榜 排行名称
     @GET("/api/www/bang/bang/bangMenu")
-    Observable<BaseRespon<List<Bang_meau>>> Bang_Menu(@Query("reqId")String reqId);
+    Observable<BaseRespon<List<BangMenu>>> bangMenu(@Query("reqId")String reqId);
 
     //排行榜音乐列表
     @GET("/api/www/bang/bang/musicList")
-    Observable<BaseRespon<Bang_Music_list>> Bang_Music_list(@Query("bangId")String bangId,
-                                                                  @Query("pn")String pn,
-                                                                  @Query("rn")String rn,
-                                                                  @Query("reqId")String reqId);
+    Observable<BaseRespon<BangMusicList>> bangMusicList(@Query("bangId")String bangId,
+                                                        @Query("pn")String pn,
+                                                        @Query("rn")String rn,
+                                                        @Query("reqId")String reqId);
 
     //mv
     @GET("/api/www/music/mvList")
-    Observable<BaseRespon<Artist_Mv>> MvList(@Query("pid")String pid,
-                                           @Query("pn")String pn,
-                                           @Query("rn")String rn,
-                                           @Query("httpsStatus")String httpsStatus,
-                                           @Query("reqId")String reqId);
+    Observable<BaseRespon<ArtistMv>> mvList(@Query("pid")String pid,
+                                            @Query("pn")String pn,
+                                            @Query("rn")String rn,
+                                            @Query("httpsStatus")String httpsStatus,
+                                            @Query("reqId")String reqId);
 
 
     //播放音乐
@@ -163,7 +161,7 @@ public interface IRetrofit {
     //获取歌曲下载地址
     @FormUrlEncoded
     @POST("http://www.333ttt.com/up/tool/")
-    Observable<BaseRespon<List<DownlodMusciInfo>>> downloadMuisc(@Field("input") String musicId, @Field("type")String type,
+    Observable<BaseRespon<List<DownlodMusciInfo>>> downloadMusic(@Field("input") String musicId, @Field("type")String type,
                                                            @Field("filter") String filter,@Field("page") int page,
                                                            @Header("X-Requested-With") String header);
 

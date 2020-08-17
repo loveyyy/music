@@ -12,9 +12,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.music.BR;
 import com.example.music.R;
+import com.example.music.model.BangMenu;
 import com.example.music.ui.bindadapter.BindingViewHolder;
 import com.example.music.databinding.BangMeauNameItemaptBinding;
-import com.example.music.model.Bang_meau;
 
 import java.util.List;
 
@@ -22,11 +22,11 @@ import java.util.List;
  * Create By morningsun  on 2019-12-05
  */
 public class Bang_Meau_Name_ItemApt extends RecyclerView.Adapter<BindingViewHolder> {
-    private List<Bang_meau.ListBean> listBeans;
+    private List<BangMenu.ListBean> listBeans;
     private Context context;
     private OnItemClick onItemClick;
 
-    public Bang_Meau_Name_ItemApt(Context context, List<Bang_meau.ListBean> listBeans){
+    public Bang_Meau_Name_ItemApt(Context context, List<BangMenu.ListBean> listBeans){
         this.context=context;
         this.listBeans=listBeans;
     }

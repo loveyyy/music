@@ -11,15 +11,15 @@ import androidx.databinding.ViewDataBinding;
 import androidx.databinding.library.baseAdapters.BR;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.music.model.ArtistList;
 import com.example.music.ui.bindadapter.BindingViewHolder;
 import com.example.music.R;
-import com.example.music.model.Artist_list;
 
 public class GridViewAdapter extends RecyclerView.Adapter<BindingViewHolder> {
     private Context context;
-    private Artist_list artistListBean;
+    private ArtistList artistListBean;
     private GridViewAdapter.OnItemClick onItemClick;
-    public GridViewAdapter(Context context, Artist_list artistListBean){
+    public GridViewAdapter(Context context, ArtistList artistListBean){
         this.context=context;
         this.artistListBean=artistListBean;
     }

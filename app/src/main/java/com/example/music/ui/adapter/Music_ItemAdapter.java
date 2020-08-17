@@ -14,15 +14,15 @@ import com.example.music.BR;
 import com.example.music.R;
 import com.example.music.ui.bindadapter.BindingViewHolder;
 import com.example.music.databinding.MusicItemAptBinding;
-import com.example.music.model.Bang_Music_list;
+import com.example.music.model.BangMusicList;
 
 import java.util.List;
 
 public class Music_ItemAdapter extends RecyclerView.Adapter<BindingViewHolder> {
     private Context context;
-    private List<Bang_Music_list.MusicListBean> musicitem;
+    private List<BangMusicList.MusicListBean> musicitem;
     private Music_ItemAdapter.OnItemClick onItemClick;
-    public Music_ItemAdapter(Context context,List<Bang_Music_list.MusicListBean> musicitem){
+    public Music_ItemAdapter(Context context,List<BangMusicList.MusicListBean> musicitem){
         this.context=context;
         this.musicitem=musicitem;
     }

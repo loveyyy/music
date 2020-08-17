@@ -45,7 +45,6 @@ import static android.content.Context.AUDIO_SERVICE;
  */
 public class PlayMvView extends RelativeLayout implements PlayController.BindSuccess, GestureDetector.OnGestureListener,GestureDetector.OnDoubleTapListener {
     private PlayermvBinding playermvBinding;
-    private Context context;
     private AudioManager mAudioManager;
     private Activity activity;
     private PlayMvController playMvController;
@@ -83,7 +82,6 @@ public class PlayMvView extends RelativeLayout implements PlayController.BindSuc
         detector = new GestureDetector(context, this);
         detector.setIsLongpressEnabled(false);
         detector.setOnDoubleTapListener(this);
-        this.context = context;
         EventBus.getDefault().register(this);
         setonclick();
         mAudioManager = (AudioManager) context.getSystemService(AUDIO_SERVICE);

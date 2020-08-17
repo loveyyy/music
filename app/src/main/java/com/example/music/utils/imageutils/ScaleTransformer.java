@@ -3,8 +3,9 @@ package com.example.music.utils.imageutils;
 import android.view.View;
 
 import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
 
-public class ScaleTransformer implements ViewPager.PageTransformer {
+public class ScaleTransformer implements ViewPager2.PageTransformer {
     private static final float MIN_SCALE = 0.95f;
 
     @Override

@@ -11,7 +11,7 @@ import androidx.databinding.DataBindingUtil;
 import com.example.music.BR;
 import com.example.music.R;
 import com.example.music.databinding.GvMusicAptBinding;
-import com.example.music.model.Rec_List;
+import com.example.music.model.RecList;
 
 import java.util.List;
 
@@ -19,9 +19,9 @@ import java.util.List;
  * Create By morningsun  on 2019-12-10
  */
 public class Gv_Music_apt extends BaseAdapter {
-    private List<Rec_List.DataBean> listBeans;
+    private List<RecList.DataBean> listBeans;
     private Context context;
-    public Gv_Music_apt(Context context,List<Rec_List.DataBean> listBeans){
+    public Gv_Music_apt(Context context,List<RecList.DataBean> listBeans){
         this.context=context;
         this.listBeans=listBeans;
     }

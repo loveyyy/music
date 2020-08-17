@@ -3,7 +3,7 @@
     <data>
         <variable
             name="bangMusicList"
-            type="com.example.music.model.Bang_Music_list.MusicListBean"/>
+            type="com.example.music.model.BangMusicList.MusicListBean"/>
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"

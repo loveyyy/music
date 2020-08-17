@@ -6,7 +6,7 @@ import com.blankj.utilcode.util.NotificationUtils;
 import com.example.music.Interface.OnDownLoadListener;
 import com.example.music.R;
 import com.example.music.http.Api;
-import com.example.music.http.ApiSubscribe;
+import com.example.music.http.RxHelper;
 import com.example.music.model.DownLoadInfo;
 import com.example.music.model.DownLoadProgree;
 import com.example.music.ui.MyApplication;
@@ -193,7 +193,7 @@ public class TaskDispatcher {
                 return false;
             }
             Api.getInstance().iRetrofit.download(downLoadInfo.getUrl(), "bytes=" + 0 + "-")
-                    .compose(ApiSubscribe.<ResponseBody>io_io())
+                    .compose(RxHelper.observableIO2Io2(MyApplication.getContext()))
                     .subscribe(new Observer<ResponseBody>() {
                         @Override
                         public void onSubscribe(Disposable d) {

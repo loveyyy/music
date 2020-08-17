@@ -4,7 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import com.example.music.ui.activity.MainAcvity;
+import com.example.music.ui.activity.MainActivity;
 import com.example.music.utils.NotificationUtils;
 import com.example.music.utils.PlayController;
 
@@ -28,7 +28,7 @@ public class NotificationReceiver extends BroadcastReceiver {
                     break;
                 case "main":
                     if (!NotificationUtils.getInstance().isAppForeground(context)) {
-                       Intent intent1=new Intent(context,MainAcvity.class);
+                       Intent intent1=new Intent(context, MainActivity.class);
                        context.startActivity(intent1);
                     }
                     break;

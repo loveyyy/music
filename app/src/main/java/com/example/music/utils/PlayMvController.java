@@ -12,7 +12,7 @@ import android.view.SurfaceView;
 import com.example.music.Interface.MvInterface;
 import com.example.music.http.Api;
 import com.example.music.http.RxHelper;
-import com.example.music.server.PlayMvServer;
+import com.example.music.server.PlayMvService;
 import com.example.music.ui.MyApplication;
 
 import java.io.IOException;
@@ -30,7 +30,6 @@ public class PlayMvController {
     private MvInterface mi;
     private boolean isBind = false;
     private ACache aCache;
-    private PlayController.BindSuccess bindSuccess;
     private static PlayMvController instance;
     private int videoW;
     private int videoH;
@@ -54,10 +53,7 @@ public class PlayMvController {
         serviceConnection = new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName name, IBinder service) {
-                mi = (PlayMvServer.MvController) service;
-                if(bindSuccess!=null){
-                    bindSuccess.OnBindSuccess();
-                }
+                mi = (PlayMvService.MvController) service;
             }
 
             @Override
@@ -66,7 +62,7 @@ public class PlayMvController {
             }
         };
         if(!isBind){
-            Intent intent = new Intent(MyApplication.getContext(), PlayMvServer.class);
+            Intent intent = new Intent(MyApplication.getContext(), PlayMvService.class);
             isBind = MyApplication.getContext().bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
         }
         aCache=ACache.get(MyApplication.getContext());
@@ -142,16 +138,6 @@ public class PlayMvController {
                 mi.release();
             }
         });
-    }
-
-
-
-    public  interface BindSuccess{
-        void OnBindSuccess();
-    }
-
-    public void SetOnBindSuccess(PlayController.BindSuccess bindSuccess){
-        this.bindSuccess=bindSuccess;
     }
 
 

@@ -8,12 +8,14 @@ public interface MusicInterface {
 
     void play(String MusicUri);
 
-    int playOrPause();
+    void playOrPause();
 
-    int getPlayState();
+    State playState();
 
-    int getPlayPro();
+    int playPro();
 
-    void setPro(int pos);
+    void seek(int pos);
+
+    void stop();
 
 }

@@ -1,14 +1,12 @@
 package com.example.music.ui.base;
 
 import android.app.Application;
-import android.content.SharedPreferences;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
 
-import com.example.music.ui.MyApplication;
 import com.example.music.utils.ACache;
 
 /**

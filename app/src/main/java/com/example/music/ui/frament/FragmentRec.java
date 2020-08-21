@@ -42,7 +42,6 @@ public class FragmentRec extends BaseFragment<FramentRecBinding,FragmentRecVM> {
     private FragmentRecVM fragmentRecVM;
     private FramentRecBinding framentRecBinding;
 
-
     private Timer timer;
     @SuppressLint("HandlerLeak")
     private Handler handler = new Handler() {
@@ -79,7 +78,7 @@ public class FragmentRec extends BaseFragment<FramentRecBinding,FragmentRecVM> {
                     public void OnItemClickListener(int pos) {
                         //推荐歌单点击事件
                         Intent intent=new Intent();
-                        intent.setClass(getContext(), RecListInfoActivity.class);
+                        intent.setClass(getMContext(), RecListInfoActivity.class);
                         intent.putExtra("rid",listBaseRespon.getList().get(pos).getId().toString());
                         startActivity(intent);
                     }
@@ -120,7 +119,7 @@ public class FragmentRec extends BaseFragment<FramentRecBinding,FragmentRecVM> {
                         intent.putExtra("time",listBaseRespon.get(pos).getPub());
                         intent.putExtra("bangid",listBaseRespon.get(pos).getId());
                         intent.putExtra("img",listBaseRespon.get(pos).getPic());
-                        intent.setClass(getContext(), BangMenuActivity.class);
+                        intent.setClass(getMContext(), BangMenuActivity.class);
                         startActivity(intent);
                     }
                 });
@@ -139,7 +138,7 @@ public class FragmentRec extends BaseFragment<FramentRecBinding,FragmentRecVM> {
                         //歌手Item点击事件
                         Intent intent=new Intent();
                         intent.putExtra("artistid",artist_listBaseRespon.getArtistList().get(pos).getId());
-                        intent.setClass(getContext(), Singer_Activity.class);
+                        intent.setClass(getMContext(), Singer_Activity.class);
                         startActivity(intent);
                     }
                 });
@@ -177,5 +176,4 @@ public class FragmentRec extends BaseFragment<FramentRecBinding,FragmentRecVM> {
     protected boolean getNeedRefresh() {
         return false;
     }
-
 }

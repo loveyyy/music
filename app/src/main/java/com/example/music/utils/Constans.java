@@ -6,5 +6,4 @@ package com.example.music.utils;
 
 public class Constans {
    public static  String IP="https://www.kuwo.cn";
-   public static  String ACTION_NAME="aaaaa";
 }

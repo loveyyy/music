@@ -21,8 +21,9 @@ import com.example.music.model.DownLoadInfo;
 import com.example.music.model.DownlodMusciInfo;
 import com.example.music.model.PlayingMusicBeens;
 import com.example.music.server.TaskDispatcher;
-import com.example.music.ui.adapter.BaseAdapter;
+import com.example.music.ui.base.BaseAdapter;
 import com.example.music.ui.base.BaseActivity;
+import com.example.music.utils.PlayController;
 import com.example.music.viewmodel.BangMenuVm;
 
 import java.io.File;
@@ -61,7 +62,7 @@ public class BangMenuActivity extends BaseActivity<BangMeauActivityBinding, Bang
             public void onChanged(final BaseRespon<BangMusicList> listBaseRespon) {
                 try {
                     bangMeauActivityBinding.rcvBangMeauList.setLayoutManager(new LinearLayoutManager(getBaseContext(), RecyclerView.VERTICAL, false));
-                    BaseAdapter<BangMusicList.MusicListBean> beanBaseAdapter=new BaseAdapter<>(getBaseContext(),listBaseRespon.getData().getMusicList(),R.layout.music_item_apt, BR.bangMusicList);
+                    BaseAdapter<BangMusicList.MusicListBean> beanBaseAdapter=new BaseAdapter<>(getContext(),listBaseRespon.getData().getMusicList(),R.layout.music_item_apt, BR.bangMusicList);
 //                    final Music_ItemAdapter music_itemAdapter = new Music_ItemAdapter(getBaseContext(), listBaseRespon.getData().getMusicList());
                     bangMeauActivityBinding.setBangMeauAdapter(beanBaseAdapter);
                     beanBaseAdapter.setOnDownLoad(new BaseAdapter.OnDownLoad() {
@@ -99,7 +100,8 @@ public class BangMenuActivity extends BaseActivity<BangMeauActivityBinding, Bang
                                 playingMusicBeens1.setRid(musicListBean.getRid());
                                 playingMusicBeens.add(playingMusicBeens1);
                             }
-                            bangMeauActivityBinding.playview.play(playingMusicBeens,pos);
+                            PlayController.getInstance().setPlayList(playingMusicBeens);
+                            PlayController.getInstance().setIndex(pos);
                         }
                     });
 

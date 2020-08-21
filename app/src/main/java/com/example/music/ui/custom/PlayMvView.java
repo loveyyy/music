@@ -9,7 +9,6 @@ import android.media.AudioManager;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -24,10 +23,11 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 
 import com.blankj.utilcode.util.LogUtils;
+import com.example.music.Interface.State;
 import com.example.music.R;
 import com.example.music.databinding.PlayermvBinding;
 import com.example.music.model.MvProgree;
-import com.example.music.server.PlayMusicServer;
+import com.example.music.server.PlayMusicService;
 import com.example.music.utils.PlayController;
 import com.example.music.utils.PlayMvController;
 
@@ -43,7 +43,7 @@ import static android.content.Context.AUDIO_SERVICE;
 /**
  * Create By morningsun  on 2020-06-30
  */
-public class PlayMvView extends RelativeLayout implements PlayController.BindSuccess, GestureDetector.OnGestureListener,GestureDetector.OnDoubleTapListener {
+public class PlayMvView extends RelativeLayout implements  GestureDetector.OnGestureListener,GestureDetector.OnDoubleTapListener {
     private PlayermvBinding playermvBinding;
     private AudioManager mAudioManager;
     private Activity activity;
@@ -78,14 +78,13 @@ public class PlayMvView extends RelativeLayout implements PlayController.BindSuc
         playermvBinding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.playermv,
                 this, true);
         playMvController = PlayMvController.getInstance();
-        playMvController.SetOnBindSuccess(this);
         detector = new GestureDetector(context, this);
         detector.setIsLongpressEnabled(false);
         detector.setOnDoubleTapListener(this);
         EventBus.getDefault().register(this);
         setonclick();
         mAudioManager = (AudioManager) context.getSystemService(AUDIO_SERVICE);
-        if (PlayController.getInstance().get_state() == PlayMusicServer.PLAYING) {
+        if (PlayController.getInstance().getState() == State.PLAYING) {
             PlayController.getInstance().playOrPause();
         }
     }
@@ -148,11 +147,6 @@ public class PlayMvView extends RelativeLayout implements PlayController.BindSuc
         startTask();
     }
 
-    @Override
-    public void OnBindSuccess() {
-
-
-    }
 
     private void startTask() {
         if (timer == null) {

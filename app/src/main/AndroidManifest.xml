@@ -17,25 +17,30 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <application
         android:name=".ui.MyApplication"
-        android:allowBackup="true"
-        android:icon="@drawable/ic_icon"
+        android:allowBackup="false"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/ic_icon"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:usesCleartextTraffic="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:ignore="GoogleAppIndexingWarning">
+        tools:ignore="GoogleAppIndexingWarning"
+        tools:targetApi="m">
         <activity android:name=".ui.activity.WelcomeActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name=".server.PlayMusicServer"
+        <service android:name=".server.PlayMusicService"
             android:exported="true"
             android:enabled="true"
             tools:ignore="InnerclassSeparator" />
-        <service android:name=".server.PlayMvServer"/>
+        <service android:name=".server.ExoPlayMusicServer"
+            android:exported="true"
+            android:enabled="true"
+            tools:ignore="InnerclassSeparator" />
+        <service android:name=".server.PlayMvService"/>
         <activity android:name=".ui.activity.MainActivity"
             android:launchMode="singleTask"
             tools:ignore="InnerclassSeparator" />

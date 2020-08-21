@@ -5,14 +5,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
+import android.widget.Toast;
 
 import com.example.music.Interface.MusicInterface;
+import com.example.music.Interface.State;
 import com.example.music.http.Api;
 import com.example.music.http.ApiResponse;
 import com.example.music.http.RxHelper;
 import com.example.music.model.BaseRespon;
 import com.example.music.model.PlayingMusicBeens;
-import com.example.music.server.PlayMusicServer;
+import com.example.music.server.PlayMusicService;
 import com.example.music.ui.MyApplication;
 import com.example.music.utils.greendao.DaoUtils;
 
@@ -22,7 +24,7 @@ import java.util.Random;
 /**
  * Create By morningsun  on 2019-12-10
  */
-public class PlayController {
+public class PlayController  {
     //bind 服务相关
     private ServiceConnection serviceConnection;
     private MusicInterface mi;
@@ -30,11 +32,6 @@ public class PlayController {
 
     private ACache aCache;
     private DaoUtils daoUtils;
-
-    private BindSuccess bindSuccess;
-    private PlayChange playChange;
-    private StateChange stateChange;
-
 
     private static PlayController instance;
 
@@ -57,10 +54,7 @@ public class PlayController {
         serviceConnection = new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName name, IBinder service) {
-                mi = (PlayMusicServer.MusicController) service;
-                if (bindSuccess != null) {
-                    bindSuccess.OnBindSuccess();
-                }
+                mi = (PlayMusicService.MusicController) service;
             }
 
             @Override
@@ -69,7 +63,7 @@ public class PlayController {
             }
         };
         if (!isBind) {
-            Intent intent = new Intent(MyApplication.getContext(), PlayMusicServer.class);
+            Intent intent = new Intent(MyApplication.getContext(), PlayMusicService.class);
             isBind = MyApplication.getContext().bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
         }
         init();
@@ -81,30 +75,27 @@ public class PlayController {
     }
 
 
-    public int playOrPause() {
+    public void playOrPause() {
         if (mi != null) {
-            int a = mi.playOrPause();
-            NotificationUtils.getInstance().sendNotification(getMusicInfo(), 1, MyApplication.getContext());
-            if (stateChange != null) {
-                stateChange.OnStateChange(a);
+            if (mi.playState() == State.STOP) {
+                play();
+            } else {
+                mi.playOrPause();
             }
-            return a;
-        } else {
-            return 3;
+            NotificationUtils.getInstance().sendNotification(getMusicInfo(), 1, MyApplication.getContext());
         }
-
     }
 
-    public int get_state() {
+    public State getState() {
         if (mi != null) {
-            return mi.getPlayState();
+            return mi.playState();
         } else {
-            return 3;
+            return State.STOP;
         }
     }
 
 
-    public PlayingMusicBeens play_Next() {
+    public PlayingMusicBeens playNext() {
         int index = getIndex();
         if (index + 1 > getPlayList().size() - 1) {
             index = 0;
@@ -139,12 +130,12 @@ public class PlayController {
 
     public void setPro(int pos) {
         if (mi != null) {
-            mi.setPro(pos);
+            mi.seek(pos);
         }
     }
 
 
-    public PlayingMusicBeens play_last() {
+    public void playLast() {
         int index = getIndex();
         if (index < 1) {
             index = getPlayList().size() - 1;
@@ -153,7 +144,6 @@ public class PlayController {
         }
         setIndex(index);
         play();
-        return getMusicInfo();
     }
 
     public void play() {
@@ -167,7 +157,6 @@ public class PlayController {
             public void success(BaseRespon data1) {
                 //获得歌曲播放地址
                 mi.play(data1.getUrl());
-                playChange.PlayChange(getMusicInfo());
                 NotificationUtils.getInstance().sendNotification(getMusicInfo(), 1, MyApplication.getContext());
             }
         });
@@ -175,7 +164,7 @@ public class PlayController {
 
 
     public int getPlayPro() {
-        return mi.getPlayPro();
+        return mi.playPro();
     }
 
     //获取当前播放音乐信息
@@ -206,38 +195,14 @@ public class PlayController {
 
 
     //设置播放列表
-    public boolean setPlayList(List<PlayingMusicBeens> playingMusicList) {
+    public void setPlayList(List<PlayingMusicBeens> playingMusicList) {
         if (!daoUtils.queryAllMessage().isEmpty()) {
             daoUtils.deleteAll();
         }
-        return daoUtils.insertMultMuisc(playingMusicList);
+        daoUtils.insertMultMuisc(playingMusicList);
+        play();
     }
 
-
-    public interface BindSuccess {
-        void OnBindSuccess();
-    }
-
-    public void SetOnBindSuccess(BindSuccess bindSuccess) {
-        this.bindSuccess = bindSuccess;
-    }
-
-
-    public interface PlayChange {
-        void PlayChange(PlayingMusicBeens playingMusicBeens);
-    }
-
-    public void SetOnPlayChange(PlayChange playChange) {
-        this.playChange = playChange;
-    }
-
-    public interface StateChange {
-        void OnStateChange(int state);
-    }
-
-    public void SetStateChange(StateChange stateChange) {
-        this.stateChange = stateChange;
-    }
 
 
 

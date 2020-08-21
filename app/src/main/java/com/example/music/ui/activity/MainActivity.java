@@ -1,6 +1,7 @@
 package com.example.music.ui.activity;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -136,7 +137,8 @@ public class MainActivity extends BaseActivity<MainactivityBinding, BaseVM> impl
         TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(mainactivityBinding.main.tabMain, mainactivityBinding.main.VpMain, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override
             public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
-                VpTableListBinding vpTableListBinding = DataBindingUtil.inflate(LayoutInflater.from(getBaseContext()), R.layout.vp_table_list, null, false);
+                tab.setText(name[position]);
+                VpTableListBinding vpTableListBinding = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.vp_table_list, null, false);
                 vpTableListBinding.tvTable.setText(name[position]);
                 vpTableListBinding.executePendingBindings();
                 tab.setCustomView(vpTableListBinding.getRoot());
@@ -147,8 +149,8 @@ public class MainActivity extends BaseActivity<MainactivityBinding, BaseVM> impl
 
 
     @Override
-    protected void onRestart() {
-        super.onRestart();
+    protected void onResume() {
+        super.onResume();
     }
 
     @Override

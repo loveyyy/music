@@ -10,7 +10,7 @@
         android:layout_height="@dimen/dp_58"
         android:background="@drawable/play_bac">
 
-        <androidx.viewpager.widget.ViewPager
+        <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/vp_play"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />

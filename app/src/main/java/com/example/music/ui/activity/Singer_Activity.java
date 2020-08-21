@@ -12,7 +12,6 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.example.music.Interface.PlayMusic;
 import com.example.music.R;
 import com.example.music.databinding.SingerActivityBinding;
 import com.example.music.model.ArtistInfo;
@@ -22,9 +21,9 @@ import com.example.music.ui.adapter.Vp_Artist_apt;
 import com.example.music.ui.base.BaseActivity;
 import com.example.music.ui.custom.CustomDialogFragment;
 import com.example.music.ui.custom.PlayerMusicView;
-import com.example.music.ui.frament.FragmentArtistMv;
 import com.example.music.ui.frament.FragmentArtistAlbums;
 import com.example.music.ui.frament.FragmentArtistMusic;
+import com.example.music.ui.frament.FragmentArtistMv;
 import com.example.music.utils.imageutils.GildeCilcleImageUtils;
 import com.example.music.viewmodel.SingerVM;
 import com.google.android.material.tabs.TabLayout;
@@ -36,7 +35,7 @@ import java.util.List;
 /**
  * Create By morningsun  on 2019-12-07
  */
-public class Singer_Activity extends BaseActivity<SingerActivityBinding, SingerVM> implements PlayMusic, PlayerMusicView.showList {
+public class Singer_Activity extends BaseActivity<SingerActivityBinding, SingerVM> implements  PlayerMusicView.showList {
     private SingerActivityBinding singerActivityBinding;
     private List<Fragment> fragments = new ArrayList();
     private SingerVM singer_vm;
@@ -67,7 +66,7 @@ public class Singer_Activity extends BaseActivity<SingerActivityBinding, SingerV
             public void onChanged(BaseRespon<ArtistInfo> arisit_infoBaseRespon) {
                 try {
                     RequestOptions requestOptions = new RequestOptions().transform(new GildeCilcleImageUtils());
-                    Glide.with(getBaseContext()).load(arisit_infoBaseRespon.getData().getPic())
+                    Glide.with(getContext()).load(arisit_infoBaseRespon.getData().getPic())
                             .apply(requestOptions).into(singerActivityBinding.ivArtist);
                     singerActivityBinding.ivArtistName.setText(arisit_infoBaseRespon.getData().getName());
                     singerActivityBinding.ivArtistInfo.setText("单曲："+arisit_infoBaseRespon.getData().getMusicNum()+
@@ -167,10 +166,6 @@ public class Singer_Activity extends BaseActivity<SingerActivityBinding, SingerV
     }
 
 
-    @Override
-    public void Play(List<PlayingMusicBeens> playingMusicBeens, int pos) {
-        singerActivityBinding.playview.play(playingMusicBeens,pos);
-    }
 
     @Override
     public void OnShowList(List<PlayingMusicBeens> playingMusicBeens) {

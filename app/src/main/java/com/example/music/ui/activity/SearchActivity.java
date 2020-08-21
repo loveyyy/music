@@ -26,7 +26,7 @@ import com.example.music.model.DownLoadInfo;
 import com.example.music.model.DownlodMusciInfo;
 import com.example.music.model.Search;
 import com.example.music.server.TaskDispatcher;
-import com.example.music.ui.adapter.BaseAdapter;
+import com.example.music.ui.base.BaseAdapter;
 import com.example.music.ui.base.BaseActivity;
 import com.example.music.viewmodel.SearchVM;
 

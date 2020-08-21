@@ -1,16 +1,20 @@
 package com.example.music.server;
 
+import android.annotation.SuppressLint;
 import android.app.Service;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Binder;
+import android.os.Build;
 import android.os.IBinder;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 
 import com.blankj.utilcode.util.LogUtils;
 import com.example.music.Interface.MusicInterface;
-import com.example.music.model.PlayingMusicBeens;
+import com.example.music.Interface.State;
+import com.example.music.model.PlayInfo;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -23,20 +27,15 @@ import java.util.TimerTask;
  * Created by Administrator on 2018/5/17.
  */
 
-public class PlayMusicServer extends Service implements MediaPlayer.OnCompletionListener {
+public class PlayMusicService extends Service implements MediaPlayer.OnCompletionListener,
+        MediaPlayer.OnBufferingUpdateListener, MediaPlayer.OnErrorListener, MediaPlayer.OnSeekCompleteListener {
     private MediaPlayer mediaPlayer;
     //计时器
     private Timer timer;
     //当前进度
     private int i = 0;
-    //当前播放状态
-    public static  final int PLAYING=0;
-    public static  final int PAUSE=1;
-    public static  final int STOP=2;
-
-    private int state=2;
-
-
+    //当前状态
+    private State state = State.STOP;
 
     @Override
     public void onCreate() {
@@ -58,7 +57,7 @@ public class PlayMusicServer extends Service implements MediaPlayer.OnCompletion
     @Override
     public boolean onUnbind(Intent intent) {
         mediaPlayer.pause();
-        if(timer!=null){
+        if (timer != null) {
             timer.cancel();
         }
         return super.onUnbind(intent);
@@ -68,23 +67,56 @@ public class PlayMusicServer extends Service implements MediaPlayer.OnCompletion
         //初始化
         if (mediaPlayer == null) {
             mediaPlayer = new MediaPlayer();
-        }else{
-            if(mediaPlayer.isPlaying()){
+        } else {
+            if (mediaPlayer.isPlaying()) {
                 mediaPlayer.stop();
+                state=State.CHANGE;
             }
             mediaPlayer.reset();
         }
+        mediaPlayer.setOnCompletionListener(this);
+        mediaPlayer.setOnBufferingUpdateListener(this);
+        mediaPlayer.setOnErrorListener(this);
+        mediaPlayer.setOnSeekCompleteListener(this);
+
         i = 0;
     }
 
     @Override
     public void onCompletion(MediaPlayer mp) {
-        EventBus.getDefault().postSticky(0);
-        timer.cancel();
+        if(timer!=null){
+            timer.cancel();
+        }
+        state = State.FINISH;
+        push();
+    }
+
+    @Override
+    public void onBufferingUpdate(MediaPlayer mp, int percent) {
+        if (percent == 100) {
+            LogUtils.e("缓冲完成");
+            state = State.PLAYING;
+            startTask();
+            push();
+        }
+    }
+
+    @Override
+    public boolean onError(MediaPlayer mp, int what, int extra) {
+        LogUtils.e("错误" + what);
+        state = State.ERROR;
+        push();
+        return false;
+    }
+
+    @Override
+    public void onSeekComplete(MediaPlayer mp) {
+        startTask();
     }
 
     //必须继承binder，才能作为中间人对象返回
     public class MusicController extends Binder implements MusicInterface {
+        @RequiresApi(api = Build.VERSION_CODES.M)
         @Override
         public void play(String MusicUri) {
             init();
@@ -97,31 +129,6 @@ public class PlayMusicServer extends Service implements MediaPlayer.OnCompletion
                     public void onPrepared(MediaPlayer mp) {
                         mediaPlayer.setLooping(false);
                         mediaPlayer.start();
-                        mediaPlayer.setOnCompletionListener(PlayMusicServer.this);
-                        mediaPlayer.setOnBufferingUpdateListener(new MediaPlayer.OnBufferingUpdateListener() {
-                            @Override
-                            public void onBufferingUpdate(MediaPlayer mp, int percent) {
-                                if(percent==100){
-                                    LogUtils.e("缓冲完成");
-                                    state = PLAYING;
-                                    startTask();
-                                }
-
-                            }
-                        });
-                       mediaPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
-                           @Override
-                           public boolean onError(MediaPlayer mp, int what, int extra) {
-                               LogUtils.e("错误"+what);
-                               return false;
-                           }
-                       });
-                       mediaPlayer.setOnSeekCompleteListener(new MediaPlayer.OnSeekCompleteListener() {
-                           @Override
-                           public void onSeekComplete(MediaPlayer mp) {
-                               startTask();
-                           }
-                       });
                     }
                 });
             } catch (IOException e) {
@@ -130,69 +137,89 @@ public class PlayMusicServer extends Service implements MediaPlayer.OnCompletion
         }
 
         @Override
-        public int playOrPause() {
-            if(mediaPlayer!=null){
-                if(state==PLAYING){
-                    mediaPlayer.pause();
-                    state=PAUSE;
-                    if(timer!=null){
-                        timer.cancel();
-                    }
-                }else{
-                    mediaPlayer.start();
-                    state=PLAYING;
-                    startTask();
+        public void playOrPause() {
+            if (state== State.PLAYING) {
+                mediaPlayer.pause();
+                state = State.PAUSE;
+                if (timer != null) {
+                    timer.cancel();
                 }
-            }else{
-                state=STOP;
+            } else {
+                mediaPlayer.start();
+                state = State.PLAYING;
+                startTask();
             }
-            return  state;
+            push();
         }
 
         @Override
-        public int getPlayState() {
+        public State playState() {
             return state;
         }
 
         @Override
-        public int getPlayPro() {
+        public int playPro() {
             return i;
         }
 
         @Override
-        public void setPro(int pos) {
-            if(timer!=null){
+        public void seek(int pos) {
+            if (timer != null) {
                 timer.cancel();
             }
-            mediaPlayer.seekTo(pos*1000);
-            i=pos;
+            mediaPlayer.seekTo(pos * 1000);
+            i = pos;
         }
 
-
+        @Override
+        public void stop() {
+            if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+                mediaPlayer.stop();
+                state = State.STOP;
+            }
+            if (timer != null) {
+                timer.cancel();
+            }
+        }
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(mediaPlayer!=null){
+        if (mediaPlayer != null) {
             mediaPlayer.stop();
             mediaPlayer.release();
             mediaPlayer = null;
         }
+        if(timer!=null){
+            timer.cancel();
+        }
+
     }
 
+    private void push() {
+        EventBus.getDefault().postSticky(state);
+    }
 
-    private void startTask(){
-        if(timer!=null){
+    private void startTask() {
+        if (timer != null) {
             timer.cancel();
         }
         timer = new Timer();
         timer.schedule(new TimerTask() {
+            @SuppressLint("NewApi")
             @Override
             public void run() {
                 i++;
-                EventBus.getDefault().postSticky(i);
+                LogUtils.e(mediaPlayer.getCurrentPosition());
+                PlayInfo playInfo=new PlayInfo();
+                playInfo.setPos(i);
+                playInfo.setState(state);
+                EventBus.getDefault().postSticky(playInfo);
             }
         }, 0, 1000);
     }
+
+
+
 }

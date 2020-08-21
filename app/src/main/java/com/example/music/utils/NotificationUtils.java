@@ -25,6 +25,7 @@ import androidx.core.app.NotificationCompat;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.example.music.Interface.State;
 import com.example.music.R;
 import com.example.music.model.PlayingMusicBeens;
 
@@ -114,7 +115,7 @@ public class NotificationUtils {
                         mRemoteViews.setTextViewText(R.id.tv_name, playingMusicBeens.getMusicname());
                         mRemoteViews.setTextViewText(R.id.tv_name, playingMusicBeens.getMusicname() + "-" + playingMusicBeens.getMusic_singer());
                         mRemoteViews.setImageViewResource(R.id.ib_last, R.drawable.ic_lrc_last);
-                        if (PlayController.getInstance().get_state() == 0) {
+                        if (PlayController.getInstance().getState() == State.PLAYING) {
                             mRemoteViews.setImageViewResource(R.id.ib_play, R.drawable.ic_lrc_stop);
                         } else {
                             mRemoteViews.setImageViewResource(R.id.ib_play, R.drawable.ic_lrc_play);

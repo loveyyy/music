@@ -103,7 +103,7 @@ public class DownloadCenterActivity extends BaseActivity<DownloadcenteractivityB
                     downloadcenteractivityBinding.rcvLocal.setVisibility(View.VISIBLE);
 
                     downLoadApt=new DownLoadApt(getContext(),new DaoUtils(getContext()).queryDownloadInfoBuilder(DownloadTask.PROGREE));
-                    downloadcenteractivityBinding.rcvLocal.setLayoutManager(new LinearLayoutManager(getBaseContext(), RecyclerView.VERTICAL,false));
+                    downloadcenteractivityBinding.rcvLocal.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL,false));
                     downloadcenteractivityBinding.rcvLocal.setAdapter(downLoadApt);
 
                 }else{
@@ -111,11 +111,11 @@ public class DownloadCenterActivity extends BaseActivity<DownloadcenteractivityB
                     downloadcenteractivityBinding.rcvLocal.setVisibility(View.GONE);
 
                     downLoadApt=new DownLoadApt(getContext(),new DaoUtils(getContext()).queryDownloadInfoBuilder(DownloadTask.FINISHED));
-                    downloadcenteractivityBinding.rcvCollect.setLayoutManager(new LinearLayoutManager(getBaseContext(), RecyclerView.VERTICAL,false));
+                    downloadcenteractivityBinding.rcvCollect.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL,false));
                     downloadcenteractivityBinding.rcvCollect.setAdapter(downLoadApt);
 
-//                    LocalMusicApt localMusicApt=new LocalMusicApt(getBaseContext(), LocalMusicUtils.getmusic(getBaseContext()));
-//                    downloadcenteractivityBinding.rcvCollect.setLayoutManager(new LinearLayoutManager(getBaseContext(), RecyclerView.VERTICAL,false));
+//                    LocalMusicApt localMusicApt=new LocalMusicApt(getContext(), LocalMusicUtils.getmusic(getContext()));
+//                    downloadcenteractivityBinding.rcvCollect.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL,false));
 //                    downloadcenteractivityBinding.rcvCollect.setAdapter(localMusicApt);
                 }
             }

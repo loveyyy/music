@@ -21,8 +21,9 @@ import com.example.music.model.DownlodMusciInfo;
 import com.example.music.model.PlayingMusicBeens;
 import com.example.music.server.TaskDispatcher;
 import com.example.music.ui.activity.Singer_Activity;
-import com.example.music.ui.adapter.BaseAdapter;
+import com.example.music.ui.base.BaseAdapter;
 import com.example.music.ui.base.BaseFragment;
+import com.example.music.utils.PlayController;
 import com.example.music.viewmodel.SingerVM;
 
 import java.io.File;
@@ -36,7 +37,6 @@ public class FragmentArtistMusic extends BaseFragment<FramentArtistMusicBinding,
     private FramentArtistMusicBinding framentArtistMusicBinding;
     private SingerVM singerVM;
     private int artistId;
-    private PlayMusic playMusic;
     @Override
     protected int getContentViewId() {
         return R.layout.frament_artist_music;
@@ -96,7 +96,8 @@ public class FragmentArtistMusic extends BaseFragment<FramentArtistMusicBinding,
                             playingMusicBeens1.setRid(String.valueOf(listBean.getRid()));
                             playingMusicBeens.add(playingMusicBeens1);
                         }
-                        playMusic.Play(playingMusicBeens,pos);
+                        PlayController.getInstance().setPlayList(playingMusicBeens);
+                        PlayController.getInstance().setIndex(pos);
                     }
                 });
 
@@ -125,6 +126,5 @@ public class FragmentArtistMusic extends BaseFragment<FramentArtistMusicBinding,
     public void onAttach(Context context) {
         super.onAttach(context);
         artistId = ((Singer_Activity) context).getartistid();
-        playMusic= (PlayMusic) getActivity();
     }
 }

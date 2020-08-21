@@ -4,14 +4,14 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.hardware.SensorManager;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.OrientationEventListener;
 
 import com.blankj.utilcode.util.LogUtils;
+import com.example.music.Interface.State;
 import com.example.music.R;
 import com.example.music.databinding.MvplayBinding;
-import com.example.music.server.PlayMusicServer;
+import com.example.music.server.PlayMusicService;
 import com.example.music.ui.base.BaseActivity;
 import com.example.music.ui.base.BaseVM;
 import com.example.music.utils.PlayController;
@@ -78,7 +78,7 @@ public class MvPlayActivity extends BaseActivity<MvplayBinding, BaseVM> {
     protected void initData() {
         mvplayBinding.playMv.setActivity(this);
         Intent intent=getIntent();
-        if(PlayController.getInstance().get_state()== PlayMusicServer.PLAYING){
+        if(PlayController.getInstance().getState()== State.PLAYING){
             PlayController.getInstance().playOrPause();
         }
         mvplayBinding.playMv.play(intent.getStringExtra("rid"));

@@ -1,10 +1,12 @@
 package com.example.music.server;
 
+import android.annotation.SuppressLint;
 import android.app.Service;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Binder;
 import android.os.IBinder;
+import android.util.Log;
 import android.view.SurfaceHolder;
 
 import androidx.annotation.Nullable;
@@ -19,10 +21,17 @@ import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+
 /**
  * Create By morningsun  on 2020-06-30
  */
-public class PlayMvServer extends Service {
+public class PlayMvService extends Service {
     private MediaPlayer mediaPlayer;
     //计时器
     private Timer timer;
@@ -148,8 +157,6 @@ public class PlayMvServer extends Service {
             }
             return mediaPlayer;
         }
-
-
     }
 
     @Override

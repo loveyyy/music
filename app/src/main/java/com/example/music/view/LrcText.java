@@ -18,6 +18,8 @@ import android.widget.Toast;
 
 import com.example.music.R;
 import com.example.music.model.LrcBeen;
+import com.example.music.model.PlayInfo;
+import com.example.music.ui.MyApplication;
 import com.example.music.utils.PlayController;
 
 import org.greenrobot.eventbus.EventBus;
@@ -236,15 +238,18 @@ public class LrcText extends TextView implements View.OnTouchListener,GestureDet
     }
 
 
-    @Subscribe(threadMode = ThreadMode.BACKGROUND,sticky = true)
-    public void GetMusicPro(Integer a){
-        progree=a;
+
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
+    public void playResult(PlayInfo playInfo) {
+        progree=playInfo.getPos();
         if(IsDrawLine){
             handler.sendEmptyMessage(12);
         }
         currentLine=findShowLine(progree);
         handler.sendEmptyMessage(10);
     }
+
+
 
     @Override
     protected void onDetachedFromWindow() {

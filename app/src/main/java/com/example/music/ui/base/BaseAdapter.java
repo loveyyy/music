@@ -1,9 +1,7 @@
-package com.example.music.ui.adapter;
+package com.example.music.ui.base;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -12,8 +10,6 @@ import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.blankj.utilcode.util.LogUtils;
-import com.example.music.Interface.OnDownLoadListener;
 import com.example.music.R;
 import com.example.music.ui.bindadapter.BindingViewHolder;
 

@@ -15,16 +15,15 @@ public class NotificationReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-
             switch (intent.getAction()){
                 case "last":
-                    PlayController.getInstance().play_last();
+                    PlayController.getInstance().playLast();
                     break;
                 case "play":
                     PlayController.getInstance().playOrPause();
                     break;
                 case "next":
-                    PlayController.getInstance().play_Next();
+                    PlayController.getInstance().playNext();
                     break;
                 case "main":
                     if (!NotificationUtils.getInstance().isAppForeground(context)) {

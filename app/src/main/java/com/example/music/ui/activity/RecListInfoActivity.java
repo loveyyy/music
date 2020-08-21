@@ -21,10 +21,11 @@ import com.example.music.model.DownlodMusciInfo;
 import com.example.music.model.PlayingMusicBeens;
 import com.example.music.model.RecListInfo;
 import com.example.music.server.TaskDispatcher;
-import com.example.music.ui.adapter.BaseAdapter;
+import com.example.music.ui.base.BaseAdapter;
 import com.example.music.ui.base.BaseActivity;
 import com.example.music.ui.custom.CustomDialogFragment;
 import com.example.music.ui.custom.PlayerMusicView;
+import com.example.music.utils.PlayController;
 import com.example.music.viewmodel.RecVM;
 
 import java.io.File;
@@ -34,7 +35,7 @@ import java.util.List;
 /**
  * Create By morningsun  on 2019-12-10
  */
-public class RecListInfoActivity extends BaseActivity<RecListInfoActivityBinding, RecVM> implements   PlayerMusicView.showList{
+public class RecListInfoActivity extends BaseActivity<RecListInfoActivityBinding, RecVM> implements PlayerMusicView.showList {
     private RecListInfoActivityBinding recListInfoActivityBinding;
     private RecVM recVM;
 
@@ -50,38 +51,38 @@ public class RecListInfoActivity extends BaseActivity<RecListInfoActivityBinding
 
     @Override
     protected void initView(RecListInfoActivityBinding bindView) {
-        recListInfoActivityBinding=bindView;
+        recListInfoActivityBinding = bindView;
         recListInfoActivityBinding.playview.SetShowList(this);
     }
 
     @Override
     protected void setVM(RecVM vm) {
-        recVM=vm;
+        recVM = vm;
         recVM.recListInfo.observe(this, new Observer<BaseRespon<RecListInfo>>() {
             @Override
             public void onChanged(final BaseRespon<RecListInfo> rec_list_infoBaseRespon) {
                 try {
-                    Glide.with(getBaseContext()).load(rec_list_infoBaseRespon.getData().getImg()).into(recListInfoActivityBinding.ivRec);
+                    Glide.with(getContext()).load(rec_list_infoBaseRespon.getData().getImg()).into(recListInfoActivityBinding.ivRec);
                     recListInfoActivityBinding.ivRecName.setText(rec_list_infoBaseRespon.getData().getName());
                     recListInfoActivityBinding.ivRecInfo.setText(rec_list_infoBaseRespon.getData().getDesc());
                     recListInfoActivityBinding.ivRecInfo1.setText(rec_list_infoBaseRespon.getData().getInfo());
 
-                    recListInfoActivityBinding.rcvRec.setLayoutManager(new LinearLayoutManager(getBaseContext(), RecyclerView.VERTICAL,false));
-                    BaseAdapter<RecListInfo.MusicListBean> beanBaseAdapter=new BaseAdapter<>(getBaseContext(),rec_list_infoBaseRespon.getData().getMusicList(),R.layout.rcv_rec_list_apt, BR.rec_list_info);
+                    recListInfoActivityBinding.rcvRec.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
+                    BaseAdapter<RecListInfo.MusicListBean> beanBaseAdapter = new BaseAdapter<>(getContext(), rec_list_infoBaseRespon.getData().getMusicList(), R.layout.rcv_rec_list_apt, BR.rec_list_info);
                     recListInfoActivityBinding.rcvRec.setAdapter(beanBaseAdapter);
                     beanBaseAdapter.setOnDownLoad(new BaseAdapter.OnDownLoad() {
                         @Override
                         public void OnDownLoadListener(int pos) {
                             //查询链接
                             Api.getInstance().iRetrofit.downloadMusic(rec_list_infoBaseRespon.getData().getMusicList().get(pos).getMusicrid().split("_")[1],
-                                    "kuwo","id",1,"XMLHttpRequest")
+                                    "kuwo", "id", 1, "XMLHttpRequest")
                                     .compose(RxHelper.observableIO2Main(getApplicationContext()))
                                     .subscribe(new ApiResponse<BaseRespon<List<DownlodMusciInfo>>>() {
                                         @Override
                                         public void success(BaseRespon<List<DownlodMusciInfo>> data) {
-                                            DownLoadInfo downLoadInfo=new DownLoadInfo();
+                                            DownLoadInfo downLoadInfo = new DownLoadInfo();
                                             downLoadInfo.setUrl(data.getData().get(0).getUrl());
-                                            downLoadInfo.setFilename(data.getData().get(0).getAuthor()+"-"+data.getData().get(0).getTitle()+".mp3");
+                                            downLoadInfo.setFilename(data.getData().get(0).getAuthor() + "-" + data.getData().get(0).getTitle() + ".mp3");
                                             downLoadInfo.setFilepath(Environment.getExternalStorageDirectory().getPath() + File.separator + "mv");
 
                                             TaskDispatcher.getInstance().enqueue(downLoadInfo);
@@ -106,13 +107,14 @@ public class RecListInfoActivity extends BaseActivity<RecListInfoActivityBinding
                                 playingMusicBeens1.setRid(String.valueOf(listBean.getRid()));
                                 playingMusicBeens.add(playingMusicBeens1);
                             }
-                            recListInfoActivityBinding.playview.play(playingMusicBeens,pos);
+                            PlayController.getInstance().setPlayList(playingMusicBeens);
+                            PlayController.getInstance().setIndex(pos);
                         }
                     });
 
 
-                }catch (NullPointerException e){
-                    Toast.makeText(getApplicationContext(),"请返回重试",Toast.LENGTH_SHORT).show();
+                } catch (NullPointerException e) {
+                    Toast.makeText(getApplicationContext(), "请返回重试", Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -126,14 +128,14 @@ public class RecListInfoActivity extends BaseActivity<RecListInfoActivityBinding
     }
 
     protected void initData() {
-        Intent intent=getIntent();
-        recVM.getRecListInfo(intent.getStringExtra("rid"),"1","30");
+        Intent intent = getIntent();
+        recVM.getRecListInfo(intent.getStringExtra("rid"), "1", "30");
     }
 
 
     @Override
     public void OnShowList(List<PlayingMusicBeens> playingMusicBeens) {
-        CustomDialogFragment customDialogFragment=new CustomDialogFragment(playingMusicBeens,getApplicationContext());
-        customDialogFragment.show(getSupportFragmentManager(),"RecListInfo");
+        CustomDialogFragment customDialogFragment = new CustomDialogFragment(playingMusicBeens, getApplicationContext());
+        customDialogFragment.show(getSupportFragmentManager(), "RecListInfo");
     }
 }

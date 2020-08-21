@@ -1,7 +1,7 @@
 package com.example.music.ui.activity;
 
-import android.content.Intent;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.lifecycle.Observer;
 
@@ -11,20 +11,25 @@ import com.example.music.R;
 import com.example.music.databinding.LrcBinding;
 import com.example.music.model.BaseRespon;
 import com.example.music.model.LrcBeen;
+import com.example.music.model.PlayInfo;
 import com.example.music.model.PlayingMusicBeens;
-import com.example.music.server.PlayMusicServer;
+import com.example.music.server.PlayMusicService;
+import com.example.music.ui.MyApplication;
 import com.example.music.ui.base.BaseActivity;
 import com.example.music.utils.PlayController;
-import com.example.music.utils.greendao.DaoUtils;
 import com.example.music.utils.imageutils.GildeCilcleImageUtils;
 import com.example.music.viewmodel.LrcVM;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 
 /**
  * Created by Administrator on 2018/7/3.
  */
 
-public class TextLrc extends BaseActivity<LrcBinding, LrcVM> implements PlayController.PlayChange {
+public class TextLrc extends BaseActivity<LrcBinding, LrcVM> {
     private LrcBinding lrcBinding;
     private LrcVM lrcVM;
     private PlayController playController;
@@ -44,7 +49,7 @@ public class TextLrc extends BaseActivity<LrcBinding, LrcVM> implements PlayCont
     protected void initView(LrcBinding bindView) {
         lrcBinding = bindView;
         playController = PlayController.getInstance();
-        playController.SetOnPlayChange(this);
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -67,44 +72,28 @@ public class TextLrc extends BaseActivity<LrcBinding, LrcVM> implements PlayCont
         lrcBinding.ibLrcLast.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                playingMusicBeens = playController.play_last();
+                playingMusicBeens = playController.playNext();
                 lrcVM.getLrc(playingMusicBeens.getRid());
             }
         });
         lrcBinding.ibLrcNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                playingMusicBeens = playController.play_Next();
+                playingMusicBeens = playController.playNext();
                 lrcVM.getLrc(playingMusicBeens.getRid());
             }
         });
         lrcBinding.ibLrcPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int state = playController.playOrPause();
-                if (state == PlayMusicServer.PLAYING) {
-                    lrcBinding.ibLrcPlay.setBackgroundResource(R.drawable.ic_lrc_stop);
-                } else if (state == PlayMusicServer.PAUSE) {
-                    lrcBinding.ibLrcPlay.setBackgroundResource(R.drawable.ic_lrc_play);
-                } else {
-                    lrcBinding.ibLrcPlay.setBackgroundResource(R.drawable.ic_lrc_stop);
-                }
+                playController.playOrPause();
             }
         });
     }
 
     @Override
     protected void initData() {
-        Intent intent = getIntent();
-        int pos = intent.getIntExtra("pos", 0);
-        if (playController.get_state() == PlayMusicServer.PLAYING) {
-            lrcBinding.ibLrcPlay.setBackgroundResource(R.drawable.ic_lrc_stop);
-        } else if (playController.get_state() == PlayMusicServer.PAUSE) {
-            lrcBinding.ibLrcPlay.setBackgroundResource(R.drawable.ic_lrc_play);
-        } else {
-            lrcBinding.ibLrcPlay.setBackgroundResource(R.drawable.ic_lrc_stop);
-        }
-        playingMusicBeens = new DaoUtils(this).queryAllMessage().get(pos);
+        playingMusicBeens = playController.getMusicInfo();
         RequestOptions requestOptions = new RequestOptions().transform(new GildeCilcleImageUtils());
         Glide.with(this).load(playingMusicBeens.getAlbumpic()).apply(requestOptions).into(lrcBinding.ivBac);
         lrcVM.getLrc(playingMusicBeens.getRid());
@@ -114,14 +103,35 @@ public class TextLrc extends BaseActivity<LrcBinding, LrcVM> implements PlayCont
     @Override
     protected void onDestroy() {
         super.onDestroy();
-//        Glide.with(getContext()).pauseRequests();
     }
 
 
-    @Override
-    public void PlayChange(PlayingMusicBeens playingMusicBeens) {
-        RequestOptions requestOptions = new RequestOptions().transform(new GildeCilcleImageUtils());
-        Glide.with(getContext()).load(playingMusicBeens.getAlbumpic()).apply(requestOptions).into(lrcBinding.ivBac);
-        lrcVM.getLrc(playingMusicBeens.getRid());
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
+    public void playResult(PlayInfo playInfo) {
+        switch (playInfo.getState()){
+            case PLAYING:
+                lrcBinding.ibLrcPlay.setBackgroundResource(R.drawable.ic_lrc_stop);
+                break;
+            case PAUSE:
+                lrcBinding.ibLrcPlay.setBackgroundResource(R.drawable.ic_lrc_play);
+                break;
+            case STOP:
+            case BUFFER:
+                lrcBinding.ibLrcPlay.setBackgroundResource(R.drawable.ic_lrc_stop);
+                break;
+            case ERROR:
+                Toast.makeText(MyApplication.getContext(), "播放错误,自动为您播放下一曲", Toast.LENGTH_SHORT).show();
+                playController.PlayModel();
+                break;
+            case FINISH:
+                playController.PlayModel();
+                break;
+            case CHANGE:
+                RequestOptions requestOptions = new RequestOptions().transform(new GildeCilcleImageUtils());
+                Glide.with(getContext()).load(playController.getMusicInfo().getAlbumpic()).apply(requestOptions).into(lrcBinding.ivBac);
+                lrcVM.getLrc(playController.getMusicInfo().getRid());
+                break;
+        }
     }
+
 }

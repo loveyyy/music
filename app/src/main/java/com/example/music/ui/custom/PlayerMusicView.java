@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -32,13 +33,14 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
-public class PlayerMusicView extends RelativeLayout {
+public class PlayerMusicView extends RelativeLayout implements PlayController.OnMusicChange {
     private PlayerBinding playerBinding;
     private Context context;
     private PlayController playController;
     private showList showList;
     private boolean isScroller = false;
     private VP_Paly_Apt vp_paly_apt;
+    private boolean isChange = false;
 
     public PlayerMusicView(Context context) {
         super(context);
@@ -49,10 +51,14 @@ public class PlayerMusicView extends RelativeLayout {
         playerBinding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.player,
                 this, true);
         playController = PlayController.getInstance();
+        playController.setOnMusicChange(this);
         this.context = context;
         EventBus.getDefault().register(this);
-        vp_paly_apt = new VP_Paly_Apt(context, playController.getPlayList());
-        playerBinding.vpPlay.setAdapter(vp_paly_apt);
+        if (!playController.getPlayList().isEmpty()) {
+            vp_paly_apt = new VP_Paly_Apt(context, playController.getPlayList());
+            playerBinding.vpPlay.setAdapter(vp_paly_apt);
+            playerBinding.vpPlay.setCurrentItem(playController.getIndex(), false);
+        }
         setonclick();
     }
 
@@ -67,7 +73,6 @@ public class PlayerMusicView extends RelativeLayout {
             @Override
             public void onItemClick(int pos) {
                 Intent intent = new Intent();
-                intent.putExtra("pos", pos);
                 intent.setClass(context, TextLrc.class);
                 context.startActivity(intent);
             }
@@ -81,19 +86,22 @@ public class PlayerMusicView extends RelativeLayout {
 
             @Override
             public void onPageSelected(int position) {
-                super.onPageSelected(position);
                 if (isScroller) {
                     playController.setIndex(position);
                     playController.play();
                     playerBinding.ivPlay.setBackgroundResource(R.drawable.stop);
                     isScroller = false;
                 }
+                super.onPageSelected(position);
+
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {
+                if (state == 2) {
+                    isScroller = true;
+                }
                 super.onPageScrollStateChanged(state);
-                isScroller = true;
             }
         });
 
@@ -123,8 +131,8 @@ public class PlayerMusicView extends RelativeLayout {
 
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     public void playResult(PlayInfo playInfo) {
-        LogUtils.e(playInfo.getState().name());
-        switch (playInfo.getState()){
+//        LogUtils.e(playInfo.getState().name()+"----"+playInfo.getPos()+"------"+playInfo.getDuration());
+        switch (playInfo.getState()) {
             case PLAYING:
                 playerBinding.ivPlay.setBackgroundResource(R.drawable.stop);
                 break;
@@ -137,22 +145,31 @@ public class PlayerMusicView extends RelativeLayout {
                 break;
             case ERROR:
                 Toast.makeText(MyApplication.getContext(), "播放错误,自动为您播放下一曲", Toast.LENGTH_SHORT).show();
-                playController.PlayModel();
+                playController.playNext();
+                isChange=true;
                 break;
             case FINISH:
                 playController.PlayModel();
-                break;
-            case CHANGE:
-                if (vp_paly_apt != null) {
-                    vp_paly_apt.notif();
-                }
-                if (playerBinding.vpPlay.getCurrentItem() != playController.getIndex()) {
-                    playerBinding.vpPlay.setCurrentItem(playController.getIndex());
-                }
+                isChange=true;
                 break;
 
         }
-        playerBinding.cirPro.setProgress(playInfo.getPos() * 100 / (playController.getMusicInfo().getDuration()));
+        if (playInfo.getDuration() != 0) {
+            playerBinding.cirPro.setProgress(playInfo.getPos() * 100 / playInfo.getDuration());
+        }
+
+    }
+
+    @Override
+    public void Change() {
+        if(vp_paly_apt!=null){
+            vp_paly_apt.notif();
+            playerBinding.vpPlay.setCurrentItem(playController.getIndex(), false);
+        }else{
+            vp_paly_apt = new VP_Paly_Apt(context, playController.getPlayList());
+            playerBinding.vpPlay.setAdapter(vp_paly_apt);
+            playerBinding.vpPlay.setCurrentItem(playController.getIndex(), false);
+        }
     }
 
 

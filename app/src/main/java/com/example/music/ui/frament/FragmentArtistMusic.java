@@ -96,8 +96,7 @@ public class FragmentArtistMusic extends BaseFragment<FramentArtistMusicBinding,
                             playingMusicBeens1.setRid(String.valueOf(listBean.getRid()));
                             playingMusicBeens.add(playingMusicBeens1);
                         }
-                        PlayController.getInstance().setPlayList(playingMusicBeens);
-                        PlayController.getInstance().setIndex(pos);
+                        PlayController.getInstance().setPlayList(playingMusicBeens,pos);
                     }
                 });
 

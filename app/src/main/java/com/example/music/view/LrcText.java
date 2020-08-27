@@ -33,10 +33,10 @@ import java.util.List;
  */
 
 @SuppressLint("AppCompatCustomView")
-public class LrcText extends TextView implements View.OnTouchListener,GestureDetector.OnGestureListener{
+public class LrcText extends TextView implements View.OnTouchListener, GestureDetector.OnGestureListener {
     private List<LrcBeen.LrclistBean> dataBean;
     // 标记当前行
-    private int currentLine=0;
+    private int currentLine = 0;
     private Paint currentPaint;
     private Paint otherPaint;
     private Paint timePaint;
@@ -52,34 +52,31 @@ public class LrcText extends TextView implements View.OnTouchListener,GestureDet
     private Typeface currentTypeface = Typeface.DEFAULT_BOLD;
     //其他歌词字体
     private Typeface otherTypeface = Typeface.DEFAULT;
-    private boolean IsDrawLine=false;
-    private boolean IsSrcoll=false;
+    private boolean IsDrawLine = false;
+    private boolean IsSrcoll = false;
 
-
-    private  float offset;
+    private float offset;
     private int progree;
     private GestureDetector detector;
     private PlayController playController;
-    private Context context;
 
     @SuppressLint("HandlerLeak")
     private Handler handler = new Handler() {
 
         @Override
         public void handleMessage(Message msg) {
-            switch (msg.what){
+            switch (msg.what) {
                 case 10:
                     //播放下一列歌词
-                    if(dataBean!=null){
-                        if(currentLine>=dataBean.size()-1){
-                            currentLine=0;
+                    if (dataBean != null) {
+                        if (currentLine >= dataBean.size() - 1) {
+                            currentLine = 0;
                             handler.removeCallbacksAndMessages(null);
-                            playController.PlayModel();
-                        }else{
+                        } else {
                             currentLine++;
                             invalidate(); // 刷新,会再次调用onDraw方法
                         }
-                    }else{
+                    } else {
                         invalidate();
                     }
                     break;
@@ -92,21 +89,18 @@ public class LrcText extends TextView implements View.OnTouchListener,GestureDet
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            IsDrawLine=false;
+                            IsDrawLine = false;
                         }
-                    },15000);
+                    }, 15000);
                     break;
             }
         }
 
     };
 
-    public LrcText(Context context, AttributeSet attrs)  {
+    public LrcText(Context context, AttributeSet attrs) {
         super(context, attrs);
-        playController=PlayController.getInstance();
-        EventBus.getDefault().register(this);
-
-        this.context =context;
+        playController = PlayController.getInstance();
         super.setOnTouchListener(this);
         super.setFocusable(true);
         super.setClickable(true);
@@ -129,7 +123,7 @@ public class LrcText extends TextView implements View.OnTouchListener,GestureDet
 
         timePaint.setColor(timeColor);
         timePaint.setTextAlign(Paint.Align.CENTER);
-        IsDrawLine=false;
+        IsDrawLine = false;
     }
 
     public LrcText(Context context) {
@@ -138,62 +132,62 @@ public class LrcText extends TextView implements View.OnTouchListener,GestureDet
 
     @Override
     protected void onDraw(Canvas canvas) {
-            if(IsDrawLine){
-                Paint p = new Paint();
-                p.setColor(getResources().getColor(R.color.colorAccent));
-                Path path = new Path();
-                path.moveTo(5, getHeight()/2-20);// 此点为多边形的起点
-                path.lineTo(5, getHeight()/2+20);
-                path.lineTo(24, getHeight()/2);
-                path.close(); // 使这些点构成封闭的多边形
-                canvas.drawPath(path, p);
-                canvas.drawLine(30,getHeight()/2,getWidth(),getHeight()/2,currentPaint);
+        if (IsDrawLine) {
+            Paint p = new Paint();
+            p.setColor(getResources().getColor(R.color.colorAccent));
+            Path path = new Path();
+            path.moveTo(5, getHeight() / 2 - 20);// 此点为多边形的起点
+            path.lineTo(5, getHeight() / 2 + 20);
+            path.lineTo(24, getHeight() / 2);
+            path.close(); // 使这些点构成封闭的多边形
+            canvas.drawPath(path, p);
+            canvas.drawLine(30, getHeight() / 2, getWidth(), getHeight() / 2, currentPaint);
 
-                for(int i=0;i<dataBean.size();i++){
-                    LrcBeen.LrclistBean lyric;
-                    if(i<currentLine){
-                        //绘制播放过的歌词
-                        lyric = dataBean.get(i);
-                        canvas.drawText(lyric.getLineLyric(), getWidth() / 2,
-                                getHeight() / 2+offset + lineSpace * (i - currentLine), otherPaint);
+            for (int i = 0; i < dataBean.size(); i++) {
+                LrcBeen.LrclistBean lyric;
+                if (i < currentLine) {
+                    //绘制播放过的歌词
+                    lyric = dataBean.get(i);
+                    canvas.drawText(lyric.getLineLyric(), getWidth() / 2,
+                            getHeight() / 2 + offset + lineSpace * (i - currentLine), otherPaint);
 
-                    } else if(i==currentLine){
-                        // 绘制正在播放的歌词
-                        lyric = dataBean.get(currentLine);
-                        canvas.drawText(lyric.getLineLyric(), getWidth() / 2,
-                                getHeight() / 2+offset, currentPaint);
-                    }else{
-                        lyric = dataBean.get(i);
-                        canvas.drawText(lyric.getLineLyric(), getWidth() / 2,
-                                getHeight() / 2+offset + lineSpace * (i -currentLine), otherPaint);
-                    }
+                } else if (i == currentLine) {
+                    // 绘制正在播放的歌词
+                    lyric = dataBean.get(currentLine);
+                    canvas.drawText(lyric.getLineLyric(), getWidth() / 2,
+                            getHeight() / 2 + offset, currentPaint);
+                } else {
+                    lyric = dataBean.get(i);
+                    canvas.drawText(lyric.getLineLyric(), getWidth() / 2,
+                            getHeight() / 2 + offset + lineSpace * (i - currentLine), otherPaint);
                 }
             }
+        }
 
-            if(IsSrcoll){
-                canvas.translate(0,offset);
-                IsSrcoll=false;
-            }
+        if (IsSrcoll) {
+            canvas.translate(0, offset);
+            IsSrcoll = false;
+        }
 
-            if(dataBean!=null&&!IsDrawLine){
-                for(int i=0;i<dataBean.size();i++){
-                    LrcBeen.LrclistBean lyric;
-                    if(i<currentLine){
-                        //绘制播放过的歌词
-                        lyric = dataBean.get(i);
-                        canvas.drawText(lyric.getLineLyric(), getWidth() / 2,
-                                getHeight() / 2 + lineSpace * (i - currentLine), otherPaint);
+        if (dataBean != null && !IsDrawLine) {
+            for (int i = 0; i < dataBean.size(); i++) {
+                LrcBeen.LrclistBean lyric;
+                if (i < currentLine) {
+                    //绘制播放过的歌词
+                    lyric = dataBean.get(i);
+                    canvas.drawText(lyric.getLineLyric(), getWidth() / 2,
+                            getHeight() / 2 + lineSpace * (i - currentLine), otherPaint);
 
-                    } else if(i==currentLine){
-                        // 绘制正在播放的歌词
-                        lyric = dataBean.get(currentLine);
-                        canvas.drawText(lyric.getLineLyric(), getWidth() / 2,
-                                getHeight() / 2, currentPaint);
-                    }else{
-                        lyric = dataBean.get(i);
-                        canvas.drawText(lyric.getLineLyric(), getWidth() / 2,
-                                getHeight() / 2 + lineSpace * (i -currentLine), otherPaint);
-                    }
+                } else if (i == currentLine) {
+                    // 绘制正在播放的歌词
+                    lyric = dataBean.get(currentLine);
+                    canvas.drawText(lyric.getLineLyric(), getWidth() / 2,
+                            getHeight() / 2, currentPaint);
+                } else {
+                    lyric = dataBean.get(i);
+                    canvas.drawText(lyric.getLineLyric(), getWidth() / 2,
+                            getHeight() / 2 + lineSpace * (i - currentLine), otherPaint);
+                }
             }
         }
 
@@ -201,28 +195,24 @@ public class LrcText extends TextView implements View.OnTouchListener,GestureDet
     }
 
     public void init(List<LrcBeen.LrclistBean> lrcBeens) {
-        dataBean =lrcBeens;
+        dataBean = lrcBeens;
         handler.removeCallbacksAndMessages(null);
-        IsDrawLine=false;
-        IsSrcoll=false;
-        progree=playController.getPlayPro();
-        currentLine=findShowLine(progree);
-        handler.sendEmptyMessage(10);
+        IsDrawLine = false;
+        IsSrcoll = false;
     }
 
 
     private int findShowLine(double time) {
-        if(dataBean!=null){
+        if (dataBean != null) {
             int left = 0;
             int right = dataBean.size();
             while (left <= right) {
                 int middle = (left + right) / 2;
-                double middleTime = Double.valueOf(dataBean.get(middle).getTime());
-
+                double middleTime = Double.valueOf(dataBean.get(middle).getTime()) * 1000;
                 if (time < middleTime) {
                     right = middle - 1;
                 } else {
-                    if (middle + 1 >= dataBean.size() || time < Double.valueOf(dataBean.get(middle + 1).getTime())) {
+                    if (middle + 1 >= dataBean.size() || time < Double.valueOf(dataBean.get(middle + 1).getTime()) * 1000) {
                         return middle;
                     }
                     left = middle + 1;
@@ -238,25 +228,21 @@ public class LrcText extends TextView implements View.OnTouchListener,GestureDet
     }
 
 
-
-    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
-    public void playResult(PlayInfo playInfo) {
-        progree=playInfo.getPos();
-        if(IsDrawLine){
+    public void setPro(int pro) {
+        progree = pro;
+        if (IsDrawLine) {
             handler.sendEmptyMessage(12);
         }
-        currentLine=findShowLine(progree);
+        currentLine = findShowLine(progree);
         handler.sendEmptyMessage(10);
     }
-
 
 
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        progree=0;
-        currentLine=0;
-        EventBus.getDefault().unregister(this);
+        progree = 0;
+        currentLine = 0;
     }
 
     @Override
@@ -271,16 +257,16 @@ public class LrcText extends TextView implements View.OnTouchListener,GestureDet
 
     @Override
     public boolean onSingleTapUp(MotionEvent e) {
-        if(IsDrawLine){
+        if (IsDrawLine) {
             float x = e.getX();
             float y = e.getY();
-            if(x>0&&x<30&&y>getHeight()/2-20&&y<getHeight()/2+20){
+            if (x > 0 && x < 30 && y > getHeight() / 2 - 20 && y < getHeight() / 2 + 20) {
                 handler.removeCallbacksAndMessages(null);
-                IsDrawLine=false;
-                if(offset>0){
-                    currentLine= (int) (currentLine-(Math.ceil(Math.abs(offset))/getResources().getDimensionPixelSize(R.dimen.dp_30)));
-                }else if(offset<0){
-                    currentLine= (int) (currentLine+(Math.floor(Math.abs(offset))/getResources().getDimensionPixelSize(R.dimen.dp_30)));
+                IsDrawLine = false;
+                if (offset > 0) {
+                    currentLine = (int) (currentLine - (Math.ceil(Math.abs(offset)) / getResources().getDimensionPixelSize(R.dimen.dp_30)));
+                } else if (offset < 0) {
+                    currentLine = (int) (currentLine + (Math.floor(Math.abs(offset)) / getResources().getDimensionPixelSize(R.dimen.dp_30)));
                 }
                 playController.setPro((Double.valueOf(dataBean.get(currentLine).getTime()).intValue()));
                 invalidate();
@@ -293,10 +279,10 @@ public class LrcText extends TextView implements View.OnTouchListener,GestureDet
     @Override
     public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
         offset += -distanceY;
-        if(dataBean!=null){
-            IsDrawLine=true;
-            if(offset<=getResources().getDimensionPixelSize(R.dimen.dp_30)*(dataBean.size()-2)){
-                IsSrcoll=true;
+        if (dataBean != null) {
+            IsDrawLine = true;
+            if (offset <= getResources().getDimensionPixelSize(R.dimen.dp_30) * (dataBean.size() - 2)) {
+                IsSrcoll = true;
             }
         }
         invalidate();

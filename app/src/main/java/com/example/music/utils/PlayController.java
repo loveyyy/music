@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
-import android.widget.Toast;
 
 import com.example.music.Interface.MusicInterface;
 import com.example.music.Interface.State;
@@ -34,6 +33,8 @@ public class PlayController  {
     private DaoUtils daoUtils;
 
     private static PlayController instance;
+
+    private OnMusicChange onMusicChange;
 
 
     /**
@@ -157,6 +158,9 @@ public class PlayController  {
             public void success(BaseRespon data1) {
                 //获得歌曲播放地址
                 mi.play(data1.getUrl());
+                if(onMusicChange!=null){
+                    onMusicChange.Change();
+                }
                 NotificationUtils.getInstance().sendNotification(getMusicInfo(), 1, MyApplication.getContext());
             }
         });
@@ -169,7 +173,7 @@ public class PlayController  {
 
     //获取当前播放音乐信息
     public PlayingMusicBeens getMusicInfo() {
-        return daoUtils.queryAllMessage().get((Integer) aCache.getAsObject("pos"));
+        return daoUtils.queryAllMessage().get(getIndex());
     }
 
 
@@ -195,14 +199,23 @@ public class PlayController  {
 
 
     //设置播放列表
-    public void setPlayList(List<PlayingMusicBeens> playingMusicList) {
+    public void setPlayList(List<PlayingMusicBeens> playingMusicList,int pos) {
         if (!daoUtils.queryAllMessage().isEmpty()) {
             daoUtils.deleteAll();
         }
         daoUtils.insertMultMuisc(playingMusicList);
+        setIndex(pos);
         play();
     }
 
+
+    public interface  OnMusicChange{
+        void Change();
+    }
+
+    public void setOnMusicChange(OnMusicChange onMusicChange){
+        this.onMusicChange= onMusicChange;
+    }
 
 
 

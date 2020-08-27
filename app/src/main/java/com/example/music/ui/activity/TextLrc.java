@@ -13,7 +13,6 @@ import com.example.music.model.BaseRespon;
 import com.example.music.model.LrcBeen;
 import com.example.music.model.PlayInfo;
 import com.example.music.model.PlayingMusicBeens;
-import com.example.music.server.PlayMusicService;
 import com.example.music.ui.MyApplication;
 import com.example.music.ui.base.BaseActivity;
 import com.example.music.utils.PlayController;
@@ -29,7 +28,7 @@ import org.greenrobot.eventbus.ThreadMode;
  * Created by Administrator on 2018/7/3.
  */
 
-public class TextLrc extends BaseActivity<LrcBinding, LrcVM> {
+public class TextLrc extends BaseActivity<LrcBinding, LrcVM> implements PlayController.OnMusicChange {
     private LrcBinding lrcBinding;
     private LrcVM lrcVM;
     private PlayController playController;
@@ -94,8 +93,6 @@ public class TextLrc extends BaseActivity<LrcBinding, LrcVM> {
     @Override
     protected void initData() {
         playingMusicBeens = playController.getMusicInfo();
-        RequestOptions requestOptions = new RequestOptions().transform(new GildeCilcleImageUtils());
-        Glide.with(this).load(playingMusicBeens.getAlbumpic()).apply(requestOptions).into(lrcBinding.ivBac);
         lrcVM.getLrc(playingMusicBeens.getRid());
     }
 
@@ -103,6 +100,7 @@ public class TextLrc extends BaseActivity<LrcBinding, LrcVM> {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
 
@@ -126,12 +124,13 @@ public class TextLrc extends BaseActivity<LrcBinding, LrcVM> {
             case FINISH:
                 playController.PlayModel();
                 break;
-            case CHANGE:
-                RequestOptions requestOptions = new RequestOptions().transform(new GildeCilcleImageUtils());
-                Glide.with(getContext()).load(playController.getMusicInfo().getAlbumpic()).apply(requestOptions).into(lrcBinding.ivBac);
-                lrcVM.getLrc(playController.getMusicInfo().getRid());
-                break;
         }
+        lrcBinding.lrctext.setPro(playInfo.getPos());
     }
 
+    @Override
+    public void Change() {
+        playingMusicBeens = playController.getMusicInfo();
+        lrcVM.getLrc(playingMusicBeens.getRid());
+    }
 }

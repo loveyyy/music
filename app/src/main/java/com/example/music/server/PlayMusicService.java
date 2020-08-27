@@ -32,8 +32,6 @@ public class PlayMusicService extends Service implements MediaPlayer.OnCompletio
     private MediaPlayer mediaPlayer;
     //计时器
     private Timer timer;
-    //当前进度
-    private int i = 0;
     //当前状态
     private State state = State.STOP;
 
@@ -67,25 +65,23 @@ public class PlayMusicService extends Service implements MediaPlayer.OnCompletio
         //初始化
         if (mediaPlayer == null) {
             mediaPlayer = new MediaPlayer();
-        } else {
-            if (mediaPlayer.isPlaying()) {
-                mediaPlayer.stop();
-                state=State.CHANGE;
-            }
-            mediaPlayer.reset();
+        }
+        if(timer!=null){
+            timer.cancel();
         }
         mediaPlayer.setOnCompletionListener(this);
         mediaPlayer.setOnBufferingUpdateListener(this);
         mediaPlayer.setOnErrorListener(this);
         mediaPlayer.setOnSeekCompleteListener(this);
-
-        i = 0;
     }
 
     @Override
     public void onCompletion(MediaPlayer mp) {
-        if(timer!=null){
+        if (timer != null) {
             timer.cancel();
+        }
+        if (mediaPlayer != null) {
+            mediaPlayer = null;
         }
         state = State.FINISH;
         push();
@@ -93,17 +89,20 @@ public class PlayMusicService extends Service implements MediaPlayer.OnCompletio
 
     @Override
     public void onBufferingUpdate(MediaPlayer mp, int percent) {
-        if (percent == 100) {
-            LogUtils.e("缓冲完成");
-            state = State.PLAYING;
-            startTask();
-            push();
+        if (percent != 100) {
+            state = State.BUFFER;
         }
+        push();
     }
 
     @Override
     public boolean onError(MediaPlayer mp, int what, int extra) {
-        LogUtils.e("错误" + what);
+        if (timer != null) {
+            timer.cancel();
+        }
+        if (mediaPlayer != null) {
+            mediaPlayer = null;
+        }
         state = State.ERROR;
         push();
         return false;
@@ -129,6 +128,8 @@ public class PlayMusicService extends Service implements MediaPlayer.OnCompletio
                     public void onPrepared(MediaPlayer mp) {
                         mediaPlayer.setLooping(false);
                         mediaPlayer.start();
+                        state = State.PLAYING;
+                        startTask();
                     }
                 });
             } catch (IOException e) {
@@ -138,7 +139,7 @@ public class PlayMusicService extends Service implements MediaPlayer.OnCompletio
 
         @Override
         public void playOrPause() {
-            if (state== State.PLAYING) {
+            if (state == State.PLAYING) {
                 mediaPlayer.pause();
                 state = State.PAUSE;
                 if (timer != null) {
@@ -159,7 +160,7 @@ public class PlayMusicService extends Service implements MediaPlayer.OnCompletio
 
         @Override
         public int playPro() {
-            return i;
+            return mediaPlayer.getCurrentPosition();
         }
 
         @Override
@@ -168,7 +169,6 @@ public class PlayMusicService extends Service implements MediaPlayer.OnCompletio
                 timer.cancel();
             }
             mediaPlayer.seekTo(pos * 1000);
-            i = pos;
         }
 
         @Override
@@ -191,14 +191,16 @@ public class PlayMusicService extends Service implements MediaPlayer.OnCompletio
             mediaPlayer.release();
             mediaPlayer = null;
         }
-        if(timer!=null){
+        if (timer != null) {
             timer.cancel();
         }
 
     }
 
     private void push() {
-        EventBus.getDefault().postSticky(state);
+        PlayInfo playInfo = new PlayInfo();
+        playInfo.setState(state);
+        EventBus.getDefault().postSticky(playInfo);
     }
 
     private void startTask() {
@@ -210,16 +212,14 @@ public class PlayMusicService extends Service implements MediaPlayer.OnCompletio
             @SuppressLint("NewApi")
             @Override
             public void run() {
-                i++;
-                LogUtils.e(mediaPlayer.getCurrentPosition());
-                PlayInfo playInfo=new PlayInfo();
-                playInfo.setPos(i);
+                PlayInfo playInfo = new PlayInfo();
+                playInfo.setPos(mediaPlayer.getCurrentPosition());
                 playInfo.setState(state);
+                playInfo.setDuration(mediaPlayer.getDuration());
                 EventBus.getDefault().postSticky(playInfo);
             }
         }, 0, 1000);
     }
-
 
 
 }

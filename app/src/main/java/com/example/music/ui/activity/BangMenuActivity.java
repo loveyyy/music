@@ -100,8 +100,7 @@ public class BangMenuActivity extends BaseActivity<BangMeauActivityBinding, Bang
                                 playingMusicBeens1.setRid(musicListBean.getRid());
                                 playingMusicBeens.add(playingMusicBeens1);
                             }
-                            PlayController.getInstance().setPlayList(playingMusicBeens);
-                            PlayController.getInstance().setIndex(pos);
+                            PlayController.getInstance().setPlayList(playingMusicBeens,pos);
                         }
                     });
 

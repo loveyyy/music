@@ -151,6 +151,7 @@ public class MainActivity extends BaseActivity<MainactivityBinding, BaseVM> impl
     @Override
     protected void onResume() {
         super.onResume();
+        mainactivityBinding.main.playview.init();
     }
 
     @Override

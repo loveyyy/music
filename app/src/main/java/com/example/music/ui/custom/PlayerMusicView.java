@@ -40,7 +40,6 @@ public class PlayerMusicView extends RelativeLayout implements PlayController.On
     private showList showList;
     private boolean isScroller = false;
     private VP_Paly_Apt vp_paly_apt;
-    private boolean isChange = false;
 
     public PlayerMusicView(Context context) {
         super(context);
@@ -54,17 +53,23 @@ public class PlayerMusicView extends RelativeLayout implements PlayController.On
         playController.setOnMusicChange(this);
         this.context = context;
         EventBus.getDefault().register(this);
-        if (!playController.getPlayList().isEmpty()) {
-            vp_paly_apt = new VP_Paly_Apt(context, playController.getPlayList());
-            playerBinding.vpPlay.setAdapter(vp_paly_apt);
-            playerBinding.vpPlay.setCurrentItem(playController.getIndex(), false);
-        }
+        init();
         setonclick();
     }
 
-    public PlayerMusicView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
+    public void init(){
+        if (!playController.getPlayList().isEmpty()) {
+            if (vp_paly_apt == null) {
+                vp_paly_apt = new VP_Paly_Apt(context, playController.getPlayList());
+                playerBinding.vpPlay.setAdapter(vp_paly_apt);
+            } else {
+                vp_paly_apt.notif();
+            }
+            playerBinding.vpPlay.setCurrentItem(playController.getIndex(), false);
+        }
+
     }
+
 
 
     @SuppressLint("ClickableViewAccessibility")
@@ -146,11 +151,9 @@ public class PlayerMusicView extends RelativeLayout implements PlayController.On
             case ERROR:
                 Toast.makeText(MyApplication.getContext(), "播放错误,自动为您播放下一曲", Toast.LENGTH_SHORT).show();
                 playController.playNext();
-                isChange=true;
                 break;
             case FINISH:
                 playController.PlayModel();
-                isChange=true;
                 break;
 
         }
@@ -162,10 +165,10 @@ public class PlayerMusicView extends RelativeLayout implements PlayController.On
 
     @Override
     public void Change() {
-        if(vp_paly_apt!=null){
+        if (vp_paly_apt != null) {
             vp_paly_apt.notif();
             playerBinding.vpPlay.setCurrentItem(playController.getIndex(), false);
-        }else{
+        } else {
             vp_paly_apt = new VP_Paly_Apt(context, playController.getPlayList());
             playerBinding.vpPlay.setAdapter(vp_paly_apt);
             playerBinding.vpPlay.setCurrentItem(playController.getIndex(), false);

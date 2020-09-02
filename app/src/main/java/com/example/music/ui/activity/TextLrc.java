@@ -1,6 +1,10 @@
 package com.example.music.ui.activity;
 
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.RotateAnimation;
 import android.widget.Toast;
 
 import androidx.lifecycle.Observer;
@@ -33,6 +37,7 @@ public class TextLrc extends BaseActivity<LrcBinding, LrcVM> implements PlayCont
     private LrcVM lrcVM;
     private PlayController playController;
     private PlayingMusicBeens playingMusicBeens;
+    private Animation animation;
 
     @Override
     public int getLayout() {
@@ -94,6 +99,7 @@ public class TextLrc extends BaseActivity<LrcBinding, LrcVM> implements PlayCont
     protected void initData() {
         playingMusicBeens = playController.getMusicInfo();
         lrcVM.getLrc(playingMusicBeens.getRid());
+         animation = AnimationUtils.loadAnimation(getContext(),R.anim.rotate);
     }
 
 
@@ -109,9 +115,15 @@ public class TextLrc extends BaseActivity<LrcBinding, LrcVM> implements PlayCont
         switch (playInfo.getState()){
             case PLAYING:
                 lrcBinding.ibLrcPlay.setBackgroundResource(R.drawable.ic_lrc_stop);
+                if(lrcBinding.ivBac.getAnimation() == null){
+                    if(animation!=null){
+                        lrcBinding.ivBac.startAnimation(animation);//开始动画
+                    }
+                }
                 break;
             case PAUSE:
                 lrcBinding.ibLrcPlay.setBackgroundResource(R.drawable.ic_lrc_play);
+                lrcBinding.ivBac.clearAnimation();
                 break;
             case STOP:
             case BUFFER:

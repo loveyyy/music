@@ -208,10 +208,16 @@ public class PlayController  {
         play();
     }
 
+    public void unbind() {
+        MyApplication.getContext().unbindService(serviceConnection);
+        mi=null;
+    }
+
 
     public interface  OnMusicChange{
         void Change();
     }
+
 
     public void setOnMusicChange(OnMusicChange onMusicChange){
         this.onMusicChange= onMusicChange;

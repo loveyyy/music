@@ -27,6 +27,8 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by Administrator on 2018/5/19.
@@ -59,6 +61,7 @@ public class LrcText extends TextView implements View.OnTouchListener, GestureDe
     private int progree;
     private GestureDetector detector;
     private PlayController playController;
+    private Timer timer=new Timer();
 
     @SuppressLint("HandlerLeak")
     private Handler handler = new Handler() {
@@ -213,7 +216,7 @@ public class LrcText extends TextView implements View.OnTouchListener, GestureDe
                     right = middle - 1;
                 } else {
                     if (middle + 1 >= dataBean.size() || time < Double.valueOf(dataBean.get(middle + 1).getTime()) * 1000) {
-                        return middle;
+                        return middle-1;
                     }
                     left = middle + 1;
                 }
@@ -298,4 +301,5 @@ public class LrcText extends TextView implements View.OnTouchListener, GestureDe
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
         return false;
     }
+
 }

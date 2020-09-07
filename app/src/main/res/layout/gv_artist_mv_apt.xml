@@ -11,7 +11,7 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <ImageView
             android:layout_width="@dimen/dp_100"
@@ -24,13 +24,15 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:maxLines="1"
-            android:text="@{artistmv.name}"/>
+            android:text="@{artistmv.name}"
+            android:textColor="#000000"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:maxLines="1"
-            android:text="@{artistmv.artist}"/>
+            android:text="@{artistmv.artist}"
+            android:textColor="#000000"/>
     </LinearLayout>
 </layout>

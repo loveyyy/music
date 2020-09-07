@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.music.BR;
 import com.example.music.R;
+import com.example.music.ui.base.BaseAdapter;
 import com.example.music.ui.bindadapter.BindingViewHolder;
 import com.example.music.databinding.MusicItemAptBinding;
 import com.example.music.model.BangMusicList;
@@ -22,6 +23,7 @@ public class Music_ItemAdapter extends RecyclerView.Adapter<BindingViewHolder> {
     private Context context;
     private List<BangMusicList.MusicListBean> musicitem;
     private Music_ItemAdapter.OnItemClick onItemClick;
+    private  Music_ItemAdapter.OnDownLoad onDownLoad;
     public Music_ItemAdapter(Context context,List<BangMusicList.MusicListBean> musicitem){
         this.context=context;
         this.musicitem=musicitem;
@@ -46,6 +48,14 @@ public class Music_ItemAdapter extends RecyclerView.Adapter<BindingViewHolder> {
                 }
             }
         });
+        binding.getRoot().findViewById(R.id.btn_download).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(onDownLoad!=null){
+                    onDownLoad.OnDownLoadListener(position);
+                }
+            }
+        });
     }
 
 
@@ -60,5 +70,14 @@ public class Music_ItemAdapter extends RecyclerView.Adapter<BindingViewHolder> {
     }
     public void setOnItemClick(Music_ItemAdapter.OnItemClick click){
         this.onItemClick=click;
+    }
+
+
+    //ItemView 的点击接口
+    public interface OnDownLoad{
+        void OnDownLoadListener(int pos);
+    }
+    public void setOnDownLoad(Music_ItemAdapter.OnDownLoad onDownLoad){
+        this.onDownLoad=onDownLoad;
     }
 }

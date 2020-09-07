@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
         <variable
-            name="BangMeauAdapter"
-            type="com.example.music.ui.base.BaseAdapter" />
+            name="bangMeauVM"
+            type="com.example.music.viewmodel.BangMenuVm" />
     </data>
     <RelativeLayout
         android:layout_width="match_parent"
@@ -50,7 +51,9 @@
                     android:layout_width="match_parent"
                     android:layout_marginTop="@dimen/dp_10"
                     android:layout_height="match_parent"
-                    app:adapter="@{BangMeauAdapter}"/>
+                    tools:listitem="@layout/music_item_apt"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:adapter="@{bangMeauVM.adapterMutableLiveData}"/>
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 

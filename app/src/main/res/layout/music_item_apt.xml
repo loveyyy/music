@@ -29,21 +29,24 @@
             android:gravity="center"
             android:layout_gravity="center"
             android:text="@{bangMusicList.name}"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textColor="#000000"/>
         <TextView
             android:id="@+id/singer"
             android:layout_width="@dimen/dp_80"
             android:gravity="center"
             android:layout_gravity="center"
             android:text="@{bangMusicList.artist}"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textColor="#000000"/>
         <TextView
             android:id="@+id/zhuanji"
             android:layout_width="@dimen/dp_80"
             android:gravity="center"
             android:layout_gravity="center"
             android:text="@{bangMusicList.album}"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textColor="#000000"/>
         <ImageButton
             android:id="@+id/btn_download"
             android:layout_width="wrap_content"

@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
+        <variable
+            name="fragmentMusicVM"
+            type="com.example.music.viewmodel.FragmentMusicVM" />
     </data>
 
     <LinearLayout
@@ -10,16 +14,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="推荐歌单" />
-
-        <GridView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/gv_music"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:numColumns="3"
-            android:scrollbars="none" />
+            android:layout_marginTop="@dimen/dp_10"
+            android:adapter="@{fragmentMusicVM.gv_music_aptMutableLiveData}"
+            tools:listitem="@layout/gv_music_apt"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="3"
+           />
     </LinearLayout>
 </layout>

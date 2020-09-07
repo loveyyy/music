@@ -18,7 +18,7 @@
     <application
         android:name=".ui.MyApplication"
         android:allowBackup="false"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/icon"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:usesCleartextTraffic="true"
@@ -36,10 +36,7 @@
             android:exported="true"
             android:enabled="true"
             tools:ignore="InnerclassSeparator" />
-        <service android:name=".server.ExoPlayMusicServer"
-            android:exported="true"
-            android:enabled="true"
-            tools:ignore="InnerclassSeparator" />
+
         <service android:name=".server.PlayMvService"/>
         <activity android:name=".ui.activity.MainActivity"
             android:launchMode="singleTask"

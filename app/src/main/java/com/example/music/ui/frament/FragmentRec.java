@@ -7,30 +7,17 @@ import android.os.Message;
 import android.view.ViewGroup;
 
 import androidx.lifecycle.Observer;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.CompositePageTransformer;
 import androidx.viewpager2.widget.MarginPageTransformer;
 
-import com.blankj.utilcode.util.StringUtils;
 import com.example.music.R;
+import com.example.music.databinding.FramentRecBinding;
 import com.example.music.model.Banner;
-import com.example.music.model.MusicList;
-import com.example.music.ui.activity.BangMenuActivity;
-import com.example.music.ui.activity.RecListInfoActivity;
-import com.example.music.ui.activity.Singer_Activity;
-import com.example.music.ui.adapter.Bang_MeauAdapter;
-import com.example.music.ui.adapter.GridViewAdapter;
-import com.example.music.ui.adapter.Music_ListAdapter;
 import com.example.music.ui.adapter.Vp_BannerAdapter;
 import com.example.music.ui.base.BaseFragment;
 import com.example.music.utils.imageutils.ScaleTransformer;
 import com.example.music.viewmodel.FragmentRecVM;
-import com.example.music.databinding.FramentRecBinding;
-import com.example.music.model.ArtistList;
-import com.example.music.model.BangList;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -66,26 +53,7 @@ public class FragmentRec extends BaseFragment<FramentRecBinding,FragmentRecVM> {
     protected void SetVM(FragmentRecVM vm) {
         fragmentRecVM=vm;
 
-
-        fragmentRecVM.musicList.observe(this, new Observer<MusicList>() {
-            @Override
-            public void onChanged(final MusicList listBaseRespon) {
-                RecyclerView.LayoutManager layoutManager=new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL,false);
-                framentRecBinding.rcvMusicListMain.setLayoutManager(layoutManager);
-                Music_ListAdapter music_listAdapter=new Music_ListAdapter(getContext(),listBaseRespon);
-                music_listAdapter.setOnItemClick(new Music_ListAdapter.OnItemClick() {
-                    @Override
-                    public void OnItemClickListener(int pos) {
-                        //推荐歌单点击事件
-                        Intent intent=new Intent();
-                        intent.setClass(getMContext(), RecListInfoActivity.class);
-                        intent.putExtra("rid",listBaseRespon.getList().get(pos).getId().toString());
-                        startActivity(intent);
-                    }
-                });
-                framentRecBinding.rcvMusicListMain.setAdapter(music_listAdapter);
-            }
-        });
+        framentRecBinding.setFragmentRecVM(fragmentRecVM);
         fragmentRecVM.bannerList.observe(this, new Observer<List<Banner>>() {
             @Override
             public void onChanged(List<Banner> responseBody) {
@@ -104,48 +72,13 @@ public class FragmentRec extends BaseFragment<FramentRecBinding,FragmentRecVM> {
 
             }
         });
-        fragmentRecVM.bangList.observe(this, new Observer<List<BangList>>() {
-            @Override
-            public void onChanged(final List<BangList> listBaseRespon) {
-                framentRecBinding.rcvRankMain.setLayoutManager(new LinearLayoutManager(getContext(),RecyclerView.HORIZONTAL,false));
-                Bang_MeauAdapter bang_meauAdapter=new Bang_MeauAdapter(getContext(),listBaseRespon);
-                framentRecBinding.rcvRankMain.setAdapter(bang_meauAdapter);
-                bang_meauAdapter.setOnItemClick(new Bang_MeauAdapter.OnItemClick() {
-                    @Override
-                    public void OnItemClickListener(int pos) {
-                        //排行歌曲点击事件--进入排行详情
-                        Intent intent=new Intent();
-                        intent.putExtra("title",listBaseRespon.get(pos).getName());
-                        intent.putExtra("time",listBaseRespon.get(pos).getPub());
-                        intent.putExtra("bangid",listBaseRespon.get(pos).getId());
-                        intent.putExtra("img",listBaseRespon.get(pos).getPic());
-                        intent.setClass(getMContext(), BangMenuActivity.class);
-                        startActivity(intent);
-                    }
-                });
 
+        fragmentRecVM.intentMutableLiveData.observe(this, new Observer<Intent>() {
+            @Override
+            public void onChanged(Intent intent) {
+                startActivity(intent);
             }
         });
-        fragmentRecVM.artistList.observe(this, new Observer<ArtistList>() {
-            @Override
-            public void onChanged(final ArtistList artist_listBaseRespon) {
-                framentRecBinding.rcvSingerMain.setLayoutManager(new LinearLayoutManager(getContext(),RecyclerView.HORIZONTAL,false));
-                GridViewAdapter gridViewAdapter=new GridViewAdapter(getContext(),artist_listBaseRespon);
-                framentRecBinding.rcvSingerMain.setAdapter(gridViewAdapter);
-                gridViewAdapter.setOnItemClick(new GridViewAdapter.OnItemClick() {
-                    @Override
-                    public void OnItemClickListener(int pos) {
-                        //歌手Item点击事件
-                        Intent intent=new Intent();
-                        intent.putExtra("artistid",artist_listBaseRespon.getArtistList().get(pos).getId());
-                        intent.setClass(getMContext(), Singer_Activity.class);
-                        startActivity(intent);
-                    }
-                });
-
-            }
-        });
-
     }
 
 
@@ -175,5 +108,11 @@ public class FragmentRec extends BaseFragment<FramentRecBinding,FragmentRecVM> {
     @Override
     protected boolean getNeedRefresh() {
         return false;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        handler.removeCallbacksAndMessages(null);
     }
 }

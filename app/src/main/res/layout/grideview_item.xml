@@ -26,7 +26,8 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:layout_height="wrap_content"
-            android:text="@{singer.name}"/>
+            android:text="@{singer.name}"
+            android:textColor="#000000"/>
 
         <TextView
             android:id="@+id/tv_num"
@@ -34,6 +35,7 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:layout_height="wrap_content"
-            android:text="@{singer.musicNum}"/>
+            android:text="@{singer.musicNum}"
+            android:textColor="#000000"/>
     </LinearLayout>
 </layout>

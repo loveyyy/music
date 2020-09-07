@@ -3,10 +3,14 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/white</item>
-        <item name="colorPrimaryDark">@color/white</item>
-        <item name="colorAccent">@color/white</item>
-        <item name="rippleColor">@color/white</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimary</item>
+        <item name="colorAccent">@color/colorPrimary</item>
+        <item name="rippleColor">@color/colorPrimary</item>
+        <item name="android:windowBackground">@drawable/welcome</item>
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+
     </style>
 
     <style name="Dialog.FullScreen" parent="Theme.AppCompat.Dialog">

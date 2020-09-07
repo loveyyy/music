@@ -1,6 +1,9 @@
 package com.example.music.viewmodel;
 
 import android.app.Application;
+import android.content.Intent;
+import android.view.View;
+import android.widget.AdapterView;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
@@ -14,6 +17,8 @@ import com.example.music.model.ArtistList;
 import com.example.music.model.ArtistMusic;
 import com.example.music.model.ArtistMv;
 import com.example.music.model.BaseRespon;
+import com.example.music.ui.activity.MvPlayActivity;
+import com.example.music.ui.adapter.FragmentArtistMvApt;
 import com.example.music.ui.base.BaseVM;
 
 /**
@@ -77,15 +82,25 @@ public class SingerVM extends BaseVM {
                 });
     }
 
-    public MutableLiveData<BaseRespon<ArtistMv>> artistMv = new MutableLiveData<>();
-
+    public MutableLiveData<FragmentArtistMvApt> mvAdapter = new MutableLiveData<>();
     public void getArtistMv(String artistId, String pn, String rn) {
         Api.getInstance().iRetrofit.artistMv(artistId, pn, rn, getaCache().getAsString("reqid"))
                 .compose(RxHelper.observableIO2Main(getApplication()))
                 .subscribe(new ApiResponse<BaseRespon<ArtistMv>>() {
                     @Override
                     public void success(BaseRespon<ArtistMv> data) {
-                        artistMv.setValue(data);
+                        FragmentArtistMvApt gv_artist_albums_apt=new FragmentArtistMvApt(getApplication(),data.getData().getMvlist());
+                        mvAdapter.setValue(gv_artist_albums_apt);
+                        gv_artist_albums_apt.setOnItemClick(new FragmentArtistMvApt.OnItemClick() {
+                            @Override
+                            public void OnItemClickListener(int pos) {
+                                //播放mv
+                                Intent intent=new Intent();
+                                intent.setClass(getApplication(), MvPlayActivity.class);
+                                intent.putExtra("rid",data.getData().getMvlist().get(pos).getId());
+                                getApplication().startActivity(intent);
+                            }
+                        });
                     }
                 });
     }

@@ -35,7 +35,6 @@ import java.util.List;
 
 public class PlayerMusicView extends RelativeLayout implements PlayController.OnMusicChange {
     private PlayerBinding playerBinding;
-    private Context context;
     private PlayController playController;
     private showList showList;
     private boolean isScroller = false;
@@ -51,7 +50,6 @@ public class PlayerMusicView extends RelativeLayout implements PlayController.On
                 this, true);
         playController = PlayController.getInstance();
         playController.setOnMusicChange(this);
-        this.context = context;
         EventBus.getDefault().register(this);
         init();
         setonclick();
@@ -60,7 +58,7 @@ public class PlayerMusicView extends RelativeLayout implements PlayController.On
     public void init(){
         if (!playController.getPlayList().isEmpty()) {
             if (vp_paly_apt == null) {
-                vp_paly_apt = new VP_Paly_Apt(context, playController.getPlayList());
+                vp_paly_apt = new VP_Paly_Apt(getContext(), playController.getPlayList());
                 playerBinding.vpPlay.setAdapter(vp_paly_apt);
             } else {
                 vp_paly_apt.notif();
@@ -78,8 +76,8 @@ public class PlayerMusicView extends RelativeLayout implements PlayController.On
             @Override
             public void onItemClick(int pos) {
                 Intent intent = new Intent();
-                intent.setClass(context, TextLrc.class);
-                context.startActivity(intent);
+                intent.setClass(getContext(), TextLrc.class);
+                getContext().startActivity(intent);
             }
         });
 
@@ -169,7 +167,7 @@ public class PlayerMusicView extends RelativeLayout implements PlayController.On
             vp_paly_apt.notif();
             playerBinding.vpPlay.setCurrentItem(playController.getIndex(), false);
         } else {
-            vp_paly_apt = new VP_Paly_Apt(context, playController.getPlayList());
+            vp_paly_apt = new VP_Paly_Apt(getContext(), playController.getPlayList());
             playerBinding.vpPlay.setAdapter(vp_paly_apt);
             playerBinding.vpPlay.setCurrentItem(playController.getIndex(), false);
         }

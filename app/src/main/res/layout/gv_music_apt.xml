@@ -11,7 +11,7 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <ImageView
             android:layout_width="@dimen/dp_100"
@@ -24,12 +24,14 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:maxLines="2"
-            android:text="@{rec_list.name}"/>
+            android:text="@{rec_list.name}"
+            android:textColor="#000000"/>
 
         <TextView
             android:layout_width="@dimen/dp_100"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@{rec_list.info}"/>
+            android:text="@{rec_list.info}"
+            android:textColor="#000000"/>
     </LinearLayout>
 </layout>
